@@ -1,0 +1,2 @@
+
+S.allInstances()->forAll(s| T.allInstances()->forAll(t| t.a = s.b.a))
