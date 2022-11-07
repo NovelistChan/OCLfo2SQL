@@ -4,10 +4,10 @@
 .idea
 # Log file
 *.log
-target/
+target
 # BlueJ files
 *.ctxt
-gen/
+gen
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
