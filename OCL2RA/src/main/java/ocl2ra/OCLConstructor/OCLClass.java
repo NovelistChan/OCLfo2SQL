@@ -2,13 +2,13 @@ package ocl2ra;
 
 import java.util.ArrayList;
 
-class OCLClass {
+public class OCLClass {
 
     private String className;
     private ArrayList<String> attrs;
-    private ArrayList<String> assocEnds;
+    private ArrayList<OCLAssociation> assocEnds;
 
-    public OCLClass(String cn, ArrayList<String> at, ArrayList<String> as) {
+    public OCLClass(String cn, ArrayList<String> at, ArrayList<OCLAssociation> as) {
         this.className = cn;
         this.attrs = at;
         this.assocEnds = as;
@@ -22,7 +22,7 @@ class OCLClass {
         return this.attrs;
     }
 
-    public ArrayList<String> getAssocs() {
+    public ArrayList<OCLAssociation> getAssocs() {
         return this.assocEnds;
     }
 
@@ -30,11 +30,17 @@ class OCLClass {
         return this.attrs.contains(attr);
     }
 
-    Boolean hasAssoc(String assoc) {
+    Boolean hasAssoc(OCLAssociation assoc) {
         return this.assocEnds.contains(assoc);
     }
 
     Boolean equals(OCLClass oc) {
         return this.className.equals(oc.getClassName());
+    }
+
+    public void printClass() {
+        System.out.println(this.className);
+        System.out.println(this.attrs);
+        System.out.println(this.assocEnds);
     }
 }
