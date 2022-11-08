@@ -1,2 +1,5 @@
 
-S.allInstances()->forAll(s| T.allInstances()->forAll(t| t.a = s.b.a))
+S.allInstances()->forAll(s| s.timeStamp > s.pred.expired)
+S.allInstances()->forAll(s| s.passId <> null)
+T.allInstances()->forAll(t| THP.allInstances()->forAll(thp| thp.SBM <> t.SBM))
+S.allInstances()->forAll(s| s.pred.succ.pred.succ.passId <> null)

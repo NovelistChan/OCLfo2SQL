@@ -24,9 +24,9 @@ public class Main {
         OCL2RAVisitor visitor = new OCL2RAVisitor();
 //        OCLAssociation oa = new OCLAssociation("pred", "next", "S", "S");
 
+        visitor.freeTransAssoc();
+        visitor.freeTransClasses();
         for (int i = 1; i < args.length; i++) {
-            visitor.freeTransAssoc();
-            visitor.freeTransClasses();
             OCLClass oc = OCLClassReader.readClassFromFile(args[i]);
             visitor.addTransClass(oc);
             visitor.addTransAssoc(oc.getAssocs());

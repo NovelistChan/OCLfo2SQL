@@ -3,6 +3,7 @@ package ocl2ra;
 import java.util.ArrayList;
 import java.util.Stack;
 import ocl2ra.ANTLR.OCL2RAParser;
+import ocl2ra.ANTLR.OCL2RAParser.ConstantSingleContext;
 import ocl2ra.ANTLR.OCL2RAParserBaseVisitor;
 import ocl2ra.OCLConstructor.OCLAssociation;
 import ocl2ra.OCLConstructor.OCLClass;
@@ -27,7 +28,15 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
 //        System.out.println(ctx.oclBool().getText());
         this.initContextQuery();
         this.setContextQuery(ORIGIN_CTX);
-        return visit(ctx.oclBool());
+
+        StringBuilder res = new StringBuilder(visit(ctx.oclBool(0)));
+
+        for (int i = 1; i < ctx.oclBool().size(); i++) {
+            res.append("\n");
+            res.append(visit(ctx.oclBool(i)));
+        }
+        return res.toString();
+//        return visit(ctx.oclBool());
     }
 
     /*
@@ -54,9 +63,31 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
                 .oclSingle(1)
                 .getText() + ") " + r1;
         }
-        return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " " + ctx
-            .oclSingle(1)
-            .getText() + ") " + "(" + r1 + " Cartesian " + r2 + ")";
+        if (ctx.oclSingle(0) instanceof ConstantSingleContext) {
+            if (ctx.oclSingle(1) instanceof ConstantSingleContext) {
+                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
+                    + ctx
+                    .oclSingle(1)
+                    .getText() + ") ";
+            } else {
+                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
+                    + ctx
+                    .oclSingle(1)
+                    .getText() + ") " + r2;
+            }
+        } else {
+            if (ctx.oclSingle(1) instanceof ConstantSingleContext) {
+                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
+                    + ctx
+                    .oclSingle(1)
+                    .getText() + ") " + r1;
+            } else {
+                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
+                    + ctx
+                    .oclSingle(1)
+                    .getText() + ") " + "(" + r1 + " Cartesian " + r2 + ")";
+            }
+        }
     }
 
     /*
@@ -132,9 +163,9 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
         String ro = visit(ctx.oclObject());
         String rb = visit(ctx.role());
         String rbContext = this.getRoleClass(rb);
-        if (rbContext.equals(this.contextQuery.peek())) {
-            return ro;
-        }
+//        if (rbContext.equals(this.contextQuery.peek())) {
+//            return ro;
+//        }
         return "(" + rbContext + " Cartesian " + ro + ")";
     }
 

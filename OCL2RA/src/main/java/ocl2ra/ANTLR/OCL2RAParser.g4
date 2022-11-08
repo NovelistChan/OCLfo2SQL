@@ -3,7 +3,7 @@ parser grammar OCL2RAParser;
 options { tokenVocab = OCL2RALexer; }
 
 oclExpr
-    : oclBool ? EOF
+    : oclBool + EOF
     ;
 
 oclBool
