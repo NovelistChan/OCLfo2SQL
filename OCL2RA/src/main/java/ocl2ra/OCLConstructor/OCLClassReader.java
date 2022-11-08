@@ -1,4 +1,4 @@
-package ocl2ra;
+package ocl2ra.OCLConstructor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

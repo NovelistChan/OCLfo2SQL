@@ -1,5 +1,5 @@
 // Generated from /Users/novelistchan/Documents/OCL2RA/src/main/java/ocl2ra/OCL2RAParser.g4 by ANTLR 4.10.1
-package ocl2ra;
+package ocl2ra.ANTLR;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

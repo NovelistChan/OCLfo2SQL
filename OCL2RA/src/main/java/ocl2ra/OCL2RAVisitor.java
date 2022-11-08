@@ -2,6 +2,10 @@ package ocl2ra;
 
 import java.util.ArrayList;
 import java.util.Stack;
+import ocl2ra.ANTLR.OCL2RAParser;
+import ocl2ra.ANTLR.OCL2RAParserBaseVisitor;
+import ocl2ra.OCLConstructor.OCLAssociation;
+import ocl2ra.OCLConstructor.OCLClass;
 
 public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
 

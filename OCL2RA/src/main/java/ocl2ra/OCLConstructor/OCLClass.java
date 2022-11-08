@@ -1,4 +1,4 @@
-package ocl2ra;
+package ocl2ra.OCLConstructor;
 
 import java.util.ArrayList;
 

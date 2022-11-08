@@ -1,4 +1,4 @@
-package ocl2ra;
+package ocl2ra.OCLConstructor;
 
 
 import javafx.util.Pair;
@@ -24,7 +24,7 @@ public class OCLAssociation {
         return assocClass;
     }
 
-    String getRoleClass(String role) {
+    public String getRoleClass(String role) {
         if (assocEnd.getValue().equals(role)) {
             return assocClass.getValue();
         } else if (assocEnd.getKey().equals(role)) {
