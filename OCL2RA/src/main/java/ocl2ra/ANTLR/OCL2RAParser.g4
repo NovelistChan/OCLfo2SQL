@@ -2,12 +2,28 @@ parser grammar OCL2RAParser;
 
 options { tokenVocab = OCL2RALexer; }
 
+oclText
+    : oclExpr + EOF
+    ;
+
 oclExpr
-    : oclBool + EOF
+    : CTX oclContext INV oclInvariant
+    ;
+
+oclContext
+    : STRING
+    ;
+
+oclInvariant
+    : oclInvName COLON oclBool
+    ;
+
+oclInvName
+    : STRING
     ;
 
 oclBool
-    : oclSet AR FA LB var SEP oclBool RB    #boolForAll
+    : oclSet AR FA LB oclVar SEP oclBool RB    #boolForAll
     | oclSingle compOp oclSingle            #boolCompare
     | oclBool boolOp oclBool                #boolCalc
     ;
@@ -17,24 +33,24 @@ oclSet
     ;
 
 oclSingle
-    : oclObject DOT attr                    #objectSingle
-    | constant                              #constantSingle
+    : oclObject DOT oclAttr                    #objectSingle
+    | oclConstant                              #constantSingle
     ;
 
 oclObject
-    : var                                   #varObj
-    | oclObject DOT role                    #roleObj
+    : oclVar                                   #varObj
+    | oclObject DOT oclRole                    #roleObj
     ;
 
-role
+oclRole
     : STRING
     ;
 
-attr
+oclAttr
     : STRING
     ;
 
-var
+oclVar
     : STRING
     ;
 
@@ -42,7 +58,7 @@ oclClass
     : STRING
     ;
 
-constant
+oclConstant
     : STRING | INT
     ;
 

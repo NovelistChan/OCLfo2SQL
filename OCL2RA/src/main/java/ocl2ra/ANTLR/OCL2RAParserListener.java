@@ -8,6 +8,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface OCL2RAParserListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclText}.
+	 * @param ctx the parse tree
+	 */
+	void enterOclText(OCL2RAParser.OclTextContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclText}.
+	 * @param ctx the parse tree
+	 */
+	void exitOclText(OCL2RAParser.OclTextContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link OCL2RAParser#oclExpr}.
 	 * @param ctx the parse tree
 	 */
@@ -17,6 +27,36 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOclExpr(OCL2RAParser.OclExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclContext}.
+	 * @param ctx the parse tree
+	 */
+	void enterOclContext(OCL2RAParser.OclContextContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclContext}.
+	 * @param ctx the parse tree
+	 */
+	void exitOclContext(OCL2RAParser.OclContextContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclInvariant}.
+	 * @param ctx the parse tree
+	 */
+	void enterOclInvariant(OCL2RAParser.OclInvariantContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclInvariant}.
+	 * @param ctx the parse tree
+	 */
+	void exitOclInvariant(OCL2RAParser.OclInvariantContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclInvName}.
+	 * @param ctx the parse tree
+	 */
+	void enterOclInvName(OCL2RAParser.OclInvNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclInvName}.
+	 * @param ctx the parse tree
+	 */
+	void exitOclInvName(OCL2RAParser.OclInvNameContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code boolForAll}
 	 * labeled alternative in {@link OCL2RAParser#oclBool}.
@@ -114,35 +154,35 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 */
 	void exitVarObj(OCL2RAParser.VarObjContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link OCL2RAParser#role}.
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclRole}.
 	 * @param ctx the parse tree
 	 */
-	void enterRole(OCL2RAParser.RoleContext ctx);
+	void enterOclRole(OCL2RAParser.OclRoleContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link OCL2RAParser#role}.
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclRole}.
 	 * @param ctx the parse tree
 	 */
-	void exitRole(OCL2RAParser.RoleContext ctx);
+	void exitOclRole(OCL2RAParser.OclRoleContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link OCL2RAParser#attr}.
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclAttr}.
 	 * @param ctx the parse tree
 	 */
-	void enterAttr(OCL2RAParser.AttrContext ctx);
+	void enterOclAttr(OCL2RAParser.OclAttrContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link OCL2RAParser#attr}.
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclAttr}.
 	 * @param ctx the parse tree
 	 */
-	void exitAttr(OCL2RAParser.AttrContext ctx);
+	void exitOclAttr(OCL2RAParser.OclAttrContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link OCL2RAParser#var}.
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclVar}.
 	 * @param ctx the parse tree
 	 */
-	void enterVar(OCL2RAParser.VarContext ctx);
+	void enterOclVar(OCL2RAParser.OclVarContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link OCL2RAParser#var}.
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclVar}.
 	 * @param ctx the parse tree
 	 */
-	void exitVar(OCL2RAParser.VarContext ctx);
+	void exitOclVar(OCL2RAParser.OclVarContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link OCL2RAParser#oclClass}.
 	 * @param ctx the parse tree
@@ -154,15 +194,15 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 */
 	void exitOclClass(OCL2RAParser.OclClassContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link OCL2RAParser#constant}.
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclConstant}.
 	 * @param ctx the parse tree
 	 */
-	void enterConstant(OCL2RAParser.ConstantContext ctx);
+	void enterOclConstant(OCL2RAParser.OclConstantContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link OCL2RAParser#constant}.
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclConstant}.
 	 * @param ctx the parse tree
 	 */
-	void exitConstant(OCL2RAParser.ConstantContext ctx);
+	void exitOclConstant(OCL2RAParser.OclConstantContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link OCL2RAParser#compOp}.
 	 * @param ctx the parse tree

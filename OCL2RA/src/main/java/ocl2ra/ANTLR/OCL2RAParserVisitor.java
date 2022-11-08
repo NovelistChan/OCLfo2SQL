@@ -11,11 +11,35 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface OCL2RAParserVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclText}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOclText(OCL2RAParser.OclTextContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link OCL2RAParser#oclExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitOclExpr(OCL2RAParser.OclExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclContext}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOclContext(OCL2RAParser.OclContextContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclInvariant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOclInvariant(OCL2RAParser.OclInvariantContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclInvName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOclInvName(OCL2RAParser.OclInvNameContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code boolForAll}
 	 * labeled alternative in {@link OCL2RAParser#oclBool}.
@@ -73,23 +97,23 @@ public interface OCL2RAParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVarObj(OCL2RAParser.VarObjContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link OCL2RAParser#role}.
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclRole}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRole(OCL2RAParser.RoleContext ctx);
+	T visitOclRole(OCL2RAParser.OclRoleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link OCL2RAParser#attr}.
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclAttr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAttr(OCL2RAParser.AttrContext ctx);
+	T visitOclAttr(OCL2RAParser.OclAttrContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link OCL2RAParser#var}.
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclVar}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar(OCL2RAParser.VarContext ctx);
+	T visitOclVar(OCL2RAParser.OclVarContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link OCL2RAParser#oclClass}.
 	 * @param ctx the parse tree
@@ -97,11 +121,11 @@ public interface OCL2RAParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOclClass(OCL2RAParser.OclClassContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link OCL2RAParser#constant}.
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConstant(OCL2RAParser.ConstantContext ctx);
+	T visitOclConstant(OCL2RAParser.OclConstantContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link OCL2RAParser#compOp}.
 	 * @param ctx the parse tree

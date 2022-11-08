@@ -16,6 +16,18 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterOclText(OCL2RAParser.OclTextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOclText(OCL2RAParser.OclTextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterOclExpr(OCL2RAParser.OclExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -23,6 +35,42 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitOclExpr(OCL2RAParser.OclExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOclContext(OCL2RAParser.OclContextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOclContext(OCL2RAParser.OclContextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOclInvariant(OCL2RAParser.OclInvariantContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOclInvariant(OCL2RAParser.OclInvariantContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOclInvName(OCL2RAParser.OclInvNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOclInvName(OCL2RAParser.OclInvNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -124,37 +172,37 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRole(OCL2RAParser.RoleContext ctx) { }
+	@Override public void enterOclRole(OCL2RAParser.OclRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRole(OCL2RAParser.RoleContext ctx) { }
+	@Override public void exitOclRole(OCL2RAParser.OclRoleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAttr(OCL2RAParser.AttrContext ctx) { }
+	@Override public void enterOclAttr(OCL2RAParser.OclAttrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAttr(OCL2RAParser.AttrContext ctx) { }
+	@Override public void exitOclAttr(OCL2RAParser.OclAttrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVar(OCL2RAParser.VarContext ctx) { }
+	@Override public void enterOclVar(OCL2RAParser.OclVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVar(OCL2RAParser.VarContext ctx) { }
+	@Override public void exitOclVar(OCL2RAParser.OclVarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -172,13 +220,13 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConstant(OCL2RAParser.ConstantContext ctx) { }
+	@Override public void enterOclConstant(OCL2RAParser.OclConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConstant(OCL2RAParser.ConstantContext ctx) { }
+	@Override public void exitOclConstant(OCL2RAParser.OclConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

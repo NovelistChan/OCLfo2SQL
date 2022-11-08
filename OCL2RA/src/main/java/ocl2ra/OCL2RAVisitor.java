@@ -22,21 +22,40 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
 
     private String INVALID_BOOLOP = "INVALID_BOOLOP";
 
-    // oclExpr : oclBool EOF
+    /*
+        oclText : oclExpr + EOF
+    */
     @Override
-    public String visitOclExpr(OCL2RAParser.OclExprContext ctx) {
-//        System.out.println(ctx.oclBool().getText());
+    public String visitOclText(OCL2RAParser.OclTextContext ctx) {
         this.initContextQuery();
         this.setContextQuery(ORIGIN_CTX);
 
-        StringBuilder res = new StringBuilder(visit(ctx.oclBool(0)));
+        StringBuilder res = new StringBuilder(visit(ctx.oclExpr(0)));
 
-        for (int i = 1; i < ctx.oclBool().size(); i++) {
+        for (int i = 1; i < ctx.oclExpr().size(); i++) {
+            if (!this.contextQuery.peek().equals(ORIGIN_CTX)) {
+                this.contextQuery.pop();
+            }
             res.append("\n");
-            res.append(visit(ctx.oclBool(i)));
+            res.append(visit(ctx.oclExpr(i)));
         }
         return res.toString();
+    }
+
+    // oclExpr : context oclContext inv oclInvariant
+    @Override
+    public String visitOclExpr(OCL2RAParser.OclExprContext ctx) {
+        this.setContextQuery(visit(ctx.oclContext()));
 //        return visit(ctx.oclBool());
+        return visit(ctx.oclInvariant());
+    }
+
+    /*
+        oclInvariant: oclInvName : oclBool
+     */
+    @Override
+    public String visitOclInvariant(OCL2RAParser.OclInvariantContext ctx) {
+        return visit(ctx.oclInvName()) + ": " + visit(ctx.oclBool());
     }
 
     /*
@@ -47,7 +66,9 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
     public String visitBoolForAll(OCL2RAParser.BoolForAllContext ctx) {
         String rs = visit(ctx.oclSet());
         String rb = visit(ctx.oclBool());
-        this.contextQuery.pop();
+        if (!this.contextQuery.peek().equals(ORIGIN_CTX)) {
+            this.contextQuery.pop();
+        }
         return rb;
     }
 
@@ -152,7 +173,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
      */
     @Override
     public String visitConstantSingle(OCL2RAParser.ConstantSingleContext ctx) {
-        return visit(ctx.constant());
+        return visit(ctx.oclConstant());
     }
 
     /*
@@ -161,7 +182,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
     @Override
     public String visitRoleObj(OCL2RAParser.RoleObjContext ctx) {
         String ro = visit(ctx.oclObject());
-        String rb = visit(ctx.role());
+        String rb = visit(ctx.oclRole());
         String rbContext = this.getRoleClass(rb);
 //        if (rbContext.equals(this.contextQuery.peek())) {
 //            return ro;
@@ -180,17 +201,27 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
 
     // Strings
     @Override
-    public String visitRole(OCL2RAParser.RoleContext ctx) {
+    public String visitOclContext(OCL2RAParser.OclContextContext ctx) {
         return ctx.getText();
     }
 
     @Override
-    public String visitAttr(OCL2RAParser.AttrContext ctx) {
+    public String visitOclInvName(OCL2RAParser.OclInvNameContext ctx) {
         return ctx.getText();
     }
 
     @Override
-    public String visitVar(OCL2RAParser.VarContext ctx) {
+    public String visitOclRole(OCL2RAParser.OclRoleContext ctx) {
+        return ctx.getText();
+    }
+
+    @Override
+    public String visitOclAttr(OCL2RAParser.OclAttrContext ctx) {
+        return ctx.getText();
+    }
+
+    @Override
+    public String visitOclVar(OCL2RAParser.OclVarContext ctx) {
         return ctx.getText();
     }
 
@@ -201,7 +232,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
     }
 
     @Override
-    public String visitConstant(OCL2RAParser.ConstantContext ctx) {
+    public String visitOclConstant(OCL2RAParser.OclConstantContext ctx) {
         return ctx.getText();
     }
 

@@ -26,6 +26,10 @@ SEP:                                 '|';
 ALL:                                 'allInstances()';
 FA:                                  'forAll';
 SE:                                  'select';
+CTX:                                 'context';
+COLON:                               ':';
+INV:                                 'inv';
+
 
 
 STRING:                              [a-zA-Z]+;

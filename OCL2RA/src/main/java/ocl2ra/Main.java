@@ -20,7 +20,7 @@ public class Main {
         OCL2RALexer lexer = new OCL2RALexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         OCL2RAParser parser = new OCL2RAParser(tokens);
-        ParseTree tree = parser.oclExpr();
+        ParseTree tree = parser.oclText();
         OCL2RAVisitor visitor = new OCL2RAVisitor();
 //        OCLAssociation oa = new OCLAssociation("pred", "next", "S", "S");
 
