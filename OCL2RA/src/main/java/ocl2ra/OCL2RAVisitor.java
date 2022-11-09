@@ -3,49 +3,75 @@ package ocl2ra;
 import java.util.ArrayList;
 import java.util.Stack;
 import ocl2ra.ANTLR.OCL2RAParser;
-import ocl2ra.ANTLR.OCL2RAParser.ConstantSingleContext;
 import ocl2ra.ANTLR.OCL2RAParserBaseVisitor;
 import ocl2ra.OCLConstructor.OCLAssociation;
 import ocl2ra.OCLConstructor.OCLClass;
+import ocl2ra.RAConstructor.Difference;
+import ocl2ra.RAConstructor.Implies;
+import ocl2ra.RAConstructor.Intersection;
+import ocl2ra.RAConstructor.NatureJoin;
+import ocl2ra.RAConstructor.RAClass;
+import ocl2ra.RAConstructor.RAContext;
+import ocl2ra.RAConstructor.RAList;
+import ocl2ra.RAConstructor.RAObject;
+import ocl2ra.RAConstructor.RAString;
+import ocl2ra.RAConstructor.Union;
 
-public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
+public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
 
     private ArrayList<OCLClass> transClasses;
 
     private ArrayList<OCLAssociation> transAssociations;
 
-    private Stack<String> contextQuery;
+    private Stack<RAContext> contextQuery;
 
-    private String ORIGIN_CTX = "ORIGIN";
+//    private String ORIGIN_CTX = "ORIGIN";
+
+    private RAContext ORIGIN_CTX = new RAClass("ORIGIN");
 
     private String ROLECLASS_NOT_FOUND = "ROLECLASS_NOT_FOUND";
 
     private String INVALID_BOOLOP = "INVALID_BOOLOP";
 
+    //    private String contextSelf;
+    private RAContext contextSelf;
+
     /*
         oclText : oclExpr + EOF
     */
     @Override
-    public String visitOclText(OCL2RAParser.OclTextContext ctx) {
+    public RAObject visitOclText(OCL2RAParser.OclTextContext ctx) {
         this.initContextQuery();
         this.setContextQuery(ORIGIN_CTX);
 
-        StringBuilder res = new StringBuilder(visit(ctx.oclExpr(0)));
+        RAList res = new RAList();
+        res.add(visit(ctx.oclExpr(0)));
 
         for (int i = 1; i < ctx.oclExpr().size(); i++) {
             if (!this.contextQuery.peek().equals(ORIGIN_CTX)) {
                 this.contextQuery.pop();
             }
-            res.append("\n");
-            res.append(visit(ctx.oclExpr(i)));
+            res.add(visit(ctx.oclExpr(i)));
         }
-        return res.toString();
+
+        return res;
+//        StringBuilder res = new StringBuilder(visit(ctx.oclExpr(0)));
+//
+//        for (int i = 1; i < ctx.oclExpr().size(); i++) {
+//            if (!this.contextQuery.peek().equals(ORIGIN_CTX)) {
+//                this.contextQuery.pop();
+//            }
+//            res.append("\n");
+//            res.append(visit(ctx.oclExpr(i)));
+//        }
+//        return res.toString();
     }
 
     // oclExpr : context oclContext inv oclInvariant
     @Override
-    public String visitOclExpr(OCL2RAParser.OclExprContext ctx) {
-        this.setContextQuery(visit(ctx.oclContext()));
+    public RAObject visitOclExpr(OCL2RAParser.OclExprContext ctx) {
+        this.setContextQuery((RAClass) visit(ctx.oclContext()));
+        this.setContextSelf(this.contextQuery.peek());
 //        return visit(ctx.oclBool());
         return visit(ctx.oclInvariant());
     }
@@ -54,8 +80,8 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
         oclInvariant: oclInvName : oclBool
      */
     @Override
-    public String visitOclInvariant(OCL2RAParser.OclInvariantContext ctx) {
-        return visit(ctx.oclInvName()) + ": " + visit(ctx.oclBool());
+    public RAObject visitOclInvariant(OCL2RAParser.OclInvariantContext ctx) {
+        return visit(ctx.oclBool()).setName(visit(ctx.oclInvName()).getName());
     }
 
     /*
@@ -63,9 +89,9 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
        oclBool : oclSet AR FA LB var SEP oclBool RB
     */
     @Override
-    public String visitBoolForAll(OCL2RAParser.BoolForAllContext ctx) {
-        String rs = visit(ctx.oclSet());
-        String rb = visit(ctx.oclBool());
+    public RAObject visitBoolForAll(OCL2RAParser.BoolForAllContext ctx) {
+        RAObject rs = visit(ctx.oclSet());
+        RAObject rb = visit(ctx.oclBool());
         if (!this.contextQuery.peek().equals(ORIGIN_CTX)) {
             this.contextQuery.pop();
         }
@@ -76,60 +102,71 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
         oclBool : oclSingle compOp oclSingle
      */
     @Override
-    public String visitBoolCompare(OCL2RAParser.BoolCompareContext ctx) {
-        String r1 = visit(ctx.oclSingle(0));
-        String r2 = visit(ctx.oclSingle(1));
-        if (r1.equals(r2)) {
-            return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " " + ctx
-                .oclSingle(1)
-                .getText() + ") " + r1;
-        }
-        if (ctx.oclSingle(0) instanceof ConstantSingleContext) {
-            if (ctx.oclSingle(1) instanceof ConstantSingleContext) {
-                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
-                    + ctx
-                    .oclSingle(1)
-                    .getText() + ") ";
-            } else {
-                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
-                    + ctx
-                    .oclSingle(1)
-                    .getText() + ") " + r2;
+    public RAObject visitBoolCompare(OCL2RAParser.BoolCompareContext ctx) {
+        RAObject r1 = visit(ctx.oclSingle(0));
+        RAObject r2 = visit(ctx.oclSingle(1));
+//        if (r1.equals(r2)) {
+//            return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " " + ctx
+//                .oclSingle(1)
+//                .getText() + ") " + r1;
+//        }
+//        if (ctx.oclSingle(0) instanceof ConstantSingleContext) {
+//            if (ctx.oclSingle(1) instanceof ConstantSingleContext) {
+//                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
+//                    + ctx
+//                    .oclSingle(1)
+//                    .getText() + ") ";
+//            } else {
+//                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
+//                    + ctx
+//                    .oclSingle(1)
+//                    .getText() + ") " + r2;
+//            }
+//        } else {
+//            if (ctx.oclSingle(1) instanceof ConstantSingleContext) {
+//                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
+//                    + ctx
+//                    .oclSingle(1)
+//                    .getText() + ") " + r1;
+//            } else {
+//                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
+//                    + ctx
+//                    .oclSingle(1)
+//                    .getText() + ") " + "(" + r1 + " Cartesian " + r2 + ")";
+//            }
+//        }
+        if ((r1 instanceof RAClass) && (r2 instanceof RAClass)) {
+            return new NatureJoin((RAContext) r1, (RAContext) r2);
+        } else if (r1 instanceof RAClass) {
+            if (((NatureJoin) r2).contains((RAClass) r1)) {
+                return r2;
             }
-        } else {
-            if (ctx.oclSingle(1) instanceof ConstantSingleContext) {
-                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
-                    + ctx
-                    .oclSingle(1)
-                    .getText() + ") " + r1;
-            } else {
-                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
-                    + ctx
-                    .oclSingle(1)
-                    .getText() + ") " + "(" + r1 + " Cartesian " + r2 + ")";
+        } else if (r2 instanceof RAClass) {
+            if (((NatureJoin) r1).contains((RAClass) r2)) {
+                return r1;
             }
         }
+        return new NatureJoin((RAContext) r1, (RAContext) r2);
     }
 
     /*
         oclBool : oclBool boolop oclBool
      */
     @Override
-    public String visitBoolCalc(OCL2RAParser.BoolCalcContext ctx) {
-        String r1 = visit(ctx.oclBool(0));
-        String r2 = visit(ctx.oclBool(1));
-        switch (visit(ctx.boolOp())) {
+    public RAObject visitBoolCalc(OCL2RAParser.BoolCalcContext ctx) {
+        RAObject r1 = visit(ctx.oclBool(0));
+        RAObject r2 = visit(ctx.oclBool(1));
+        switch (visit(ctx.boolOp()).print()) {
             case "and":
-                return r1 + " intersect " + r2;
+                return new Intersection(r1, r2);
             case "or":
-                return r1 + " union " + r2;
+                return new Union(r1, r2);
             case "xor":
-                return "(" + r1 + " union " + r2 + ")" + " differ " + "(" + r1 + " intersect " + r2
-                    + ")";
+                return new Difference(new Union(r1, r2), new Intersection(r1, r2));
             case "implies":
-                return "U differ " + r1 + " union " + r2;
+                return new Implies(r1, r2);
             default:
-                return INVALID_BOOLOP;
+                return new RAString(INVALID_BOOLOP);
         }
 //        return visitChildren(ctx);
     }
@@ -150,21 +187,21 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
         oclSet : oclClass.allInstances()
      */
     @Override
-    public String visitClassAll(OCL2RAParser.ClassAllContext ctx) {
-        String cq = this.contextQuery.peek();
+    public RAObject visitClassAll(OCL2RAParser.ClassAllContext ctx) {
+        RAContext cq = this.contextQuery.peek();
         if (cq.equals(ORIGIN_CTX)) {
-            this.setContextQuery(ctx.oclClass().getText());
-            return ctx.oclClass().getText();
+            this.setContextQuery(new RAClass(ctx.oclClass().getText()));
+            return new RAClass(ctx.oclClass().getText());
         }
-        this.setContextQuery(ctx.oclClass().getText() + " Cartesian " + cq);
-        return ctx.oclClass().getText() + " Cartesian " + cq;
+        this.setContextQuery(new NatureJoin(new RAClass(ctx.oclClass().getText()), cq));
+        return new NatureJoin(new RAClass(ctx.oclClass().getText()), cq);
     }
 
     /*
         oclSingle : oclObject.attr
      */
     @Override
-    public String visitObjectSingle(OCL2RAParser.ObjectSingleContext ctx) {
+    public RAObject visitObjectSingle(OCL2RAParser.ObjectSingleContext ctx) {
         return visit(ctx.oclObject());
     }
 
@@ -172,7 +209,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
         oclSingle : constant
      */
     @Override
-    public String visitConstantSingle(OCL2RAParser.ConstantSingleContext ctx) {
+    public RAObject visitConstantSingle(OCL2RAParser.ConstantSingleContext ctx) {
         return visit(ctx.oclConstant());
     }
 
@@ -180,70 +217,73 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
         oclObject : oclObject.role
      */
     @Override
-    public String visitRoleObj(OCL2RAParser.RoleObjContext ctx) {
-        String ro = visit(ctx.oclObject());
-        String rb = visit(ctx.oclRole());
-        String rbContext = this.getRoleClass(rb);
-//        if (rbContext.equals(this.contextQuery.peek())) {
-//            return ro;
-//        }
-        return "(" + rbContext + " Cartesian " + ro + ")";
+    public RAObject visitRoleObj(OCL2RAParser.RoleObjContext ctx) {
+        RAObject ro = visit(ctx.oclObject());
+        RAObject rb = visit(ctx.oclRole());
+        String rbContext = this.getRoleClass(rb.print());
+        if (rbContext.equals(this.contextQuery.peek().print())) {
+            return ro;
+        }
+//        return "(" + rbContext + " Cartesian " + ro + ")";
+        return new NatureJoin((RAContext) ro, new RAClass(rbContext));
     }
 
     /*
         oclObject : var
      */
     @Override
-    public String visitVarObj(OCL2RAParser.VarObjContext ctx) {
+    public RAContext visitVarObj(OCL2RAParser.VarObjContext ctx) {
+        if (ctx.getText().equals("self")) {
+            return this.contextSelf;
+        }
         return this.contextQuery.peek();
     }
 
 
     // Strings
     @Override
-    public String visitOclContext(OCL2RAParser.OclContextContext ctx) {
-        return ctx.getText();
+    public RAObject visitOclContext(OCL2RAParser.OclContextContext ctx) {
+        return new RAClass(ctx.getText());
     }
 
     @Override
-    public String visitOclInvName(OCL2RAParser.OclInvNameContext ctx) {
-        return ctx.getText();
+    public RAObject visitOclInvName(OCL2RAParser.OclInvNameContext ctx) {
+        return new RAString(ctx.getText());
     }
 
     @Override
-    public String visitOclRole(OCL2RAParser.OclRoleContext ctx) {
-        return ctx.getText();
+    public RAObject visitOclRole(OCL2RAParser.OclRoleContext ctx) {
+        return new RAString(ctx.getText());
     }
 
     @Override
-    public String visitOclAttr(OCL2RAParser.OclAttrContext ctx) {
-        return ctx.getText();
+    public RAObject visitOclAttr(OCL2RAParser.OclAttrContext ctx) {
+        return new RAString(ctx.getText());
     }
 
     @Override
-    public String visitOclVar(OCL2RAParser.OclVarContext ctx) {
-        return ctx.getText();
-    }
-
-    // unused
-    @Override
-    public String visitOclClass(OCL2RAParser.OclClassContext ctx) {
-        return ctx.getText();
+    public RAObject visitOclVar(OCL2RAParser.OclVarContext ctx) {
+        return new RAString(ctx.getText());
     }
 
     @Override
-    public String visitOclConstant(OCL2RAParser.OclConstantContext ctx) {
-        return ctx.getText();
+    public RAObject visitOclClass(OCL2RAParser.OclClassContext ctx) {
+        return new RAClass(ctx.getText());
     }
 
     @Override
-    public String visitCompOp(OCL2RAParser.CompOpContext ctx) {
-        return ctx.getText();
+    public RAObject visitOclConstant(OCL2RAParser.OclConstantContext ctx) {
+        return new RAString(ctx.getText());
     }
 
     @Override
-    public String visitBoolOp(OCL2RAParser.BoolOpContext ctx) {
-        return ctx.getText();
+    public RAObject visitCompOp(OCL2RAParser.CompOpContext ctx) {
+        return new RAString(ctx.getText());
+    }
+
+    @Override
+    public RAObject visitBoolOp(OCL2RAParser.BoolOpContext ctx) {
+        return new RAString(ctx.getText());
     }
 
 
@@ -270,8 +310,12 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<String> {
         this.contextQuery = new Stack<>();
     }
 
-    public void setContextQuery(String cq) {
+    public void setContextQuery(RAContext cq) {
         this.contextQuery.push(cq);
+    }
+
+    public void setContextSelf(RAContext s) {
+        this.contextSelf = s;
     }
 
     // oclAssoc mgr

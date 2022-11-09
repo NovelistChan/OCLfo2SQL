@@ -22,7 +22,6 @@ public class Main {
         OCL2RAParser parser = new OCL2RAParser(tokens);
         ParseTree tree = parser.oclText();
         OCL2RAVisitor visitor = new OCL2RAVisitor();
-//        OCLAssociation oa = new OCLAssociation("pred", "next", "S", "S");
 
         visitor.freeTransAssoc();
         visitor.freeTransClasses();
@@ -32,9 +31,7 @@ public class Main {
             visitor.addTransAssoc(oc.getAssocs());
         }
 
-//        visitor.freeTransAssoc();
-//        visitor.addTransAssoc(oa);
-        System.out.println(visitor.visit(tree));
+        System.out.println(visitor.visit(tree).print());
 
     }
 }
