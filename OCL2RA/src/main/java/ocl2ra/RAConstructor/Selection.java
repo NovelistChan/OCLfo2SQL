@@ -24,7 +24,7 @@ public class Selection extends RAObject {
 
     @Override
     public String print() {
-        return "Sigma (" + conds + ") " + body.print();
+        return "Sigma " + (conds == null ? "" : " (" + conds + ") ") + body.print();
     }
 
 }

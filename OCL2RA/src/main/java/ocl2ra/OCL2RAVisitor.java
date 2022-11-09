@@ -10,11 +10,14 @@ import ocl2ra.RAConstructor.Difference;
 import ocl2ra.RAConstructor.Implies;
 import ocl2ra.RAConstructor.Intersection;
 import ocl2ra.RAConstructor.NatureJoin;
+import ocl2ra.RAConstructor.Projection;
 import ocl2ra.RAConstructor.RAClass;
+import ocl2ra.RAConstructor.RAConstant;
 import ocl2ra.RAConstructor.RAContext;
 import ocl2ra.RAConstructor.RAList;
 import ocl2ra.RAConstructor.RAObject;
 import ocl2ra.RAConstructor.RAString;
+import ocl2ra.RAConstructor.Selection;
 import ocl2ra.RAConstructor.Union;
 
 public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
@@ -135,18 +138,30 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
 //                    .getText() + ") " + "(" + r1 + " Cartesian " + r2 + ")";
 //            }
 //        }
-        if ((r1 instanceof RAClass) && (r2 instanceof RAClass)) {
-            return new NatureJoin((RAContext) r1, (RAContext) r2);
-        } else if (r1 instanceof RAClass) {
-            if (((NatureJoin) r2).contains((RAClass) r1)) {
-                return r2;
+
+        StringBuilder conds = new StringBuilder();
+        conds.append(ctx.oclSingle(0).getText()).append(" ").append(ctx.compOp().getText())
+            .append(" ").append(ctx.oclSingle(1).getText());
+        if (r1 instanceof RAConstant) {
+            if (r2 instanceof RAConstant) {
+                return new Projection(new Selection(conds.toString(), this.contextQuery.peek()));
+            } else {
+                return new Projection(new Selection(conds.toString(), r2));
             }
-        } else if (r2 instanceof RAClass) {
+        } else if (r2 instanceof RAConstant) {
+            return new Projection(new Selection(conds.toString(), r1));
+        }
+        if ((r1 instanceof RAClass) && !(r2 instanceof RAClass)) {
+            if (((NatureJoin) r2).contains((RAClass) r1)) {
+                return new Projection(new Selection(conds.toString(), r2));
+            }
+        } else if ((r2 instanceof RAClass) && !(r1 instanceof RAClass)) {
             if (((NatureJoin) r1).contains((RAClass) r2)) {
-                return r1;
+                return new Projection(new Selection(conds.toString(), r1));
             }
         }
-        return new NatureJoin((RAContext) r1, (RAContext) r2);
+        return new Projection(
+            new Selection(conds.toString(), new NatureJoin((RAContext) r1, (RAContext) r2)));
     }
 
     /*
@@ -273,7 +288,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
 
     @Override
     public RAObject visitOclConstant(OCL2RAParser.OclConstantContext ctx) {
-        return new RAString(ctx.getText());
+        return new RAConstant(ctx.getText());
     }
 
     @Override
@@ -335,7 +350,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         this.transAssociations.add(oa);
     }
 
-    String getRoleClass(String role) {
+    private String getRoleClass(String role) {
         for (OCLAssociation oa : this.transAssociations) {
             if (!oa.getRoleClass(role).equals(ROLECLASS_NOT_FOUND)) {
                 return oa.getRoleClass(role);
