@@ -24,12 +24,12 @@ oclInvName
 
 oclBool
     : oclSet AR FA LB oclVar SEP oclBool RB    #boolForAll
-    | oclSingle compOp oclSingle            #boolCompare
-    | oclBool boolOp oclBool                #boolCalc
+    | oclSingle compOp oclSingle               #boolCompare
+    | oclBool boolOp oclBool                   #boolCalc
     ;
 
 oclSet
-    : oclClass DOT ALL                      #classAll
+    : oclClass DOT ALL                         #classAll
     ;
 
 oclSingle

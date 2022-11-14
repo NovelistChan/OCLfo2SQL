@@ -1,6 +1,5 @@
 package ocl2ra;
 
-
 import java.io.FileInputStream;
 import java.io.InputStream;
 import ocl2ra.ANTLR.OCL2RALexer;
