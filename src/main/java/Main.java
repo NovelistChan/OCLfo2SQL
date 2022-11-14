@@ -1,5 +1,5 @@
-import ANTLR.OCL2RALexer;
-import ANTLR.OCL2RAParser;
+import ANTLR.OCL2RA.OCL2RALexer;
+import ANTLR.OCL2RA.OCL2RAParser;
 import OCLConstructor.OCLClass;
 import OCLConstructor.OCLClassReader;
 import java.io.FileInputStream;

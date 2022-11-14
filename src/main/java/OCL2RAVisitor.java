@@ -1,5 +1,5 @@
-import ANTLR.OCL2RAParser;
-import ANTLR.OCL2RAParserBaseVisitor;
+import ANTLR.OCL2RA.OCL2RAParser;
+import ANTLR.OCL2RA.OCL2RAParserBaseVisitor;
 import OCLConstructor.OCLAssociation;
 import OCLConstructor.OCLClass;
 import RAConstructor.Difference;
