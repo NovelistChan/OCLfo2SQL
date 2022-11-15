@@ -158,6 +158,18 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 */
 	void exitColumnOne(RA2SQLParser.ColumnOneContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code idCons}
+	 * labeled alternative in {@link RA2SQLParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdCons(RA2SQLParser.IdConsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code idCons}
+	 * labeled alternative in {@link RA2SQLParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdCons(RA2SQLParser.IdConsContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code idMany}
 	 * labeled alternative in {@link RA2SQLParser#column}.
 	 * @param ctx the parse tree
@@ -182,6 +194,30 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 */
 	void exitIdOne(RA2SQLParser.IdOneContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code expressionMany}
+	 * labeled alternative in {@link RA2SQLParser#expressions}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionMany(RA2SQLParser.ExpressionManyContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code expressionMany}
+	 * labeled alternative in {@link RA2SQLParser#expressions}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionMany(RA2SQLParser.ExpressionManyContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code expressionOne}
+	 * labeled alternative in {@link RA2SQLParser#expressions}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionOne(RA2SQLParser.ExpressionOneContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code expressionOne}
+	 * labeled alternative in {@link RA2SQLParser#expressions}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionOne(RA2SQLParser.ExpressionOneContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RA2SQLParser#expression}.
 	 * @param ctx the parse tree
 	 */
@@ -192,6 +228,30 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 */
 	void exitExpression(RA2SQLParser.ExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code consStri}
+	 * labeled alternative in {@link RA2SQLParser#constant}.
+	 * @param ctx the parse tree
+	 */
+	void enterConsStri(RA2SQLParser.ConsStriContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code consStri}
+	 * labeled alternative in {@link RA2SQLParser#constant}.
+	 * @param ctx the parse tree
+	 */
+	void exitConsStri(RA2SQLParser.ConsStriContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code consInt}
+	 * labeled alternative in {@link RA2SQLParser#constant}.
+	 * @param ctx the parse tree
+	 */
+	void enterConsInt(RA2SQLParser.ConsIntContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code consInt}
+	 * labeled alternative in {@link RA2SQLParser#constant}.
+	 * @param ctx the parse tree
+	 */
+	void exitConsInt(RA2SQLParser.ConsIntContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RA2SQLParser#compOp}.
 	 * @param ctx the parse tree
 	 */
@@ -201,4 +261,14 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCompOp(RA2SQLParser.CompOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RA2SQLParser#boolOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolOp(RA2SQLParser.BoolOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RA2SQLParser#boolOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolOp(RA2SQLParser.BoolOpContext ctx);
 }

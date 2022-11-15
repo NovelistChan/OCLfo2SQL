@@ -33,6 +33,7 @@ columns
 column
     : ID                                        #idOne
     | column DOT ID                             #idMany
+    | constant                                  #idCons
     ;
 
 expressions
@@ -42,6 +43,11 @@ expressions
 
 expression
     : column compOp column
+    ;
+
+constant
+    : QUOTE ID QUOTE                            #consStri
+    | INT                                       #consInt
     ;
 
 compOp

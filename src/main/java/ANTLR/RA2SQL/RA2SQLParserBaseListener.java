@@ -172,6 +172,18 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterIdCons(RA2SQLParser.IdConsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIdCons(RA2SQLParser.IdConsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIdMany(RA2SQLParser.IdManyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -196,6 +208,30 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterExpressionMany(RA2SQLParser.ExpressionManyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpressionMany(RA2SQLParser.ExpressionManyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpressionOne(RA2SQLParser.ExpressionOneContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpressionOne(RA2SQLParser.ExpressionOneContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterExpression(RA2SQLParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -208,6 +244,30 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterConsStri(RA2SQLParser.ConsStriContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConsStri(RA2SQLParser.ConsStriContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterConsInt(RA2SQLParser.ConsIntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConsInt(RA2SQLParser.ConsIntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCompOp(RA2SQLParser.CompOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -215,6 +275,18 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCompOp(RA2SQLParser.CompOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolOp(RA2SQLParser.BoolOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolOp(RA2SQLParser.BoolOpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

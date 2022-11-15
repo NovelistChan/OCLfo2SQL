@@ -29,6 +29,7 @@ DOT:                                 '.';
 LB:                                  '(';
 RB:                                  ')';
 SEP:                                 '|';
+QUOTE:                               '\'';
 
 STRING:                              [a-zA-Z]+;
 INT:                                 [0-9]+;
