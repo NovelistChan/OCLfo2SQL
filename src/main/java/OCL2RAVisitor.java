@@ -5,7 +5,7 @@ import OCLConstructor.OCLClass;
 import RAConstructor.Difference;
 import RAConstructor.Implies;
 import RAConstructor.Intersection;
-import RAConstructor.NatureJoin;
+import RAConstructor.NaturalJoin;
 import RAConstructor.Projection;
 import RAConstructor.RAClass;
 import RAConstructor.RAConstant;
@@ -150,16 +150,16 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
             return new Projection(new Selection(conds.toString(), r1));
         }
         if ((r1 instanceof RAClass) && !(r2 instanceof RAClass)) {
-            if (((NatureJoin) r2).contains((RAClass) r1)) {
+            if (((NaturalJoin) r2).contains((RAClass) r1)) {
                 return new Projection(new Selection(conds.toString(), r2));
             }
         } else if ((r2 instanceof RAClass) && !(r1 instanceof RAClass)) {
-            if (((NatureJoin) r1).contains((RAClass) r2)) {
+            if (((NaturalJoin) r1).contains((RAClass) r2)) {
                 return new Projection(new Selection(conds.toString(), r1));
             }
         }
         return new Projection(
-            new Selection(conds.toString(), new NatureJoin((RAContext) r1, (RAContext) r2)));
+            new Selection(conds.toString(), new NaturalJoin((RAContext) r1, (RAContext) r2)));
     }
 
     /*
@@ -206,8 +206,8 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
             this.setContextQuery(new RAClass(ctx.oclClass().getText()));
             return new RAClass(ctx.oclClass().getText());
         }
-        this.setContextQuery(new NatureJoin(new RAClass(ctx.oclClass().getText()), cq));
-        return new NatureJoin(new RAClass(ctx.oclClass().getText()), cq);
+        this.setContextQuery(new NaturalJoin(new RAClass(ctx.oclClass().getText()), cq));
+        return new NaturalJoin(new RAClass(ctx.oclClass().getText()), cq);
     }
 
     /*
@@ -238,7 +238,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
             return ro;
         }
 //        return "(" + rbContext + " Cartesian " + ro + ")";
-        return new NatureJoin((RAContext) ro, new RAClass(rbContext));
+        return new NaturalJoin((RAContext) ro, new RAClass(rbContext));
     }
 
     /*

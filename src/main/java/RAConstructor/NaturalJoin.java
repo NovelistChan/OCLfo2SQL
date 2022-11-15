@@ -1,11 +1,11 @@
 package RAConstructor;
 
-public class NatureJoin extends RAContext {
+public class NaturalJoin extends RAContext {
 
     private RAContext para1;
     private RAContext para2;
 
-    public NatureJoin(RAContext p1, RAContext p2) {
+    public NaturalJoin(RAContext p1, RAContext p2) {
         this.para1 = p1;
         this.para2 = p2;
     }
@@ -26,16 +26,16 @@ public class NatureJoin extends RAContext {
 
     @Override
     public boolean equals(RAObject raObject) {
-        if (!(raObject instanceof NatureJoin)) {
+        if (!(raObject instanceof NaturalJoin)) {
             return false;
         } else {
-            return this.para1.equals(((NatureJoin) raObject).getPara1()) && this.para2
-                .equals(((NatureJoin) raObject).getPara2());
+            return this.para1.equals(((NaturalJoin) raObject).getPara1()) && this.para2
+                .equals(((NaturalJoin) raObject).getPara2());
         }
     }
 
     public boolean contains(RAContext raObject) {
-        if (raObject instanceof NatureJoin) {
+        if (raObject instanceof NaturalJoin) {
             if (this.equals(raObject)) {
                 return true;
             } else {

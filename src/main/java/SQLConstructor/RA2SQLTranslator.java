@@ -1,6 +1,6 @@
 package SQLConstructor;
 
-import RAConstructor.NatureJoin;
+import RAConstructor.NaturalJoin;
 import RAConstructor.Projection;
 import RAConstructor.RAObject;
 
@@ -14,7 +14,7 @@ public class RA2SQLTranslator {
 
     }
 
-    public void translate(NatureJoin n) {
+    public void translate(NaturalJoin n) {
 
     }
 
