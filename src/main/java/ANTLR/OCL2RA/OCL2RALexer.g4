@@ -22,6 +22,7 @@ DOT:                                 '.';
 LB:                                  '(';
 RB:                                  ')';
 SEP:                                 '|';
+QUOTE:                               '\'';
 
 ALL:                                 'allInstances()';
 FA:                                  'forAll';
@@ -31,8 +32,9 @@ COLON:                               ':';
 INV:                                 'inv';
 
 
+ID:                                  [a-zA-Z][a-zA-Z0-9_]*;
 
-STRING:                              [a-zA-Z]+;
+//STRING:                              [a-zA-Z0-9_]+;
 INT:                                 [0-9]+;
 
 //VAR:                                 STRING;

@@ -285,7 +285,12 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     }
 
     @Override
-    public RAObject visitOclConstant(OCL2RAParser.OclConstantContext ctx) {
+    public RAObject visitOclString(OCL2RAParser.OclStringContext ctx) {
+        return new RAConstant("'" + ctx.ID().getText() + "'");
+    }
+
+    @Override
+    public RAObject visitOclInt(OCL2RAParser.OclIntContext ctx) {
         return new RAConstant(ctx.getText());
     }
 

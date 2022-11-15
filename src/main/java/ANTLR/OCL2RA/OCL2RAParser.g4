@@ -11,7 +11,7 @@ oclExpr
     ;
 
 oclContext
-    : STRING
+    : ID
     ;
 
 oclInvariant
@@ -19,7 +19,7 @@ oclInvariant
     ;
 
 oclInvName
-    : STRING
+    : ID
     ;
 
 oclBool
@@ -43,23 +43,24 @@ oclObject
     ;
 
 oclRole
-    : STRING
+    : ID
     ;
 
 oclAttr
-    : STRING
+    : ID
     ;
 
 oclVar
-    : STRING
+    : ID
     ;
 
 oclClass
-    : STRING
+    : ID
     ;
 
 oclConstant
-    : STRING | INT
+    : QUOTE ID QUOTE                            #oclString
+    | INT                                       #oclInt
     ;
 
 compOp

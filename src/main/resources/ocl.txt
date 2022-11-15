@@ -1,8 +1,8 @@
 
 context S inv timeLimit: self.timeStamp > self.pred.expired
-context S inv passIdNotN: self.passId <> null
+context S inv passIdNotN: self.passId <> 'null'
 context T inv SBM: THP.allInstances()->forAll(thp| thp.SBM <> self.SBM)
-context S inv cross: self.pred.succ.pred.succ.passId <> null
+context S inv cross: self.pred.succ.pred.succ.passId <> 'null'
 context S inv two: self.timeStamp > 0 and self.timeStamp < 99999
 context S inv dou: self.timeStamp > 0 or self.timeStamp <> 1
 context S inv par: self.timeStamp > 0 implies self.pred.expired > 0

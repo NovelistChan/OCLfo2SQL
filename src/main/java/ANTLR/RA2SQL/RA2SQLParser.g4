@@ -22,7 +22,7 @@ projection
     ;
 
 selection
-    : SELECTION LB expression RB relation
+    : SELECTION LB expressions RB relation
     ;
 
 columns
@@ -35,10 +35,19 @@ column
     | column DOT ID                             #idMany
     ;
 
+expressions
+    : expression boolOp expressions             #expressionMany
+    | expression                                #expressionOne
+    ;
+
 expression
     : column compOp column
     ;
 
 compOp
     : EQ | GE | LE | GT | LT | NE
+    ;
+
+boolOp
+    : AND | OR
     ;
