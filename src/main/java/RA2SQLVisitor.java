@@ -114,23 +114,80 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
         return null;
     }
 
+    /*
+    columns : column , columns
+     */
     @Override
     public String visitIdMany(RA2SQLParser.IdManyContext ctx) {
         return null;
     }
 
+    /*
+    columns : ID
+     */
     @Override
     public String visitIdOne(RA2SQLParser.IdOneContext ctx) {
         return null;
     }
 
+    /*
+    columns : constant
+     */
+    @Override
+    public String visitIdCons(RA2SQLParser.IdConsContext ctx) {
+        return null;
+    }
+
+    /*
+    expressions : expression boolOp expressions
+     */
+    @Override
+    public String visitExpressionMany(RA2SQLParser.ExpressionManyContext ctx) {
+        return null;
+    }
+
+    /*
+    expressions : expression
+     */
+    @Override
+    public String visitExpressionOne(RA2SQLParser.ExpressionOneContext ctx) {
+        return null;
+    }
+
+    /*
+    expression : column compOp column
+     */
     @Override
     public String visitExpression(RA2SQLParser.ExpressionContext ctx) {
         return null;
     }
 
+    /*
+    constant : 'ID'
+     */
+    @Override
+    public String visitConsStri(RA2SQLParser.ConsStriContext ctx) {
+        return null;
+    }
+
+    /*
+    constant : int
+     */
+    @Override
+    public String visitConsInt(RA2SQLParser.ConsIntContext ctx) {
+        return null;
+    }
+
+    /*
+    String
+     */
     @Override
     public String visitCompOp(RA2SQLParser.CompOpContext ctx) {
+        return null;
+    }
+
+    @Override
+    public String visitBoolOp(RA2SQLParser.BoolOpContext ctx) {
         return null;
     }
 
