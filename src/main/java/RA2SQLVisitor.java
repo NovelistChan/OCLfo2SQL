@@ -31,7 +31,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitSelect(RA2SQLParser.SelectContext ctx) {
-        return null;
+        return visit(ctx.selection());
     }
 
     /*
@@ -39,7 +39,9 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitIntersect(RA2SQLParser.IntersectContext ctx) {
-        return null;
+        return visit(ctx.relation(0)) + "\n"
+            + "INTERSECT \n"
+            + visit(ctx.relation(1)) + "\n";
     }
 
     /*
@@ -47,7 +49,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitProject(RA2SQLParser.ProjectContext ctx) {
-        return null;
+        return visit(ctx.projection());
     }
 
     /*
@@ -55,7 +57,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitId(RA2SQLParser.IdContext ctx) {
-        return null;
+        return ctx.ID().getText();
     }
 
     /*
@@ -63,7 +65,9 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitUnion(RA2SQLParser.UnionContext ctx) {
-        return null;
+        return visit(ctx.relation(0)) + "\n"
+            + "UNION \n"
+            + visit(ctx.relation(1)) + "\n";
     }
 
     /*
@@ -71,7 +75,9 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitJoin(RA2SQLParser.JoinContext ctx) {
-        return null;
+        return visit(ctx.relation(0)) + "\n"
+            + "JOIN \n"
+            + visit(ctx.relation(1)) + "\n";
     }
 
     /*
@@ -79,23 +85,27 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitDiffer(RA2SQLParser.DifferContext ctx) {
-        return null;
+        return "SELECT * FROM " + visit(ctx.relation(0)) + "\n"
+            + "WHERE NOT IN SELECT * FROM " + visit(ctx.relation(1)) + "\n";
     }
 
     /*
-    projection : Pi columns relation
+    projection : Pi ( columns ) relation
      */
     @Override
     public String visitProjection(RA2SQLParser.ProjectionContext ctx) {
-        return null;
+        return "SELECT " + visit(ctx.columns()) + "\n"
+            + "FROM " + visit(ctx.relation());
     }
 
     /*
-    selection : Sigma expression relation
+    selection : Sigma ( expressions ) relation
      */
     @Override
     public String visitSelection(RA2SQLParser.SelectionContext ctx) {
-        return null;
+        return "SELECT * FROM \n"
+            + visit(ctx.relation()) + "\n"
+            + "WHERE " + visit(ctx.expressions()) + "\n";
     }
 
     /*
@@ -103,7 +113,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitColumnMany(RA2SQLParser.ColumnManyContext ctx) {
-        return null;
+        return visit(ctx.column()) + ", " + visit(ctx.columns());
     }
 
     /*
@@ -111,31 +121,31 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitColumnOne(RA2SQLParser.ColumnOneContext ctx) {
-        return null;
+        return visit(ctx.column());
     }
 
     /*
-    columns : column , columns
+    column : column DOT ID
      */
     @Override
     public String visitIdMany(RA2SQLParser.IdManyContext ctx) {
-        return null;
+        return visit(ctx.column()) + ctx.DOT().getText() + ctx.ID().getText();
     }
 
     /*
-    columns : ID
+    column : ID
      */
     @Override
     public String visitIdOne(RA2SQLParser.IdOneContext ctx) {
-        return null;
+        return ctx.ID().getText();
     }
 
     /*
-    columns : constant
+    column : constant
      */
     @Override
     public String visitIdCons(RA2SQLParser.IdConsContext ctx) {
-        return null;
+        return visit(ctx.constant());
     }
 
     /*
@@ -143,7 +153,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitExpressionMany(RA2SQLParser.ExpressionManyContext ctx) {
-        return null;
+        return visit(ctx.expression()) + " " + visit(ctx.boolOp()) + " " + visit(ctx.expressions());
     }
 
     /*
@@ -151,7 +161,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitExpressionOne(RA2SQLParser.ExpressionOneContext ctx) {
-        return null;
+        return visit(ctx.expression());
     }
 
     /*
@@ -159,7 +169,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitExpression(RA2SQLParser.ExpressionContext ctx) {
-        return null;
+        return visit(ctx.column(0)) + " " + visit(ctx.column(1));
     }
 
     /*
@@ -167,7 +177,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitConsStri(RA2SQLParser.ConsStriContext ctx) {
-        return null;
+        return "'" + ctx.ID().getText() + "'";
     }
 
     /*
@@ -175,7 +185,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitConsInt(RA2SQLParser.ConsIntContext ctx) {
-        return null;
+        return ctx.getText();
     }
 
     /*
@@ -183,12 +193,12 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitCompOp(RA2SQLParser.CompOpContext ctx) {
-        return null;
+        return ctx.getText();
     }
 
     @Override
     public String visitBoolOp(RA2SQLParser.BoolOpContext ctx) {
-        return null;
+        return ctx.getText();
     }
 
 }
