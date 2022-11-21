@@ -22,4 +22,9 @@ public class RAObject implements RAObjectInterface {
     public boolean equals(RAObject raObject) {
         return false;
     }
+
+    @Override
+    public RAObject negation() {
+        return this;
+    }
 }

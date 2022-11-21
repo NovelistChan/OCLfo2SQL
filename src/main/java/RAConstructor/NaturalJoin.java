@@ -47,4 +47,9 @@ public class NaturalJoin extends RAContext {
             return false;
         }
     }
+
+    @Override
+    public RAObject negation() {
+        return new NaturalJoin((RAContext) para1.negation(), (RAContext) para2.negation());
+    }
 }

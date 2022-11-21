@@ -23,4 +23,8 @@ public class Difference extends RAObject {
         return r1.print() + " \\ " + r2.print();
     }
 
+    @Override
+    public RAObject negation() {
+        return new Union(r1.negation(), r2);
+    }
 }

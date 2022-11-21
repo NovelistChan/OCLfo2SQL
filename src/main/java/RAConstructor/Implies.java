@@ -20,6 +20,11 @@ public class Implies extends RAObject {
 
     @Override
     public String print() {
-        return new Union(new Difference(new UniversalSet(), r1), r2).print();
+        return new Union(r1.negation(), r2).print();
+    }
+
+    @Override
+    public RAObject negation() {
+        return new Intersection(r1, r2.negation());
     }
 }

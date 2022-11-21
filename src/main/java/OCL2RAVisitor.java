@@ -2,11 +2,11 @@ import ANTLR.OCL2RA.OCL2RAParser;
 import ANTLR.OCL2RA.OCL2RAParserBaseVisitor;
 import OCLConstructor.OCLAssociation;
 import OCLConstructor.OCLClass;
+import RAConstructor.Comparison;
 import RAConstructor.Difference;
 import RAConstructor.Implies;
 import RAConstructor.Intersection;
 import RAConstructor.NaturalJoin;
-import RAConstructor.Projection;
 import RAConstructor.RAClass;
 import RAConstructor.RAConstant;
 import RAConstructor.RAContext;
@@ -106,60 +106,85 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     public RAObject visitBoolCompare(OCL2RAParser.BoolCompareContext ctx) {
         RAObject r1 = visit(ctx.oclSingle(0));
         RAObject r2 = visit(ctx.oclSingle(1));
-//        if (r1.equals(r2)) {
-//            return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " " + ctx
-//                .oclSingle(1)
-//                .getText() + ") " + r1;
-//        }
-//        if (ctx.oclSingle(0) instanceof ConstantSingleContext) {
-//            if (ctx.oclSingle(1) instanceof ConstantSingleContext) {
-//                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
-//                    + ctx
-//                    .oclSingle(1)
-//                    .getText() + ") ";
-//            } else {
-//                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
-//                    + ctx
-//                    .oclSingle(1)
-//                    .getText() + ") " + r2;
-//            }
-//        } else {
-//            if (ctx.oclSingle(1) instanceof ConstantSingleContext) {
-//                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
-//                    + ctx
-//                    .oclSingle(1)
-//                    .getText() + ") " + r1;
-//            } else {
-//                return "PI Sigma (" + ctx.oclSingle(0).getText() + " " + visit(ctx.compOp()) + " "
-//                    + ctx
-//                    .oclSingle(1)
-//                    .getText() + ") " + "(" + r1 + " Cartesian " + r2 + ")";
-//            }
-//        }
 
-        StringBuilder conds = new StringBuilder();
-        conds.append(ctx.oclSingle(0).getText()).append(" ").append(ctx.compOp().getText())
-            .append(" ").append(ctx.oclSingle(1).getText());
+//        StringBuilder conds = new StringBuilder();
+//        conds.append(ctx.oclSingle(0).getText()).append(" ").append(ctx.compOp().getText())
+//            .append(" ").append(ctx.oclSingle(1).getText());
+//        if (r1 instanceof RAConstant) {
+//            if (r2 instanceof RAConstant) {
+//                return new Projection(new Selection(conds.toString(), this.contextQuery.peek()));
+//            } else {
+//                return new Projection(new Selection(conds.toString(), r2));
+//            }
+//        } else if (r2 instanceof RAConstant) {
+//            return new Projection(new Selection(conds.toString(), r1));
+//        }
+//        if ((r1 instanceof RAClass) && !(r2 instanceof RAClass)) {
+//            if (((NaturalJoin) r2).contains((RAClass) r1)) {
+//                return new Projection(new Selection(conds.toString(), r2));
+//            }
+//        } else if ((r2 instanceof RAClass) && !(r1 instanceof RAClass)) {
+//            if (((NaturalJoin) r1).contains((RAClass) r2)) {
+//                return new Projection(new Selection(conds.toString(), r1));
+//            }
+//        }
+//        return new Projection(
+//            new Selection(conds.toString(), new NaturalJoin((RAContext) r1, (RAContext) r2)));
+//        StringBuilder conds = new StringBuilder();
+//        conds.append(ctx.oclSingle(0).getText()).append(" ").append(ctx.compOp().getText())
+//            .append(" ").append(ctx.oclSingle(1).getText());
+
+//        switch (ctx.compOp().getText()) {
+//            case "<":
+//                conds.add(new Comparison(ctx.oclSingle(0).getText(), ctx.oclSingle(1).getText(),
+//                    CompareOperation.LT));
+//                break;
+//            case ">":
+//                conds.add(new Comparison(ctx.oclSingle(0).getText(), ctx.oclSingle(1).getText(),
+//                    CompareOperation.GT));
+//                break;
+//            case "<>":
+//                conds.add(new Comparison(ctx.oclSingle(0).getText(), ctx.oclSingle(1).getText(),
+//                    CompareOperation.NE));
+//                break;
+//            case "=":
+//                conds.add(new Comparison(ctx.oclSingle(0).getText(), ctx.oclSingle(1).getText(),
+//                    CompareOperation.EQ));
+//                break;
+//            case "<=":
+//                conds.add(new Comparison(ctx.oclSingle(0).getText(), ctx.oclSingle(1).getText(),
+//                    CompareOperation.LE));
+//                break;
+//            case ">=":
+//                conds.add(new Comparison(ctx.oclSingle(0).getText(), ctx.oclSingle(1).getText(),
+//                    CompareOperation.GE));
+//                break;
+//            default:
+//                break;
+//        }
+        ArrayList<Comparison> conds = new ArrayList<>();
+        conds.add(new Comparison(ctx.oclSingle(0).getText(), ctx.oclSingle(1).getText(),
+            ctx.compOp().getText()));
         if (r1 instanceof RAConstant) {
             if (r2 instanceof RAConstant) {
-                return new Projection(new Selection(conds.toString(), this.contextQuery.peek()));
+                return new Selection(conds, this.contextQuery.peek());
             } else {
-                return new Projection(new Selection(conds.toString(), r2));
+                return new Selection(conds, r2);
             }
         } else if (r2 instanceof RAConstant) {
-            return new Projection(new Selection(conds.toString(), r1));
+            return new Selection(conds, r1);
         }
         if ((r1 instanceof RAClass) && !(r2 instanceof RAClass)) {
             if (((NaturalJoin) r2).contains((RAClass) r1)) {
-                return new Projection(new Selection(conds.toString(), r2));
+                return new Selection(conds, r2);
             }
         } else if ((r2 instanceof RAClass) && !(r1 instanceof RAClass)) {
             if (((NaturalJoin) r1).contains((RAClass) r2)) {
-                return new Projection(new Selection(conds.toString(), r1));
+                return new Selection(conds, r1);
             }
         }
-        return new Projection(
-            new Selection(conds.toString(), new NaturalJoin((RAContext) r1, (RAContext) r2)));
+        return
+            new Selection(conds, new NaturalJoin((RAContext) r1, (RAContext) r2));
     }
 
     /*

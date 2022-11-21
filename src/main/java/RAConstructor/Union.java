@@ -22,4 +22,9 @@ public class Union extends RAObject {
     public String print() {
         return r1.print() + " union " + r2.print();
     }
+
+    @Override
+    public RAObject negation() {
+        return new Intersection(r1.negation(), r2.negation());
+    }
 }

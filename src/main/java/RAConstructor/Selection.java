@@ -1,15 +1,18 @@
 package RAConstructor;
 
+import java.util.ArrayList;
+
 public class Selection extends RAObject {
 
-    private String conds;
+    private ArrayList<Comparison> conds;
     private RAObject body;
+
 
     public Selection(RAObject b) {
         this.body = b;
     }
 
-    public Selection(String c, RAObject b) {
+    public Selection(ArrayList<Comparison> c, RAObject b) {
         this.conds = c;
         this.body = b;
     }
@@ -18,13 +21,55 @@ public class Selection extends RAObject {
         return body;
     }
 
-    public String getConds() {
+    public ArrayList<Comparison> getConds() {
         return conds;
     }
 
     @Override
     public String print() {
-        return "Sigma " + (conds == null ? "" : " (" + conds + ") ") + body.print();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Sigma ");
+        if (conds.size() != 0) {
+            sb.append("(");
+            for (Comparison cond : conds) {
+                sb.append(cond.getLh()).append(" ").append(cond.getCompOp()).append(" ")
+                    .append(cond.getRh());
+                if (!cond.equals(conds.get(conds.size() - 1))) {
+                    sb.append(", ");
+                }
+            }
+            sb.append(") ");
+        }
+        sb.append(body.print());
+        return sb.toString();
     }
 
+    @Override
+    public RAObject negation() {
+        for (Comparison cond : conds) {
+            switch (cond.getCompOp()) {
+                case "<":
+                    cond.setCompOp(">=");
+                    break;
+                case ">":
+                    cond.setCompOp("<=");
+                    break;
+                case "=":
+                    cond.setCompOp("<>");
+                    break;
+                case "<>":
+                    cond.setCompOp("=");
+                    break;
+                case "<=":
+                    cond.setCompOp(">");
+                    break;
+                case ">=":
+                    cond.setCompOp("<");
+                    break;
+                default:
+                    break;
+            }
+        }
+        return this;
+    }
 }

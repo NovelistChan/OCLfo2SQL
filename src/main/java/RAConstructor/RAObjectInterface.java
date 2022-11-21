@@ -6,4 +6,6 @@ public interface RAObjectInterface {
 
     boolean equals(RAObject raObject);
 
+    RAObject negation();
+
 }
