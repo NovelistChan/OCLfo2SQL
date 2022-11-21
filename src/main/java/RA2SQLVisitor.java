@@ -169,7 +169,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitExpression(RA2SQLParser.ExpressionContext ctx) {
-        return visit(ctx.column(0)) + " " + visit(ctx.column(1));
+        return visit(ctx.column(0)) + " " + visit(ctx.compOp()) + " " + visit(ctx.column(1));
     }
 
     /*
