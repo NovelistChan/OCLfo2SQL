@@ -8,7 +8,9 @@ public class NaturalJoin extends RAContext {
     public NaturalJoin(RAContext p1, RAContext p2) {
         this.para1 = p1;
         this.para2 = p2;
+        this.selfCheck();
     }
+
 
     public RAContext getPara1() {
         return para1;
@@ -20,9 +22,27 @@ public class NaturalJoin extends RAContext {
 
     @Override
     public String print() {
-        return para1.print() + " Cartesian " + para2.print();
+        return para1.print() + " join " + para2.print();
     }
 
+    private void selfCheck() {
+        if (this.para1 instanceof NaturalJoin) {
+            if (((NaturalJoin) this.para1).contains(this.para2)) {
+                NaturalJoin p = new NaturalJoin(((NaturalJoin) this.para1).getPara1(),
+                    ((NaturalJoin) this.para1).getPara2());
+                this.para1 = p.getPara1();
+                this.para2 = p.getPara2();
+            }
+        }
+        if (this.para2 instanceof NaturalJoin) {
+            if (((NaturalJoin) this.para2).contains(this.para1)) {
+                NaturalJoin p = new NaturalJoin(((NaturalJoin) this.para2).getPara1(),
+                    ((NaturalJoin) this.para2).getPara2());
+                this.para1 = p.getPara1();
+                this.para2 = p.getPara2();
+            }
+        }
+    }
 
     @Override
     public boolean equals(RAObject raObject) {
@@ -39,10 +59,28 @@ public class NaturalJoin extends RAContext {
             if (this.equals(raObject)) {
                 return true;
             } else {
-                return this.para1.equals(raObject) || this.para2.equals(raObject);
+                if (this.para1 instanceof NaturalJoin && this.para2 instanceof NaturalJoin) {
+                    return ((NaturalJoin) this.para1).contains(raObject)
+                        || ((NaturalJoin) this.para2).contains(raObject);
+                } else if (this.para1 instanceof NaturalJoin) {
+                    return ((NaturalJoin) this.para1).contains(raObject);
+                } else if (this.para2 instanceof NaturalJoin) {
+                    return ((NaturalJoin) this.para2).contains(raObject);
+                } else {
+                    return false;
+                }
             }
         } else if (raObject instanceof RAClass) {
-            return this.para1.equals(raObject) || this.para2.equals(raObject);
+            if (this.para1 instanceof NaturalJoin && this.para2 instanceof NaturalJoin) {
+                return ((NaturalJoin) this.para1).contains(raObject) || ((NaturalJoin) this.para2)
+                    .contains(raObject);
+            } else if (this.para1 instanceof NaturalJoin) {
+                return ((NaturalJoin) this.para1).contains(raObject) || this.para2.equals(raObject);
+            } else if (this.para2 instanceof NaturalJoin) {
+                return this.para1.equals(raObject) || ((NaturalJoin) this.para2).contains(raObject);
+            } else {
+                return this.para1.equals(raObject) || this.para2.equals(raObject);
+            }
         } else {
             return false;
         }

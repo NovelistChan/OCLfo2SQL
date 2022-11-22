@@ -7,3 +7,4 @@ context S inv two: self.timeStamp > 0 and self.timeStamp < 99999
 context S inv dou: self.timeStamp > 0 or self.timeStamp <> 1
 context S inv par: self.timeStamp > 0 implies self.pred.expired > 0
 context S inv uni: self.timeStamp > 0 xor self.pred.succ.timeStamp <= 0
+context T inv SBM: THP.allInstances()->forAll(thp| TT.allInstances()->forAll(tt| tt.SBM <> thp.SBM and self.SBM <> tt.SBM))

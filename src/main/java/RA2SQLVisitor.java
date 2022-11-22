@@ -41,7 +41,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
     public String visitIntersect(RA2SQLParser.IntersectContext ctx) {
         return visit(ctx.relation(0)) + "\n"
             + "INTERSECT \n"
-            + visit(ctx.relation(1)) + "\n";
+            + visit(ctx.relation(1));
     }
 
     /*
@@ -67,7 +67,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
     public String visitUnion(RA2SQLParser.UnionContext ctx) {
         return visit(ctx.relation(0)) + "\n"
             + "UNION \n"
-            + visit(ctx.relation(1)) + "\n";
+            + visit(ctx.relation(1));
     }
 
     /*
@@ -77,7 +77,7 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
     public String visitJoin(RA2SQLParser.JoinContext ctx) {
         return visit(ctx.relation(0)) + "\n"
             + "JOIN \n"
-            + visit(ctx.relation(1)) + "\n";
+            + visit(ctx.relation(1));
     }
 
     /*
@@ -85,8 +85,8 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitDiffer(RA2SQLParser.DifferContext ctx) {
-        return "SELECT * FROM " + visit(ctx.relation(0)) + "\n"
-            + "WHERE NOT IN SELECT * FROM " + visit(ctx.relation(1)) + "\n";
+        return "(SELECT * FROM " + visit(ctx.relation(0)) + "\n"
+            + "WHERE id NOT IN SELECT id FROM " + visit(ctx.relation(1)) + ")";
     }
 
     /*
@@ -94,8 +94,8 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitProjection(RA2SQLParser.ProjectionContext ctx) {
-        return "SELECT " + visit(ctx.columns()) + "\n"
-            + "FROM " + visit(ctx.relation());
+        return "(SELECT " + visit(ctx.columns()) + "\n"
+            + "FROM " + visit(ctx.relation()) + ")";
     }
 
     /*
@@ -103,9 +103,9 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitSelection(RA2SQLParser.SelectionContext ctx) {
-        return "SELECT * FROM \n"
+        return "(SELECT * FROM \n"
             + visit(ctx.relation()) + "\n"
-            + "WHERE " + visit(ctx.expressions()) + "\n";
+            + "WHERE " + visit(ctx.expressions()) + ")";
     }
 
     /*
