@@ -8,12 +8,18 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitScript(RA2SQLParser.ScriptContext ctx) {
-        StringBuilder res = new StringBuilder(visit(ctx.relation(0)));
+        StringBuilder res = new StringBuilder();
 
-        for (int i = 1; i < ctx.relation().size(); i++) {
+        for (int i = 0; i < ctx.relation().size(); i++) {
+            String r = visit(ctx.relation(i));
+            if (r.charAt(0) == '(' && r.charAt(r.length() - 1) == ')') {
+                r = r.substring(1, r.length() - 1);
+            }
+            res.append(r);
             res.append("\n");
-            res.append(visit(ctx.relation(i)));
         }
+
+        String r = res.toString();
 
         return res.toString();
     }
