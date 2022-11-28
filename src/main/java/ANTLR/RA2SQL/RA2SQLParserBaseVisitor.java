@@ -24,13 +24,6 @@ public class RA2SQLParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUdiffer(RA2SQLParser.UdifferContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitSelect(RA2SQLParser.SelectContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

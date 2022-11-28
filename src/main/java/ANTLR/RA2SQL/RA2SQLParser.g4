@@ -12,17 +12,16 @@ relation
     | relation UNION relation                   #union
     | relation INTERSECTION relation            #intersect
     | relation DIFFER relation                  #differ
-    | UNIVERSALSET DIFFER relation              #udiffer
     | relation JOIN relation                    #join
     | ID                                        #id
     ;
 
 projection
-    : PROJECTION LB columns RB relation
+    : PROJECTION LB columns RB LB relation RB
     ;
 
 selection
-    : SELECTION LB expressions RB relation
+    : SELECTION LB expressions RB LB relation RB
     ;
 
 columns

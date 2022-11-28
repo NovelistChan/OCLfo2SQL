@@ -1,0 +1,14 @@
+{
+  "class": "TT",
+  "attributes": [
+    {
+      "name": "XH",
+      "type": "String"
+    },
+    {
+      "name": "SBM",
+      "type": "String"
+    }
+  ],
+  "ends": []
+}

@@ -28,18 +28,6 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUdiffer(RA2SQLParser.UdifferContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitUdiffer(RA2SQLParser.UdifferContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSelect(RA2SQLParser.SelectContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -17,13 +17,6 @@ public interface RA2SQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitScript(RA2SQLParser.ScriptContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code udiffer}
-	 * labeled alternative in {@link RA2SQLParser#relation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitUdiffer(RA2SQLParser.UdifferContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code select}
 	 * labeled alternative in {@link RA2SQLParser#relation}.
 	 * @param ctx the parse tree

@@ -1,5 +1,5 @@
 {
-  "class": "S",
+  "class": "SnapShotTest",
   "attributes": [
     {
       "name": "timeExpired",
@@ -22,14 +22,14 @@
     {
       "association": "S_Pred",
       "name": "pred",
-      "target": "S",
+      "target": "SnapShotTest",
       "opp": "succ",
       "mult": "1"
     },
     {
       "association": "S_Succ",
       "name": "succ",
-      "target": "S",
+      "target": "SnapShotTest",
       "opp": "pred",
       "mult": "1"
     }

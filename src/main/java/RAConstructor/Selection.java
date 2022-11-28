@@ -40,7 +40,7 @@ public class Selection extends RAObject {
             }
             sb.append(") ");
         }
-        sb.append(body.print());
+        sb.append("(").append(body.print()).append(")");
         return sb.toString();
     }
 

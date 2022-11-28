@@ -18,18 +18,6 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 */
 	void exitScript(RA2SQLParser.ScriptContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code udiffer}
-	 * labeled alternative in {@link RA2SQLParser#relation}.
-	 * @param ctx the parse tree
-	 */
-	void enterUdiffer(RA2SQLParser.UdifferContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code udiffer}
-	 * labeled alternative in {@link RA2SQLParser#relation}.
-	 * @param ctx the parse tree
-	 */
-	void exitUdiffer(RA2SQLParser.UdifferContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code select}
 	 * labeled alternative in {@link RA2SQLParser#relation}.
 	 * @param ctx the parse tree

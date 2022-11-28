@@ -16,6 +16,8 @@ import RAConstructor.RAString;
 import RAConstructor.Selection;
 import RAConstructor.Union;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
@@ -37,6 +39,8 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     //    private String contextSelf;
     private RAContext contextSelf;
     private RAContext contextTail;
+
+    private Map<String, RAContext> varContextPairList;
 
     /*
         oclText : oclExpr + EOF
@@ -72,6 +76,9 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     // oclExpr : context oclContext inv oclInvariant
     @Override
     public RAObject visitOclExpr(OCL2RAParser.OclExprContext ctx) {
+//        this.initContextQuery();
+//        this.setContextQuery(ORIGIN_CTX);
+        this.initVarContextPairList();
         this.setContextQuery((RAClass) visit(ctx.oclContext()));
         this.setContextSelf(this.contextQuery.peek());
 //        return visit(ctx.oclBool());
@@ -93,6 +100,9 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     @Override
     public RAObject visitBoolForAll(OCL2RAParser.BoolForAllContext ctx) {
         RAObject rs = visit(ctx.oclSet());
+        String varName = ctx.oclVar().getText();
+//        System.out.println("varName: " + varName);
+        this.varContextPairList.put(varName, this.contextTail);
         RAObject rb = visit(ctx.oclBool());
         if (!this.contextQuery.peek().equals(ORIGIN_CTX)) {
             this.contextQuery.pop();
@@ -227,10 +237,13 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
      */
     @Override
     public RAContext visitVarObj(OCL2RAParser.VarObjContext ctx) {
+//        System.out.println("varObj: " + ctx.getText());
         if (ctx.getText().equals("self")) {
             return this.contextSelf;
         }
-        return this.contextQuery.peek();
+
+//        System.out.println("context: " + this.varContextPairList.get(ctx.getText()).print());
+        return this.varContextPairList.get(ctx.getText());
     }
 
 
@@ -338,6 +351,11 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         this.transAssociations.add(oa);
     }
 
+    public void initVarContextPairList() {
+        this.varContextPairList = new HashMap<>();
+    }
+
+
     private String getRoleClass(String role) {
         for (OCLAssociation oa : this.transAssociations) {
             if (!oa.getRoleClass(role).equals(ROLECLASS_NOT_FOUND)) {
@@ -356,7 +374,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         if (var.equals("self")) {
             var = this.contextSelf.print();
         } else {
-            var = this.contextTail.print();
+            var = this.varContextPairList.get(var).print();
         }
         return var + "." + att;
     }

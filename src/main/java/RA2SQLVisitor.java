@@ -12,24 +12,14 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
 
         for (int i = 0; i < ctx.relation().size(); i++) {
             String r = visit(ctx.relation(i));
-            if (r.charAt(0) == '(' && r.charAt(r.length() - 1) == ')') {
-                r = r.substring(1, r.length() - 1);
-            }
+//            if (r.charAt(0) == '(' && r.charAt(r.length() - 1) == ')') {
+//                r = r.substring(1, r.length() - 1);
+//            }
             res.append(r);
-            res.append("\n");
+            res.append("\n\n");
         }
 
-        String r = res.toString();
-
         return res.toString();
-    }
-
-    /*
-    relation : U - relation
-     */
-    @Override
-    public String visitUdiffer(RA2SQLParser.UdifferContext ctx) {
-        return null;
     }
 
     /*
@@ -81,8 +71,8 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitJoin(RA2SQLParser.JoinContext ctx) {
-        return visit(ctx.relation(0)) + "\n"
-            + "JOIN \n"
+        return visit(ctx.relation(0))
+            + " JOIN "
             + visit(ctx.relation(1));
     }
 
@@ -91,8 +81,10 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitDiffer(RA2SQLParser.DifferContext ctx) {
-        return "(SELECT * FROM " + visit(ctx.relation(0)) + "\n"
-            + "WHERE id NOT IN SELECT id FROM " + visit(ctx.relation(1)) + ")";
+        return "SELECT * \nFROM (" + visit(ctx.relation(0)) + ") as A\n"
+            + "WHERE id NOT IN (\n"
+            + "SELECT id \n"
+            + "FROM (" + visit(ctx.relation(1)) + ") as B)";
     }
 
     /*
@@ -100,8 +92,8 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitProjection(RA2SQLParser.ProjectionContext ctx) {
-        return "(SELECT " + visit(ctx.columns()) + "\n"
-            + "FROM " + visit(ctx.relation()) + ")";
+        return "SELECT " + visit(ctx.columns()) + "\n"
+            + "FROM " + visit(ctx.relation());
     }
 
     /*
@@ -109,9 +101,9 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitSelection(RA2SQLParser.SelectionContext ctx) {
-        return "(SELECT * FROM \n"
-            + visit(ctx.relation()) + "\n"
-            + "WHERE " + visit(ctx.expressions()) + ")";
+        return "SELECT * \n"
+            + "FROM " + visit(ctx.relation()) + "\n"
+            + "WHERE " + visit(ctx.expressions());
     }
 
     /*
