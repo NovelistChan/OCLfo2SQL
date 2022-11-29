@@ -14,6 +14,7 @@ import RAConstructor.RAList;
 import RAConstructor.RAObject;
 import RAConstructor.RAString;
 import RAConstructor.Selection;
+import RAConstructor.ThetaJoin;
 import RAConstructor.Union;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,7 +102,6 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     public RAObject visitBoolForAll(OCL2RAParser.BoolForAllContext ctx) {
         RAObject rs = visit(ctx.oclSet());
         String varName = ctx.oclVar().getText();
-//        System.out.println("varName: " + varName);
         this.varContextPairList.put(varName, this.contextTail);
         RAObject rb = visit(ctx.oclBool());
         if (!this.contextQuery.peek().equals(ORIGIN_CTX)) {
@@ -117,19 +117,27 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     public RAObject visitBoolCompare(OCL2RAParser.BoolCompareContext ctx) {
         RAObject r1 = visit(ctx.oclSingle(0));
         RAObject r2 = visit(ctx.oclSingle(1));
+
+        // get sigma conditions
+        boolean rename = false;
+        if ((r1 instanceof RAClass) && (r2 instanceof RAClass) && r1.equals(r2)) {
+            rename = true;
+        }
         String lh, rh;
         if (r1 instanceof RAConstant) {
             lh = r1.print();
         } else {
-            lh = makeUpConds(ctx.oclSingle(0).getText());
+            lh = makeUpConds(ctx.oclSingle(0).getText(), rename, "A");
         }
         if (r2 instanceof RAConstant) {
             rh = r2.print();
         } else {
-            rh = makeUpConds(ctx.oclSingle(1).getText());
+            rh = makeUpConds(ctx.oclSingle(1).getText(), rename, "B");
         }
         ArrayList<Comparison> conds = new ArrayList<>();
         conds.add(new Comparison(lh, rh, ctx.compOp().getText()));
+
+        // ensure no redundant join
         if (r1 instanceof RAConstant) {
             if (r2 instanceof RAConstant) {
                 return new Selection(conds, this.contextQuery.peek());
@@ -146,6 +154,34 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         } else if ((r2 instanceof RAClass) && !(r1 instanceof RAClass)) {
             if (((NaturalJoin) r1).contains((RAClass) r2)) {
                 return new Selection(conds, r1);
+            }
+        }
+
+        // check if join on association ends
+        if ((r1 instanceof RAClass) && (r2 instanceof RAClass)) {
+            OCLAssociation as = this.hasAssociation((RAClass) r1, (RAClass) r2);
+            if (as != null) {
+                ArrayList<Comparison> joinConds = new ArrayList<>();
+                if (r1.equals(r2)) {
+                    joinConds.add(new Comparison(
+                        "A." + as.getAssocEnd().getKey(),
+                        "B." + as.getAssocEnd().getValue(),
+                        "="
+                    ));
+                } else {
+                    if (as.getAssocClass().getKey().equals(r1.print())) {
+                        joinConds.add(new Comparison(
+                            as.getAssocClass().getKey() + "." + as.getAssocEnd().getKey()
+                            , as.getAssocClass().getValue() + "." + as.getAssocEnd().getValue(),
+                            "="));
+                    } else {
+                        joinConds.add(new Comparison(
+                            as.getAssocClass().getValue() + "." + as.getAssocEnd().getValue()
+                            , as.getAssocClass().getKey() + "." + as.getAssocEnd().getKey(), "="));
+                    }
+                }
+                return new Selection(conds,
+                    new ThetaJoin((RAContext) r1, (RAContext) r2, joinConds));
             }
         }
         return
@@ -365,11 +401,21 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         return ROLECLASS_NOT_FOUND;
     }
 
-    private String makeUpConds(String operand) {
-//        System.out.println("operand: " + operand);
+    private OCLAssociation hasAssociation(RAClass r1, RAClass r2) {
+        for (OCLAssociation oa : this.transAssociations) {
+            if (oa.hasAssociation(r1.print(), r2.print())) {
+                return oa;
+            }
+        }
+        return null;
+    }
+
+    private String makeUpConds(String operand, boolean changeName, String newName) {
         String[] ops = operand.split("\\.");
-//        System.out.println("ops: " + Arrays.toString(ops));
         String att = ops[ops.length - 1];
+        if (changeName) {
+            return newName + "." + att;
+        }
         String var = ops[0];
         if (var.equals("self")) {
             var = this.contextSelf.print();

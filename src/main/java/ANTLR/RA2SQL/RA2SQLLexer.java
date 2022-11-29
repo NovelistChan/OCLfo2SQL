@@ -41,7 +41,7 @@ public class RA2SQLLexer extends Lexer {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, null, "'Pi'", "'Sigma'", "'union'", "'\\'", "'intersect'", "'join'", 
+			null, null, "'pi'", "'sigma'", "'union'", "'\\'", "'intersect'", "'join'", 
 			"'U'", null, "','", "'='", "'>'", "'<'", "'<>'", "'>='", "'<='", "'and'", 
 			"'or'", "'xor'", "'implies'", "'not'", "'->'", "'.'", "'('", "')'", "'|'", 
 			"'''"
@@ -176,8 +176,8 @@ public class RA2SQLLexer extends Lexer {
 		"\u0000\u0000\u0000;=\u0007\u0000\u0000\u0000<;\u0001\u0000\u0000\u0000"+
 		"=>\u0001\u0000\u0000\u0000><\u0001\u0000\u0000\u0000>?\u0001\u0000\u0000"+
 		"\u0000?@\u0001\u0000\u0000\u0000@A\u0006\u0000\u0000\u0000A\u0002\u0001"+
-		"\u0000\u0000\u0000BC\u0005P\u0000\u0000CD\u0005i\u0000\u0000D\u0004\u0001"+
-		"\u0000\u0000\u0000EF\u0005S\u0000\u0000FG\u0005i\u0000\u0000GH\u0005g"+
+		"\u0000\u0000\u0000BC\u0005p\u0000\u0000CD\u0005i\u0000\u0000D\u0004\u0001"+
+		"\u0000\u0000\u0000EF\u0005s\u0000\u0000FG\u0005i\u0000\u0000GH\u0005g"+
 		"\u0000\u0000HI\u0005m\u0000\u0000IJ\u0005a\u0000\u0000J\u0006\u0001\u0000"+
 		"\u0000\u0000KL\u0005u\u0000\u0000LM\u0005n\u0000\u0000MN\u0005i\u0000"+
 		"\u0000NO\u0005o\u0000\u0000OP\u0005n\u0000\u0000P\b\u0001\u0000\u0000"+

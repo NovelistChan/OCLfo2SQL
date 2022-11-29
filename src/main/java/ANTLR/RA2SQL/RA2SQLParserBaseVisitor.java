@@ -38,6 +38,13 @@ public class RA2SQLParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitThetaJoin(RA2SQLParser.ThetaJoinContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitProject(RA2SQLParser.ProjectContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

@@ -2,8 +2,8 @@ lexer grammar RA2SQLLexer;
 
 SPACE:                               [ \t\r\n]+    -> channel(HIDDEN);
 
-PROJECTION:                          'Pi';
-SELECTION:                           'Sigma';
+PROJECTION:                          'pi';
+SELECTION:                           'sigma';
 UNION:                               'union';
 DIFFER:                              '\\';
 INTERSECTION:                        'intersect';

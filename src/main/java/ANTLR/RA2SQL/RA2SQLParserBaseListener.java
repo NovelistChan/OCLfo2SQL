@@ -52,6 +52,18 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterThetaJoin(RA2SQLParser.ThetaJoinContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitThetaJoin(RA2SQLParser.ThetaJoinContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterProject(RA2SQLParser.ProjectContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -28,7 +28,7 @@ public class Selection extends RAObject {
     @Override
     public String print() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Sigma ");
+        sb.append("sigma ");
         if (conds.size() != 0) {
             sb.append("(");
             for (Comparison cond : conds) {

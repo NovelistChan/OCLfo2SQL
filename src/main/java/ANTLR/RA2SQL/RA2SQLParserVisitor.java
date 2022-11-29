@@ -31,6 +31,13 @@ public interface RA2SQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIntersect(RA2SQLParser.IntersectContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code thetaJoin}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitThetaJoin(RA2SQLParser.ThetaJoinContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code project}
 	 * labeled alternative in {@link RA2SQLParser#relation}.
 	 * @param ctx the parse tree

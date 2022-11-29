@@ -77,6 +77,26 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
     }
 
     /*
+    relation : relation join (expressions) relation (thetaJoin)
+     */
+    @Override
+    public String visitThetaJoin(RA2SQLParser.ThetaJoinContext ctx) {
+        if (ctx.relation(0).getText().equals(ctx.relation(1).getText())) {
+            return visit(ctx.relation(0)) + " A"
+                + " JOIN "
+                + visit(ctx.relation(1)) + " B\n"
+                + "ON "
+                + visit(ctx.expressions());
+        } else {
+            return visit(ctx.relation(0))
+                + " JOIN "
+                + visit(ctx.relation(1)) + "\n"
+                + "ON "
+                + visit(ctx.expressions());
+        }
+    }
+
+    /*
     relation : relation differ relation
      */
     @Override

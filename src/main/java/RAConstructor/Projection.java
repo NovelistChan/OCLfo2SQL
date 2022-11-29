@@ -26,7 +26,7 @@ public class Projection extends RAObject {
 
     @Override
     public String print() {
-        return "Pi " + body.print();
+        return "pi " + body.print();
     }
 
 }

@@ -42,6 +42,18 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 */
 	void exitIntersect(RA2SQLParser.IntersectContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code thetaJoin}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 */
+	void enterThetaJoin(RA2SQLParser.ThetaJoinContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code thetaJoin}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 */
+	void exitThetaJoin(RA2SQLParser.ThetaJoinContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code project}
 	 * labeled alternative in {@link RA2SQLParser#relation}.
 	 * @param ctx the parse tree

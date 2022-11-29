@@ -33,4 +33,11 @@ public class OCLAssociation {
             return ROLECLASS_NOT_FOUND;
         }
     }
+
+    public boolean hasAssociation(String class1, String class2) {
+        return
+            (this.assocClass.getKey().equals(class1) && this.assocClass.getValue().equals(class2))
+                || (this.assocClass.getKey().equals(class2) && this.assocClass.getValue()
+                .equals(class1));
+    }
 }

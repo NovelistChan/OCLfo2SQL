@@ -13,6 +13,7 @@ relation
     | relation INTERSECTION relation            #intersect
     | relation DIFFER relation                  #differ
     | relation JOIN relation                    #join
+    | relation JOIN LB expressions RB relation  #thetaJoin
     | ID                                        #id
     ;
 
