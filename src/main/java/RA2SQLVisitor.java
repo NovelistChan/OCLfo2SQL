@@ -82,9 +82,9 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
     @Override
     public String visitThetaJoin(RA2SQLParser.ThetaJoinContext ctx) {
         if (ctx.relation(0).getText().equals(ctx.relation(1).getText())) {
-            return visit(ctx.relation(0)) + " A"
+            return visit(ctx.relation(0)) + " " + ctx.ID(0).getText()
                 + " JOIN "
-                + visit(ctx.relation(1)) + " B\n"
+                + visit(ctx.relation(1)) + " " + ctx.ID(1).getText() + "\n"
                 + "ON "
                 + visit(ctx.expressions());
         } else {
@@ -101,10 +101,10 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitDiffer(RA2SQLParser.DifferContext ctx) {
-        return "SELECT * \nFROM (" + visit(ctx.relation(0)) + ") as A\n"
+        return "SELECT * \nFROM (" + visit(ctx.relation(0)) + ") as " + ctx.ID(0).getText() + "\n"
             + "WHERE id NOT IN (\n"
             + "SELECT id \n"
-            + "FROM (" + visit(ctx.relation(1)) + ") as B)";
+            + "FROM (" + visit(ctx.relation(1)) + ") as " + ctx.ID(1).getText() + ")";
     }
 
     /*

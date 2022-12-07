@@ -1,10 +1,10 @@
 
-context SnapShotTest inv timeLimit: self.timeStamp > self.pred.expired
+context SnapShotTest inv timeLimit: self.timeStamp < self.predId.expired
 context SnapShotTest inv passIdNotN: self.passId <> 'null'
 context T inv SBM: THP.allInstances()->forAll(thp| thp.SBM <> self.SBM)
-context SnapShotTest inv cross: self.pred.succ.pred.succ.passId <> 'null'
+context SnapShotTest inv cross: self.predId.succId.predId.succId.passId <> 'null'
 context SnapShotTest inv two: self.timeStamp > 0 and self.timeStamp < 99999
 context SnapShotTest inv dou: self.timeStamp > 0 or self.timeStamp <> 1
-context SnapShotTest inv par: self.timeStamp > 0 implies self.pred.expired > 0
-context SnapShotTest inv uni: self.timeStamp > 0 xor self.pred.succ.timeStamp <= 0
+context SnapShotTest inv par: self.timeStamp > 0 implies self.predId.expired > 0
+context SnapShotTest inv uni: self.timeStamp > 0 xor self.predId.succId.timeStamp <= 0
 context T inv SBM: THP.allInstances()->forAll(thp| TT.allInstances()->forAll(tt| tt.SBM <> thp.SBM and self.SBM <> tt.SBM))

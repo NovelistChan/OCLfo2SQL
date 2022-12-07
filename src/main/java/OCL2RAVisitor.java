@@ -3,7 +3,6 @@ import ANTLR.OCL2RA.OCL2RAParserBaseVisitor;
 import OCLConstructor.OCLAssociation;
 import OCLConstructor.OCLClass;
 import RAConstructor.Comparison;
-import RAConstructor.Difference;
 import RAConstructor.Implies;
 import RAConstructor.Intersection;
 import RAConstructor.NaturalJoin;
@@ -40,6 +39,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     //    private String contextSelf;
     private RAContext contextSelf;
     private RAContext contextTail;
+    private int tempTableCount;
 
     private Map<String, RAContext> varContextPairList;
 
@@ -48,6 +48,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     */
     @Override
     public RAObject visitOclText(OCL2RAParser.OclTextContext ctx) {
+        this.tempTableCount = 0;
         this.initContextQuery();
         this.setContextQuery(ORIGIN_CTX);
 
@@ -124,18 +125,20 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
             rename = true;
         }
         String lh, rh;
+        String tableName1 = this.getTempTableName();
+        String tableName2 = this.getTempTableName();
         if (r1 instanceof RAConstant) {
             lh = r1.print();
         } else {
-            lh = makeUpConds(ctx.oclSingle(0).getText(), rename, "A");
+            lh = makeUpConds(ctx.oclSingle(0).getText(), rename, tableName1);
         }
         if (r2 instanceof RAConstant) {
             rh = r2.print();
         } else {
-            rh = makeUpConds(ctx.oclSingle(1).getText(), rename, "B");
+            rh = makeUpConds(ctx.oclSingle(1).getText(), rename, tableName2);
         }
         ArrayList<Comparison> conds = new ArrayList<>();
-        conds.add(new Comparison(lh, rh, ctx.compOp().getText()));
+        conds.add(new Comparison(lh, rh, visit(ctx.compOp()).print()));
 
         // ensure no redundant join
         if (r1 instanceof RAConstant) {
@@ -164,8 +167,8 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
                 ArrayList<Comparison> joinConds = new ArrayList<>();
                 if (r1.equals(r2)) {
                     joinConds.add(new Comparison(
-                        "A." + as.getAssocEnd().getKey(),
-                        "B." + as.getAssocEnd().getValue(),
+                        tableName1 + "." + as.getAssocEnd().getKey(),
+                        tableName2 + ".id",
                         "="
                     ));
                 } else {
@@ -181,7 +184,8 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
                     }
                 }
                 return new Selection(conds,
-                    new ThetaJoin((RAContext) r1, (RAContext) r2, joinConds));
+                    new ThetaJoin((RAContext) r1, (RAContext) r2, joinConds, tableName1,
+                        tableName2));
             }
         }
         return
@@ -197,13 +201,14 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         RAObject r2 = visit(ctx.oclBool(1));
         switch (visit(ctx.boolOp()).print()) {
             case "and":
-                return new Intersection(r1, r2);
-            case "or":
                 return new Union(r1, r2);
+            case "or":
+                return new Intersection(r1, r2);
             case "xor":
-                return new Difference(new Union(r1, r2), new Intersection(r1, r2));
+                return new Union(new Intersection(r1, r2),
+                    new Union(r1, r2)); // TODO formal negation
             case "implies":
-                return new Implies(r1, r2);
+                return new Implies(r1, r2).negation();
             default:
                 return new RAString(INVALID_BOOLOP);
         }
@@ -326,6 +331,22 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
 
     @Override
     public RAObject visitCompOp(OCL2RAParser.CompOpContext ctx) {
+        switch (ctx.getText()) {
+            case ">":
+                return new RAString("<=");
+            case "<":
+                return new RAString(">=");
+            case "=":
+                return new RAString("<>");
+            case "<>":
+                return new RAString("=");
+            case ">=":
+                return new RAString("<");
+            case "<=":
+                return new RAString(">");
+            default:
+                break;
+        }
         return new RAString(ctx.getText());
     }
 
@@ -393,6 +414,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
 
 
     private String getRoleClass(String role) {
+//        System.out.println("role: " + role);
         for (OCLAssociation oa : this.transAssociations) {
             if (!oa.getRoleClass(role).equals(ROLECLASS_NOT_FOUND)) {
                 return oa.getRoleClass(role);
@@ -408,6 +430,12 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
             }
         }
         return null;
+    }
+
+    private String getTempTableName() {
+        String res = "t" + Integer.toString(this.tempTableCount);
+        this.tempTableCount++;
+        return res;
     }
 
     private String makeUpConds(String operand, boolean changeName, String newName) {

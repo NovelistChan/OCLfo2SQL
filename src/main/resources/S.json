@@ -21,16 +21,16 @@
   "ends": [
     {
       "association": "S_Pred",
-      "name": "pred",
+      "name": "predId",
       "target": "SnapShotTest",
-      "opp": "succ",
+      "opp": "succId",
       "mult": "1"
     },
     {
       "association": "S_Succ",
-      "name": "succ",
+      "name": "succId",
       "target": "SnapShotTest",
-      "opp": "pred",
+      "opp": "predId",
       "mult": "1"
     }
   ]

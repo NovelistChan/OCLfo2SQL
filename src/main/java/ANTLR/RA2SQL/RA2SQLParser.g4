@@ -7,14 +7,14 @@ script
     ;
 
 relation
-    : projection                                #project
-    | selection                                 #select
-    | relation UNION relation                   #union
-    | relation INTERSECTION relation            #intersect
-    | relation DIFFER relation                  #differ
-    | relation JOIN relation                    #join
-    | relation JOIN LB expressions RB relation  #thetaJoin
-    | ID                                        #id
+    : projection                                     #project
+    | selection                                      #select
+    | relation UNION relation                        #union
+    | relation INTERSECTION relation                 #intersect
+    | relation ID DIFFER relation ID                 #differ
+    | relation JOIN relation                         #join
+    | relation ID JOIN LB expressions RB relation ID #thetaJoin
+    | ID                                             #id
     ;
 
 projection
@@ -26,19 +26,19 @@ selection
     ;
 
 columns
-    : column COMMA columns                      #columnMany
-    | column                                    #columnOne
+    : column COMMA columns                           #columnMany
+    | column                                         #columnOne
     ;
 
 column
-    : ID                                        #idOne
-    | column DOT ID                             #idMany
-    | constant                                  #idCons
+    : ID                                             #idOne
+    | column DOT ID                                  #idMany
+    | constant                                       #idCons
     ;
 
 expressions
-    : expression boolOp expressions             #expressionMany
-    | expression                                #expressionOne
+    : expression boolOp expressions                  #expressionMany
+    | expression                                     #expressionOne
     ;
 
 expression
@@ -46,8 +46,8 @@ expression
     ;
 
 constant
-    : QUOTE ID QUOTE                            #consStri
-    | INT                                       #consInt
+    : QUOTE ID QUOTE                                 #consStri
+    | INT                                            #consInt
     ;
 
 compOp

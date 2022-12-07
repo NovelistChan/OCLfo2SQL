@@ -5,10 +5,15 @@ import java.util.ArrayList;
 public class ThetaJoin extends NaturalJoin {
 
     private ArrayList<Comparison> conds;
+    private String t1;
+    private String t2;
 
-    public ThetaJoin(RAContext p1, RAContext p2, ArrayList<Comparison> conds) {
+    public ThetaJoin(RAContext p1, RAContext p2, ArrayList<Comparison> conds, String tableName1,
+        String tableName2) {
         super(p1, p2);
         this.conds = conds;
+        this.t1 = tableName1;
+        this.t2 = tableName2;
     }
 
     public ArrayList<Comparison> getConds() {
@@ -22,6 +27,7 @@ public class ThetaJoin extends NaturalJoin {
 //        if (this.getPara1().equals(this.getPara2())) {
 //            sb.append(" A");
 //        }
+        sb.append(" ").append(this.t1);
         sb.append(" join(");
         for (Comparison cond : conds) {
             sb.append(cond.getLh()).append(" ").append(cond.getCompOp()).append(" ")
@@ -34,6 +40,7 @@ public class ThetaJoin extends NaturalJoin {
 //        if (this.getPara1().equals(this.getPara2())) {
 //            sb.append(" B");
 //        }
+        sb.append(" ").append(this.t2);
         return sb.toString();
     }
 }
