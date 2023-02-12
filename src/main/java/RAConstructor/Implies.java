@@ -25,6 +25,6 @@ public class Implies extends RAObject {
 
     @Override
     public RAObject negation() {
-        return new Intersection(r1, r2.negation());
+        return new Intersection(r1.negation(), r2);
     }
 }

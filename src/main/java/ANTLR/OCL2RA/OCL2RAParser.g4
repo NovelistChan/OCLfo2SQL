@@ -33,7 +33,8 @@ oclSet
     ;
 
 oclSingle
-    : oclObject DOT oclAttr                    #objectSingle
+    : LB oclSingle binaryOp oclSingle RB       #binarySingle
+    | oclObject DOT oclAttr                    #objectSingle
     | oclConstant                              #constantSingle
     ;
 
@@ -69,6 +70,10 @@ compOp
 
 boolOp
     : AND | OR | XOR | IMPLY
+    ;
+
+binaryOp
+    : ADD | MIN | MUL | MOD | DIV
     ;
 
 

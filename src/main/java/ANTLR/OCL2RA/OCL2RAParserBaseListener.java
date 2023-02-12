@@ -124,6 +124,18 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBinarySingle(OCL2RAParser.BinarySingleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinarySingle(OCL2RAParser.BinarySingleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterObjectSingle(OCL2RAParser.ObjectSingleContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -263,6 +275,18 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBoolOp(OCL2RAParser.BoolOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryOp(OCL2RAParser.BinaryOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryOp(OCL2RAParser.BinaryOpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

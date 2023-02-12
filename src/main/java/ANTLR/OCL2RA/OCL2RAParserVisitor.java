@@ -69,6 +69,13 @@ public interface OCL2RAParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitClassAll(OCL2RAParser.ClassAllContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code binarySingle}
+	 * labeled alternative in {@link OCL2RAParser#oclSingle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinarySingle(OCL2RAParser.BinarySingleContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code objectSingle}
 	 * labeled alternative in {@link OCL2RAParser#oclSingle}.
 	 * @param ctx the parse tree
@@ -146,4 +153,10 @@ public interface OCL2RAParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBoolOp(OCL2RAParser.BoolOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link OCL2RAParser#binaryOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinaryOp(OCL2RAParser.BinaryOpContext ctx);
 }

@@ -8,4 +8,5 @@ public interface RAObjectInterface {
 
     RAObject negation();
 
+    String getBinaryString();
 }

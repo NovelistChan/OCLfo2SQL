@@ -27,4 +27,9 @@ public class RAObject implements RAObjectInterface {
     public RAObject negation() {
         return this;
     }
+
+    @Override
+    public String getBinaryString() {
+        return null;
+    }
 }

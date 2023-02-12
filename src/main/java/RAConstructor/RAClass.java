@@ -8,9 +8,14 @@ public class RAClass extends RAContext {
         this.className = cn;
     }
 
+    public RAClass(RAClass c) {
+        this.className = c.getClassName();
+    }
+
     public String getClassName() {
         return className;
     }
+
 
     @Override
     public String print() {
@@ -25,4 +30,11 @@ public class RAClass extends RAContext {
             return ((RAClass) raObject).getClassName().equals(this.className);
         }
     }
+
+    @Override
+    public String getBinaryString() {
+        return this.getContextName();
+    }
+
+
 }

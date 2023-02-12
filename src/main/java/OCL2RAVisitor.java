@@ -3,9 +3,11 @@ import ANTLR.OCL2RA.OCL2RAParserBaseVisitor;
 import OCLConstructor.OCLAssociation;
 import OCLConstructor.OCLClass;
 import RAConstructor.Comparison;
+import RAConstructor.ConstantType;
 import RAConstructor.Implies;
 import RAConstructor.Intersection;
 import RAConstructor.NaturalJoin;
+import RAConstructor.RABinary;
 import RAConstructor.RAClass;
 import RAConstructor.RAConstant;
 import RAConstructor.RAContext;
@@ -113,18 +115,42 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
 
     /*
         oclBool : oclSingle compOp oclSingle
+        Compare Conditions:
+        I. including Binary
+            i. Binary CompOp Binary
+            ii. Binary CompOp Context
+            iii. Binary CompOp Constant
+        II. excluding Binary
+            i. Context CompOp Context
+            ii. Context CompOp Constant
+            iii. Constant CompOp Constant
+        Binary = Context BinaryOp Context
+        Context = RAClass or Join/Selection
      */
     @Override
     public RAObject visitBoolCompare(OCL2RAParser.BoolCompareContext ctx) {
         RAObject r1 = visit(ctx.oclSingle(0));
         RAObject r2 = visit(ctx.oclSingle(1));
-
+        ArrayList<Comparison> conds = new ArrayList<>();
         // get sigma conditions
+        // I. including Binary
+        if (r1 instanceof RABinary || r2 instanceof RABinary) {
+            String lh = r1.getBinaryString();
+            String rh = r2.getBinaryString();
+            conds.add(new Comparison(lh, rh, visit(ctx.compOp()).print()));
+            return new Selection(conds, this.contextQuery.peek());
+        }
+        // II. excluding Binary
+        String[] leftCtx = ctx.oclSingle(0).getText().split("\\.");
+        String[] rightCtx = ctx.oclSingle(1).getText().split("\\.");
         boolean rename = false;
-        if ((r1 instanceof RAClass) && (r2 instanceof RAClass) && r1.equals(r2)) {
+        // Class CompOp Class: If Two Same Classes, Prepare Renaming
+        if ((r1 instanceof RAClass) && (r2 instanceof RAClass) && r1.equals(r2) && (leftCtx.length
+            != rightCtx.length)) {
             rename = true;
         }
         String lh, rh;
+        // temptable: tn
         String tableName1 = this.getTempTableName();
         String tableName2 = this.getTempTableName();
         if (r1 instanceof RAConstant) {
@@ -137,24 +163,29 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         } else {
             rh = makeUpConds(ctx.oclSingle(1).getText(), rename, tableName2);
         }
-        ArrayList<Comparison> conds = new ArrayList<>();
+
         conds.add(new Comparison(lh, rh, visit(ctx.compOp()).print()));
 
         // ensure no redundant join
         if (r1 instanceof RAConstant) {
             if (r2 instanceof RAConstant) {
+                // Constant CompOp Constant
                 return new Selection(conds, this.contextQuery.peek());
             } else {
+                // Constant CompOp Context
                 return new Selection(conds, r2);
             }
         } else if (r2 instanceof RAConstant) {
+            // Context CompOp Constant
             return new Selection(conds, r1);
         }
         if ((r1 instanceof RAClass) && !(r2 instanceof RAClass)) {
+            // Class CompOp NatureJoin
             if (((NaturalJoin) r2).contains((RAClass) r1)) {
                 return new Selection(conds, r2);
             }
         } else if ((r2 instanceof RAClass) && !(r1 instanceof RAClass)) {
+            // NatureJoin CompOp Class
             if (((NaturalJoin) r1).contains((RAClass) r2)) {
                 return new Selection(conds, r1);
             }
@@ -163,7 +194,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         // check if join on association ends
         if ((r1 instanceof RAClass) && (r2 instanceof RAClass)) {
             OCLAssociation as = this.hasAssociation((RAClass) r1, (RAClass) r2);
-            if (as != null) {
+            if (as != null && (leftCtx.length != rightCtx.length)) {
                 ArrayList<Comparison> joinConds = new ArrayList<>();
                 if (r1.equals(r2)) {
                     joinConds.add(new Comparison(
@@ -187,6 +218,10 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
                     new ThetaJoin((RAContext) r1, (RAContext) r2, joinConds, tableName1,
                         tableName2));
             }
+        }
+        // both Context
+        if (r1.equals(r2)) {
+            return new Selection(conds, r1);
         }
         return
             new Selection(conds, new NaturalJoin((RAContext) r1, (RAContext) r2));
@@ -243,11 +278,42 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     }
 
     /*
+        oclSingle : ( oclSingle binaryOp oclSingle )
+     */
+    @Override
+    public RAObject visitBinarySingle(OCL2RAParser.BinarySingleContext ctx) {
+        RAObject leftOp = visit(ctx.oclSingle(0));
+        RAObject rightOp = visit(ctx.oclSingle(1));
+        String op = ctx.binaryOp().getText();
+        if (leftOp instanceof RAContext) {
+            ((RAContext) leftOp).setContextName(makeUpConds(ctx.oclSingle(0).getText(), false, ""));
+        }
+        if (rightOp instanceof RAContext) {
+            ((RAContext) rightOp)
+                .setContextName(makeUpConds(ctx.oclSingle(1).getText(), false, ""));
+        }
+
+        return new RABinary(leftOp, rightOp, op);
+    }
+
+    /*
         oclSingle : oclObject.attr
      */
     @Override
     public RAObject visitObjectSingle(OCL2RAParser.ObjectSingleContext ctx) {
-        return visit(ctx.oclObject());
+//        return new RASingle((RAContext) visit(ctx.oclObject()), ctx.oclAttr().getText());
+//        String ctxText = ctx.getText();
+//        String[] ops = ctxText.split("\\.");
+//        String var = ops[0];
+//        if (var.equals("self")) {
+//            var = this.contextSelf.print();
+//        } else {
+//            var = this.varContextPairList.get(var).print();
+//        }
+        RAObject obj = visit(ctx.oclObject());
+//        obj.setName(var + "." + ops[ops.length - 1]);
+//        System.out.println("name: " + obj.getName());
+        return obj;
     }
 
     /*
@@ -280,11 +346,19 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     public RAContext visitVarObj(OCL2RAParser.VarObjContext ctx) {
 //        System.out.println("varObj: " + ctx.getText());
         if (ctx.getText().equals("self")) {
-            return this.contextSelf;
+            if (this.contextSelf instanceof RAClass) {
+                return new RAClass((RAClass) this.contextSelf);
+            } else {
+                return new NaturalJoin((NaturalJoin) this.contextSelf);
+            }
         }
 
 //        System.out.println("context: " + this.varContextPairList.get(ctx.getText()).print());
-        return this.varContextPairList.get(ctx.getText());
+        if (this.varContextPairList.get(ctx.getText()) instanceof RAClass) {
+            return new RAClass((RAClass) this.varContextPairList.get(ctx.getText()));
+        } else {
+            return new NaturalJoin((NaturalJoin) this.varContextPairList.get(ctx.getText()));
+        }
     }
 
 
@@ -321,12 +395,12 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
 
     @Override
     public RAObject visitOclString(OCL2RAParser.OclStringContext ctx) {
-        return new RAConstant("'" + ctx.ID().getText() + "'");
+        return new RAConstant("'" + ctx.ID().getText() + "'", ConstantType.STR);
     }
 
     @Override
     public RAObject visitOclInt(OCL2RAParser.OclIntContext ctx) {
-        return new RAConstant(ctx.getText());
+        return new RAConstant(ctx.getText(), ConstantType.INT);
     }
 
     @Override
@@ -423,6 +497,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         return ROLECLASS_NOT_FOUND;
     }
 
+    // Existence of Association Between Class S & Class T
     private OCLAssociation hasAssociation(RAClass r1, RAClass r2) {
         for (OCLAssociation oa : this.transAssociations) {
             if (oa.hasAssociation(r1.print(), r2.print())) {
@@ -452,6 +527,10 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         }
         return var + "." + att;
     }
+
+//    private RAContext getCombinationContext(RAContext c1, RAContext c2) {
+//        if (c1 instanceof NaturalJoin &&)
+//    }
 //    boolean isOriginal() {
 //        return this.contextQuery.peek().equals(ORIGIN_CTX);
 //    }

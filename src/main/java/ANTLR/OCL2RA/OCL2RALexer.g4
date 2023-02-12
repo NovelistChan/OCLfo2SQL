@@ -31,6 +31,11 @@ CTX:                                 'context';
 COLON:                               ':';
 INV:                                 'inv';
 
+ADD:                                 '+';
+MIN:                                 '-';
+MUL:                                 '*';
+DIV:                                 '/';
+MOD:                                 '%';
 
 ID:                                  [a-zA-Z][a-zA-Z0-9_]*;
 

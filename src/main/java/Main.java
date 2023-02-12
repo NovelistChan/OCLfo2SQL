@@ -1,7 +1,5 @@
 import ANTLR.OCL2RA.OCL2RALexer;
 import ANTLR.OCL2RA.OCL2RAParser;
-import ANTLR.RA2SQL.RA2SQLLexer;
-import ANTLR.RA2SQL.RA2SQLParser;
 import OCLConstructor.OCLClass;
 import OCLConstructor.OCLClassReader;
 import java.io.FileInputStream;
@@ -32,15 +30,15 @@ public class Main {
 
         System.out.println(visitor.visit(tree).print());
 
-        String ra = visitor.visit(tree).print();
-
-        ANTLRInputStream inputRA = new ANTLRInputStream(ra);
-        RA2SQLLexer lexerRA = new RA2SQLLexer(inputRA);
-        CommonTokenStream raTokens = new CommonTokenStream(lexerRA);
-        RA2SQLParser parserRA = new RA2SQLParser(raTokens);
-        ParseTree raTree = parserRA.script();
-        RA2SQLVisitor visitor1 = new RA2SQLVisitor();
-
-        System.out.println(visitor1.visit(raTree));
+//        String ra = visitor.visit(tree).print();
+//
+//        ANTLRInputStream inputRA = new ANTLRInputStream(ra);
+//        RA2SQLLexer lexerRA = new RA2SQLLexer(inputRA);
+//        CommonTokenStream raTokens = new CommonTokenStream(lexerRA);
+//        RA2SQLParser parserRA = new RA2SQLParser(raTokens);
+//        ParseTree raTree = parserRA.script();
+//        RA2SQLVisitor visitor1 = new RA2SQLVisitor();
+//
+//        System.out.println(visitor1.visit(raTree));
     }
 }

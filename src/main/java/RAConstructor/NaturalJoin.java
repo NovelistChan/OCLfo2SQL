@@ -11,6 +11,10 @@ public class NaturalJoin extends RAContext {
         this.selfCheck();
     }
 
+    public NaturalJoin(NaturalJoin n) {
+        this.para1 = n.getPara1();
+        this.para2 = n.getPara2();
+    }
 
     public RAContext getPara1() {
         return para1;
@@ -89,5 +93,10 @@ public class NaturalJoin extends RAContext {
     @Override
     public RAObject negation() {
         return new NaturalJoin((RAContext) para1.negation(), (RAContext) para2.negation());
+    }
+
+    @Override
+    public String getBinaryString() {
+        return this.getContextName();
     }
 }

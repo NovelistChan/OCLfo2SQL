@@ -106,6 +106,18 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 */
 	void exitClassAll(OCL2RAParser.ClassAllContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code binarySingle}
+	 * labeled alternative in {@link OCL2RAParser#oclSingle}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinarySingle(OCL2RAParser.BinarySingleContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code binarySingle}
+	 * labeled alternative in {@link OCL2RAParser#oclSingle}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinarySingle(OCL2RAParser.BinarySingleContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code objectSingle}
 	 * labeled alternative in {@link OCL2RAParser#oclSingle}.
 	 * @param ctx the parse tree
@@ -237,4 +249,14 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBoolOp(OCL2RAParser.BoolOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link OCL2RAParser#binaryOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryOp(OCL2RAParser.BinaryOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link OCL2RAParser#binaryOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryOp(OCL2RAParser.BinaryOpContext ctx);
 }
