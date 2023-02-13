@@ -42,8 +42,15 @@ expressions
     ;
 
 expression
-    : column compOp column
+    : binaryExp compOp binaryExp
     ;
+
+
+binaryExp
+    : LB binaryExp binaryOp binaryExp RB             #binarySub
+    | column                                         #unarySub
+    ;
+
 
 constant
     : QUOTE ID QUOTE                                 #consStri
@@ -56,4 +63,8 @@ compOp
 
 boolOp
     : AND | OR
+    ;
+
+binaryOp
+    : ADD | MIN | MUL | MOD | DIV
     ;

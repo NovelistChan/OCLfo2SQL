@@ -35,17 +35,20 @@ public class RA2SQLParser extends Parser {
     public static final int
         SPACE = 1, PROJECTION = 2, SELECTION = 3, UNION = 4, DIFFER = 5, INTERSECTION = 6,
         JOIN = 7, UNIVERSALSET = 8, ID = 9, COMMA = 10, EQ = 11, GT = 12, LT = 13, NE = 14, GE = 15,
-        LE = 16, AND = 17, OR = 18, XOR = 19, IMPLY = 20, NOT = 21, AR = 22, DOT = 23, LB = 24,
-        RB = 25, SEP = 26, QUOTE = 27, STRING = 28, INT = 29;
+        LE = 16, AND = 17, OR = 18, XOR = 19, IMPLY = 20, NOT = 21, AR = 22, ADD = 23, MIN = 24,
+        MUL = 25, DIV = 26, MOD = 27, DOT = 28, LB = 29, RB = 30, SEP = 31, QUOTE = 32, STRING = 33,
+        INT = 34;
     public static final int
         RULE_script = 0, RULE_relation = 1, RULE_projection = 2, RULE_selection = 3,
         RULE_columns = 4, RULE_column = 5, RULE_expressions = 6, RULE_expression = 7,
-        RULE_constant = 8, RULE_compOp = 9, RULE_boolOp = 10;
+        RULE_binaryExp = 8, RULE_constant = 9, RULE_compOp = 10, RULE_boolOp = 11,
+        RULE_binaryOp = 12;
 
     private static String[] makeRuleNames() {
         return new String[]{
             "script", "relation", "projection", "selection", "columns", "column",
-            "expressions", "expression", "constant", "compOp", "boolOp"
+            "expressions", "expression", "binaryExp", "constant", "compOp", "boolOp",
+            "binaryOp"
         };
     }
 
@@ -55,8 +58,8 @@ public class RA2SQLParser extends Parser {
         return new String[]{
             null, null, "'pi'", "'sigma'", "'union'", "'\\'", "'intersect'", "'join'",
             "'U'", null, "','", "'='", "'>'", "'<'", "'<>'", "'>='", "'<='", "'and'",
-            "'or'", "'xor'", "'implies'", "'not'", "'->'", "'.'", "'('", "')'", "'|'",
-            "'''"
+            "'or'", "'xor'", "'implies'", "'not'", "'->'", "'+'", "'-'", "'*'", "'/'",
+            "'%'", "'.'", "'('", "')'", "'|'", "'''"
         };
     }
 
@@ -66,8 +69,8 @@ public class RA2SQLParser extends Parser {
         return new String[]{
             null, "SPACE", "PROJECTION", "SELECTION", "UNION", "DIFFER", "INTERSECTION",
             "JOIN", "UNIVERSALSET", "ID", "COMMA", "EQ", "GT", "LT", "NE", "GE",
-            "LE", "AND", "OR", "XOR", "IMPLY", "NOT", "AR", "DOT", "LB", "RB", "SEP",
-            "QUOTE", "STRING", "INT"
+            "LE", "AND", "OR", "XOR", "IMPLY", "NOT", "AR", "ADD", "MIN", "MUL",
+            "DIV", "MOD", "DOT", "LB", "RB", "SEP", "QUOTE", "STRING", "INT"
         };
     }
 
@@ -185,22 +188,22 @@ public class RA2SQLParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(23);
+                setState(27);
                 _errHandler.sync(this);
                 _la = _input.LA(1);
                 do {
                     {
                         {
-                            setState(22);
+                            setState(26);
                             relation(0);
                         }
                     }
-                    setState(25);
+                    setState(29);
                     _errHandler.sync(this);
                     _la = _input.LA(1);
                 } while ((((_la) & ~0x3f) == 0
                     && ((1L << _la) & ((1L << PROJECTION) | (1L << SELECTION) | (1L << ID))) != 0));
-                setState(27);
+                setState(31);
                 match(EOF);
             }
         } catch (RecognitionException re) {
@@ -587,7 +590,7 @@ public class RA2SQLParser extends Parser {
             int _alt;
             enterOuterAlt(_localctx, 1);
             {
-                setState(33);
+                setState(37);
                 _errHandler.sync(this);
                 switch (_input.LA(1)) {
                     case PROJECTION: {
@@ -595,7 +598,7 @@ public class RA2SQLParser extends Parser {
                         _ctx = _localctx;
                         _prevctx = _localctx;
 
-                        setState(30);
+                        setState(34);
                         projection();
                     }
                     break;
@@ -603,7 +606,7 @@ public class RA2SQLParser extends Parser {
                         _localctx = new SelectContext(_localctx);
                         _ctx = _localctx;
                         _prevctx = _localctx;
-                        setState(31);
+                        setState(35);
                         selection();
                     }
                     break;
@@ -611,7 +614,7 @@ public class RA2SQLParser extends Parser {
                         _localctx = new IdContext(_localctx);
                         _ctx = _localctx;
                         _prevctx = _localctx;
-                        setState(32);
+                        setState(36);
                         match(ID);
                     }
                     break;
@@ -619,7 +622,7 @@ public class RA2SQLParser extends Parser {
                         throw new NoViableAltException(this);
                 }
                 _ctx.stop = _input.LT(-1);
-                setState(61);
+                setState(65);
                 _errHandler.sync(this);
                 _alt = getInterpreter().adaptivePredict(_input, 3, _ctx);
                 while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
@@ -629,21 +632,21 @@ public class RA2SQLParser extends Parser {
 						}
                         _prevctx = _localctx;
                         {
-                            setState(59);
+                            setState(63);
                             _errHandler.sync(this);
                             switch (getInterpreter().adaptivePredict(_input, 2, _ctx)) {
                                 case 1: {
                                     _localctx = new UnionContext(
                                         new RelationContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_relation);
-                                    setState(35);
+                                    setState(39);
 									if (!(precpred(_ctx, 6))) {
 										throw new FailedPredicateException(this,
 											"precpred(_ctx, 6)");
 									}
-                                    setState(36);
+                                    setState(40);
                                     match(UNION);
-                                    setState(37);
+                                    setState(41);
                                     relation(7);
                                 }
                                 break;
@@ -651,14 +654,14 @@ public class RA2SQLParser extends Parser {
                                     _localctx = new IntersectContext(
                                         new RelationContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_relation);
-                                    setState(38);
+                                    setState(42);
 									if (!(precpred(_ctx, 5))) {
 										throw new FailedPredicateException(this,
 											"precpred(_ctx, 5)");
 									}
-                                    setState(39);
+                                    setState(43);
                                     match(INTERSECTION);
-                                    setState(40);
+                                    setState(44);
                                     relation(6);
                                 }
                                 break;
@@ -666,14 +669,14 @@ public class RA2SQLParser extends Parser {
                                     _localctx = new JoinContext(
                                         new RelationContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_relation);
-                                    setState(41);
+                                    setState(45);
 									if (!(precpred(_ctx, 3))) {
 										throw new FailedPredicateException(this,
 											"precpred(_ctx, 3)");
 									}
-                                    setState(42);
+                                    setState(46);
                                     match(JOIN);
-                                    setState(43);
+                                    setState(47);
                                     relation(4);
                                 }
                                 break;
@@ -681,18 +684,18 @@ public class RA2SQLParser extends Parser {
                                     _localctx = new DifferContext(
                                         new RelationContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_relation);
-                                    setState(44);
+                                    setState(48);
 									if (!(precpred(_ctx, 4))) {
 										throw new FailedPredicateException(this,
 											"precpred(_ctx, 4)");
 									}
-                                    setState(45);
+                                    setState(49);
                                     match(ID);
-                                    setState(46);
+                                    setState(50);
                                     match(DIFFER);
-                                    setState(47);
+                                    setState(51);
                                     relation(0);
-                                    setState(48);
+                                    setState(52);
                                     match(ID);
                                 }
                                 break;
@@ -700,31 +703,31 @@ public class RA2SQLParser extends Parser {
                                     _localctx = new ThetaJoinContext(
                                         new RelationContext(_parentctx, _parentState));
                                     pushNewRecursionContext(_localctx, _startState, RULE_relation);
-                                    setState(50);
+                                    setState(54);
 									if (!(precpred(_ctx, 2))) {
 										throw new FailedPredicateException(this,
 											"precpred(_ctx, 2)");
 									}
-                                    setState(51);
-                                    match(ID);
-                                    setState(52);
-                                    match(JOIN);
-                                    setState(53);
-                                    match(LB);
-                                    setState(54);
-                                    expressions();
                                     setState(55);
-                                    match(RB);
+                                    match(ID);
                                     setState(56);
-                                    relation(0);
+                                    match(JOIN);
                                     setState(57);
+                                    match(LB);
+                                    setState(58);
+                                    expressions();
+                                    setState(59);
+                                    match(RB);
+                                    setState(60);
+                                    relation(0);
+                                    setState(61);
                                     match(ID);
                                 }
                                 break;
                             }
                         }
                     }
-                    setState(63);
+                    setState(67);
                     _errHandler.sync(this);
                     _alt = getInterpreter().adaptivePredict(_input, 3, _ctx);
                 }
@@ -808,19 +811,19 @@ public class RA2SQLParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(64);
-                match(PROJECTION);
-                setState(65);
-                match(LB);
-                setState(66);
-                columns();
-                setState(67);
-                match(RB);
                 setState(68);
-                match(LB);
+                match(PROJECTION);
                 setState(69);
-                relation(0);
+                match(LB);
                 setState(70);
+                columns();
+                setState(71);
+                match(RB);
+                setState(72);
+                match(LB);
+                setState(73);
+                relation(0);
+                setState(74);
                 match(RB);
             }
         } catch (RecognitionException re) {
@@ -902,19 +905,19 @@ public class RA2SQLParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(72);
-                match(SELECTION);
-                setState(73);
-                match(LB);
-                setState(74);
-                expressions();
-                setState(75);
-                match(RB);
                 setState(76);
-                match(LB);
+                match(SELECTION);
                 setState(77);
-                relation(0);
+                match(LB);
                 setState(78);
+                expressions();
+                setState(79);
+                match(RB);
+                setState(80);
+                match(LB);
+                setState(81);
+                relation(0);
+                setState(82);
                 match(RB);
             }
         } catch (RecognitionException re) {
@@ -1026,18 +1029,18 @@ public class RA2SQLParser extends Parser {
         ColumnsContext _localctx = new ColumnsContext(_ctx, getState());
         enterRule(_localctx, 8, RULE_columns);
         try {
-            setState(85);
+            setState(89);
             _errHandler.sync(this);
             switch (getInterpreter().adaptivePredict(_input, 4, _ctx)) {
                 case 1:
                     _localctx = new ColumnManyContext(_localctx);
                     enterOuterAlt(_localctx, 1);
                 {
-                    setState(80);
+                    setState(84);
                     column(0);
-                    setState(81);
+                    setState(85);
                     match(COMMA);
-                    setState(82);
+                    setState(86);
                     columns();
                 }
                 break;
@@ -1045,7 +1048,7 @@ public class RA2SQLParser extends Parser {
                     _localctx = new ColumnOneContext(_localctx);
                     enterOuterAlt(_localctx, 2);
                 {
-                    setState(84);
+                    setState(88);
                     column(0);
                 }
                 break;
@@ -1204,7 +1207,7 @@ public class RA2SQLParser extends Parser {
             int _alt;
             enterOuterAlt(_localctx, 1);
             {
-                setState(90);
+                setState(94);
                 _errHandler.sync(this);
                 switch (_input.LA(1)) {
                     case ID: {
@@ -1212,7 +1215,7 @@ public class RA2SQLParser extends Parser {
                         _ctx = _localctx;
                         _prevctx = _localctx;
 
-                        setState(88);
+                        setState(92);
                         match(ID);
                     }
                     break;
@@ -1221,7 +1224,7 @@ public class RA2SQLParser extends Parser {
                         _localctx = new IdConsContext(_localctx);
                         _ctx = _localctx;
                         _prevctx = _localctx;
-                        setState(89);
+                        setState(93);
                         constant();
                     }
                     break;
@@ -1229,7 +1232,7 @@ public class RA2SQLParser extends Parser {
                         throw new NoViableAltException(this);
                 }
                 _ctx.stop = _input.LT(-1);
-                setState(97);
+                setState(101);
                 _errHandler.sync(this);
                 _alt = getInterpreter().adaptivePredict(_input, 6, _ctx);
                 while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
@@ -1243,18 +1246,18 @@ public class RA2SQLParser extends Parser {
                                 _localctx = new IdManyContext(
                                     new ColumnContext(_parentctx, _parentState));
                                 pushNewRecursionContext(_localctx, _startState, RULE_column);
-                                setState(92);
+                                setState(96);
 								if (!(precpred(_ctx, 2))) {
 									throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 								}
-                                setState(93);
+                                setState(97);
                                 match(DOT);
-                                setState(94);
+                                setState(98);
                                 match(ID);
                             }
                         }
                     }
-                    setState(99);
+                    setState(103);
                     _errHandler.sync(this);
                     _alt = getInterpreter().adaptivePredict(_input, 6, _ctx);
                 }
@@ -1368,18 +1371,18 @@ public class RA2SQLParser extends Parser {
         ExpressionsContext _localctx = new ExpressionsContext(_ctx, getState());
         enterRule(_localctx, 12, RULE_expressions);
         try {
-            setState(105);
+            setState(109);
             _errHandler.sync(this);
             switch (getInterpreter().adaptivePredict(_input, 7, _ctx)) {
                 case 1:
                     _localctx = new ExpressionManyContext(_localctx);
                     enterOuterAlt(_localctx, 1);
                 {
-                    setState(100);
+                    setState(104);
                     expression();
-                    setState(101);
+                    setState(105);
                     boolOp();
-                    setState(102);
+                    setState(106);
                     expressions();
                 }
                 break;
@@ -1387,7 +1390,7 @@ public class RA2SQLParser extends Parser {
                     _localctx = new ExpressionOneContext(_localctx);
                     enterOuterAlt(_localctx, 2);
                 {
-                    setState(104);
+                    setState(108);
                     expression();
                 }
                 break;
@@ -1404,12 +1407,12 @@ public class RA2SQLParser extends Parser {
 
     public static class ExpressionContext extends ParserRuleContext {
 
-        public List<ColumnContext> column() {
-            return getRuleContexts(ColumnContext.class);
+        public List<BinaryExpContext> binaryExp() {
+            return getRuleContexts(BinaryExpContext.class);
         }
 
-        public ColumnContext column(int i) {
-            return getRuleContext(ColumnContext.class, i);
+        public BinaryExpContext binaryExp(int i) {
+            return getRuleContext(BinaryExpContext.class, i);
         }
 
         public CompOpContext compOp() {
@@ -1455,12 +1458,161 @@ public class RA2SQLParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(107);
-                column(0);
-                setState(108);
+                setState(111);
+                binaryExp();
+                setState(112);
                 compOp();
-                setState(109);
-                column(0);
+                setState(113);
+                binaryExp();
+            }
+        } catch (RecognitionException re) {
+            _localctx.exception = re;
+            _errHandler.reportError(this, re);
+            _errHandler.recover(this, re);
+        } finally {
+            exitRule();
+        }
+        return _localctx;
+    }
+
+    public static class BinaryExpContext extends ParserRuleContext {
+
+        public BinaryExpContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_binaryExp;
+        }
+
+        public BinaryExpContext() {
+        }
+
+        public void copyFrom(BinaryExpContext ctx) {
+            super.copyFrom(ctx);
+        }
+    }
+
+    public static class UnarySubContext extends BinaryExpContext {
+
+        public ColumnContext column() {
+            return getRuleContext(ColumnContext.class, 0);
+        }
+
+        public UnarySubContext(BinaryExpContext ctx) {
+            copyFrom(ctx);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof RA2SQLParserListener) {
+				((RA2SQLParserListener) listener).enterUnarySub(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof RA2SQLParserListener) {
+				((RA2SQLParserListener) listener).exitUnarySub(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof RA2SQLParserVisitor) {
+				return ((RA2SQLParserVisitor<? extends T>) visitor).visitUnarySub(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
+    public static class BinarySubContext extends BinaryExpContext {
+
+        public TerminalNode LB() {
+            return getToken(RA2SQLParser.LB, 0);
+        }
+
+        public List<BinaryExpContext> binaryExp() {
+            return getRuleContexts(BinaryExpContext.class);
+        }
+
+        public BinaryExpContext binaryExp(int i) {
+            return getRuleContext(BinaryExpContext.class, i);
+        }
+
+        public BinaryOpContext binaryOp() {
+            return getRuleContext(BinaryOpContext.class, 0);
+        }
+
+        public TerminalNode RB() {
+            return getToken(RA2SQLParser.RB, 0);
+        }
+
+        public BinarySubContext(BinaryExpContext ctx) {
+            copyFrom(ctx);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof RA2SQLParserListener) {
+				((RA2SQLParserListener) listener).enterBinarySub(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof RA2SQLParserListener) {
+				((RA2SQLParserListener) listener).exitBinarySub(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof RA2SQLParserVisitor) {
+				return ((RA2SQLParserVisitor<? extends T>) visitor).visitBinarySub(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
+    public final BinaryExpContext binaryExp() throws RecognitionException {
+        BinaryExpContext _localctx = new BinaryExpContext(_ctx, getState());
+        enterRule(_localctx, 16, RULE_binaryExp);
+        try {
+            setState(122);
+            _errHandler.sync(this);
+            switch (_input.LA(1)) {
+                case LB:
+                    _localctx = new BinarySubContext(_localctx);
+                    enterOuterAlt(_localctx, 1);
+                {
+                    setState(115);
+                    match(LB);
+                    setState(116);
+                    binaryExp();
+                    setState(117);
+                    binaryOp();
+                    setState(118);
+                    binaryExp();
+                    setState(119);
+                    match(RB);
+                }
+                break;
+                case ID:
+                case QUOTE:
+                case INT:
+                    _localctx = new UnarySubContext(_localctx);
+                    enterOuterAlt(_localctx, 2);
+                {
+                    setState(121);
+                    column(0);
+                }
+                break;
+                default:
+                    throw new NoViableAltException(this);
             }
         } catch (RecognitionException re) {
             _localctx.exception = re;
@@ -1569,20 +1721,20 @@ public class RA2SQLParser extends Parser {
 
     public final ConstantContext constant() throws RecognitionException {
         ConstantContext _localctx = new ConstantContext(_ctx, getState());
-        enterRule(_localctx, 16, RULE_constant);
+        enterRule(_localctx, 18, RULE_constant);
         try {
-            setState(115);
+            setState(128);
             _errHandler.sync(this);
             switch (_input.LA(1)) {
                 case QUOTE:
                     _localctx = new ConsStriContext(_localctx);
                     enterOuterAlt(_localctx, 1);
                 {
-                    setState(111);
+                    setState(124);
                     match(QUOTE);
-                    setState(112);
+                    setState(125);
                     match(ID);
-                    setState(113);
+                    setState(126);
                     match(QUOTE);
                 }
                 break;
@@ -1590,7 +1742,7 @@ public class RA2SQLParser extends Parser {
                     _localctx = new ConsIntContext(_localctx);
                     enterOuterAlt(_localctx, 2);
                 {
-                    setState(114);
+                    setState(127);
                     match(INT);
                 }
                 break;
@@ -1668,12 +1820,12 @@ public class RA2SQLParser extends Parser {
 
     public final CompOpContext compOp() throws RecognitionException {
         CompOpContext _localctx = new CompOpContext(_ctx, getState());
-        enterRule(_localctx, 18, RULE_compOp);
+        enterRule(_localctx, 20, RULE_compOp);
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(117);
+                setState(130);
                 _la = _input.LA(1);
                 if (!((((_la) & ~0x3f) == 0 &&
                     ((1L << _la) & ((1L << EQ) | (1L << GT) | (1L << LT) | (1L << NE) | (1L << GE)
@@ -1742,14 +1894,100 @@ public class RA2SQLParser extends Parser {
 
     public final BoolOpContext boolOp() throws RecognitionException {
         BoolOpContext _localctx = new BoolOpContext(_ctx, getState());
-        enterRule(_localctx, 20, RULE_boolOp);
+        enterRule(_localctx, 22, RULE_boolOp);
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(119);
+                setState(132);
                 _la = _input.LA(1);
                 if (!(_la == AND || _la == OR)) {
+                    _errHandler.recoverInline(this);
+                } else {
+					if (_input.LA(1) == Token.EOF) {
+						matchedEOF = true;
+					}
+                    _errHandler.reportMatch(this);
+                    consume();
+                }
+            }
+        } catch (RecognitionException re) {
+            _localctx.exception = re;
+            _errHandler.reportError(this, re);
+            _errHandler.recover(this, re);
+        } finally {
+            exitRule();
+        }
+        return _localctx;
+    }
+
+    public static class BinaryOpContext extends ParserRuleContext {
+
+        public TerminalNode ADD() {
+            return getToken(RA2SQLParser.ADD, 0);
+        }
+
+        public TerminalNode MIN() {
+            return getToken(RA2SQLParser.MIN, 0);
+        }
+
+        public TerminalNode MUL() {
+            return getToken(RA2SQLParser.MUL, 0);
+        }
+
+        public TerminalNode MOD() {
+            return getToken(RA2SQLParser.MOD, 0);
+        }
+
+        public TerminalNode DIV() {
+            return getToken(RA2SQLParser.DIV, 0);
+        }
+
+        public BinaryOpContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_binaryOp;
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof RA2SQLParserListener) {
+				((RA2SQLParserListener) listener).enterBinaryOp(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof RA2SQLParserListener) {
+				((RA2SQLParserListener) listener).exitBinaryOp(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof RA2SQLParserVisitor) {
+				return ((RA2SQLParserVisitor<? extends T>) visitor).visitBinaryOp(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
+    public final BinaryOpContext binaryOp() throws RecognitionException {
+        BinaryOpContext _localctx = new BinaryOpContext(_ctx, getState());
+        enterRule(_localctx, 24, RULE_binaryOp);
+        int _la;
+        try {
+            enterOuterAlt(_localctx, 1);
+            {
+                setState(134);
+                _la = _input.LA(1);
+                if (!((((_la) & ~0x3f) == 0 &&
+                    ((1L << _la) & ((1L << ADD) | (1L << MIN) | (1L << MUL) | (1L << DIV) | (1L
+                        << MOD))) != 0))) {
                     _errHandler.recoverInline(this);
                 } else {
 					if (_input.LA(1) == Token.EOF) {
@@ -1804,74 +2042,82 @@ public class RA2SQLParser extends Parser {
     }
 
     public static final String _serializedATN =
-        "\u0004\u0001\u001dz\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002" +
+        "\u0004\u0001\"\u0089\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002" +
             "\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002" +
             "\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002" +
-            "\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0001\u0000\u0004\u0000\u0018" +
-            "\b\u0000\u000b\u0000\f\u0000\u0019\u0001\u0000\u0001\u0000\u0001\u0001" +
-            "\u0001\u0001\u0001\u0001\u0001\u0001\u0003\u0001\"\b\u0001\u0001\u0001" +
+            "\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002" +
+            "\f\u0007\f\u0001\u0000\u0004\u0000\u001c\b\u0000\u000b\u0000\f\u0000\u001d" +
+            "\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001" +
+            "\u0003\u0001&\b\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001" +
             "\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001" +
             "\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001" +
             "\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001" +
-            "\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0005\u0001" +
-            "<\b\u0001\n\u0001\f\u0001?\t\u0001\u0001\u0002\u0001\u0002\u0001\u0002" +
-            "\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003" +
-            "\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003" +
-            "\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004" +
-            "\u0003\u0004V\b\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0003\u0005" +
-            "[\b\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0005\u0005`\b\u0005\n\u0005" +
-            "\f\u0005c\t\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001" +
-            "\u0006\u0003\u0006j\b\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001" +
-            "\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0003\bt\b\b\u0001\t\u0001\t\u0001" +
-            "\n\u0001\n\u0001\n\u0000\u0002\u0002\n\u000b\u0000\u0002\u0004\u0006\b" +
-            "\n\f\u000e\u0010\u0012\u0014\u0000\u0002\u0001\u0000\u000b\u0010\u0001" +
-            "\u0000\u0011\u0012{\u0000\u0017\u0001\u0000\u0000\u0000\u0002!\u0001\u0000" +
-            "\u0000\u0000\u0004@\u0001\u0000\u0000\u0000\u0006H\u0001\u0000\u0000\u0000" +
-            "\bU\u0001\u0000\u0000\u0000\nZ\u0001\u0000\u0000\u0000\fi\u0001\u0000" +
-            "\u0000\u0000\u000ek\u0001\u0000\u0000\u0000\u0010s\u0001\u0000\u0000\u0000" +
-            "\u0012u\u0001\u0000\u0000\u0000\u0014w\u0001\u0000\u0000\u0000\u0016\u0018" +
-            "\u0003\u0002\u0001\u0000\u0017\u0016\u0001\u0000\u0000\u0000\u0018\u0019" +
-            "\u0001\u0000\u0000\u0000\u0019\u0017\u0001\u0000\u0000\u0000\u0019\u001a" +
-            "\u0001\u0000\u0000\u0000\u001a\u001b\u0001\u0000\u0000\u0000\u001b\u001c" +
-            "\u0005\u0000\u0000\u0001\u001c\u0001\u0001\u0000\u0000\u0000\u001d\u001e" +
-            "\u0006\u0001\uffff\uffff\u0000\u001e\"\u0003\u0004\u0002\u0000\u001f\"" +
-            "\u0003\u0006\u0003\u0000 \"\u0005\t\u0000\u0000!\u001d\u0001\u0000\u0000" +
-            "\u0000!\u001f\u0001\u0000\u0000\u0000! \u0001\u0000\u0000\u0000\"=\u0001" +
-            "\u0000\u0000\u0000#$\n\u0006\u0000\u0000$%\u0005\u0004\u0000\u0000%<\u0003" +
-            "\u0002\u0001\u0007&\'\n\u0005\u0000\u0000\'(\u0005\u0006\u0000\u0000(" +
-            "<\u0003\u0002\u0001\u0006)*\n\u0003\u0000\u0000*+\u0005\u0007\u0000\u0000" +
-            "+<\u0003\u0002\u0001\u0004,-\n\u0004\u0000\u0000-.\u0005\t\u0000\u0000" +
-            "./\u0005\u0005\u0000\u0000/0\u0003\u0002\u0001\u000001\u0005\t\u0000\u0000" +
-            "1<\u0001\u0000\u0000\u000023\n\u0002\u0000\u000034\u0005\t\u0000\u0000" +
-            "45\u0005\u0007\u0000\u000056\u0005\u0018\u0000\u000067\u0003\f\u0006\u0000" +
-            "78\u0005\u0019\u0000\u000089\u0003\u0002\u0001\u00009:\u0005\t\u0000\u0000" +
-            ":<\u0001\u0000\u0000\u0000;#\u0001\u0000\u0000\u0000;&\u0001\u0000\u0000" +
-            "\u0000;)\u0001\u0000\u0000\u0000;,\u0001\u0000\u0000\u0000;2\u0001\u0000" +
-            "\u0000\u0000<?\u0001\u0000\u0000\u0000=;\u0001\u0000\u0000\u0000=>\u0001" +
-            "\u0000\u0000\u0000>\u0003\u0001\u0000\u0000\u0000?=\u0001\u0000\u0000" +
-            "\u0000@A\u0005\u0002\u0000\u0000AB\u0005\u0018\u0000\u0000BC\u0003\b\u0004" +
-            "\u0000CD\u0005\u0019\u0000\u0000DE\u0005\u0018\u0000\u0000EF\u0003\u0002" +
-            "\u0001\u0000FG\u0005\u0019\u0000\u0000G\u0005\u0001\u0000\u0000\u0000" +
-            "HI\u0005\u0003\u0000\u0000IJ\u0005\u0018\u0000\u0000JK\u0003\f\u0006\u0000" +
-            "KL\u0005\u0019\u0000\u0000LM\u0005\u0018\u0000\u0000MN\u0003\u0002\u0001" +
-            "\u0000NO\u0005\u0019\u0000\u0000O\u0007\u0001\u0000\u0000\u0000PQ\u0003" +
-            "\n\u0005\u0000QR\u0005\n\u0000\u0000RS\u0003\b\u0004\u0000SV\u0001\u0000" +
-            "\u0000\u0000TV\u0003\n\u0005\u0000UP\u0001\u0000\u0000\u0000UT\u0001\u0000" +
-            "\u0000\u0000V\t\u0001\u0000\u0000\u0000WX\u0006\u0005\uffff\uffff\u0000" +
-            "X[\u0005\t\u0000\u0000Y[\u0003\u0010\b\u0000ZW\u0001\u0000\u0000\u0000" +
-            "ZY\u0001\u0000\u0000\u0000[a\u0001\u0000\u0000\u0000\\]\n\u0002\u0000" +
-            "\u0000]^\u0005\u0017\u0000\u0000^`\u0005\t\u0000\u0000_\\\u0001\u0000" +
-            "\u0000\u0000`c\u0001\u0000\u0000\u0000a_\u0001\u0000\u0000\u0000ab\u0001" +
-            "\u0000\u0000\u0000b\u000b\u0001\u0000\u0000\u0000ca\u0001\u0000\u0000" +
-            "\u0000de\u0003\u000e\u0007\u0000ef\u0003\u0014\n\u0000fg\u0003\f\u0006" +
-            "\u0000gj\u0001\u0000\u0000\u0000hj\u0003\u000e\u0007\u0000id\u0001\u0000" +
-            "\u0000\u0000ih\u0001\u0000\u0000\u0000j\r\u0001\u0000\u0000\u0000kl\u0003" +
-            "\n\u0005\u0000lm\u0003\u0012\t\u0000mn\u0003\n\u0005\u0000n\u000f\u0001" +
-            "\u0000\u0000\u0000op\u0005\u001b\u0000\u0000pq\u0005\t\u0000\u0000qt\u0005" +
-            "\u001b\u0000\u0000rt\u0005\u001d\u0000\u0000so\u0001\u0000\u0000\u0000" +
-            "sr\u0001\u0000\u0000\u0000t\u0011\u0001\u0000\u0000\u0000uv\u0007\u0000" +
-            "\u0000\u0000v\u0013\u0001\u0000\u0000\u0000wx\u0007\u0001\u0000\u0000" +
-            "x\u0015\u0001\u0000\u0000\u0000\t\u0019!;=UZais";
+            "\u0001\u0001\u0001\u0001\u0005\u0001@\b\u0001\n\u0001\f\u0001C\t\u0001" +
+            "\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002" +
+            "\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003" +
+            "\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004" +
+            "\u0001\u0004\u0001\u0004\u0001\u0004\u0003\u0004Z\b\u0004\u0001\u0005" +
+            "\u0001\u0005\u0001\u0005\u0003\u0005_\b\u0005\u0001\u0005\u0001\u0005" +
+            "\u0001\u0005\u0005\u0005d\b\u0005\n\u0005\f\u0005g\t\u0005\u0001\u0006" +
+            "\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0003\u0006n\b\u0006" +
+            "\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001" +
+            "\b\u0001\b\u0001\b\u0001\b\u0001\b\u0003\b{\b\b\u0001\t\u0001\t\u0001" +
+            "\t\u0001\t\u0003\t\u0081\b\t\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001" +
+            "\f\u0001\f\u0001\f\u0000\u0002\u0002\n\r\u0000\u0002\u0004\u0006\b\n\f" +
+            "\u000e\u0010\u0012\u0014\u0016\u0018\u0000\u0003\u0001\u0000\u000b\u0010" +
+            "\u0001\u0000\u0011\u0012\u0001\u0000\u0017\u001b\u0089\u0000\u001b\u0001" +
+            "\u0000\u0000\u0000\u0002%\u0001\u0000\u0000\u0000\u0004D\u0001\u0000\u0000" +
+            "\u0000\u0006L\u0001\u0000\u0000\u0000\bY\u0001\u0000\u0000\u0000\n^\u0001" +
+            "\u0000\u0000\u0000\fm\u0001\u0000\u0000\u0000\u000eo\u0001\u0000\u0000" +
+            "\u0000\u0010z\u0001\u0000\u0000\u0000\u0012\u0080\u0001\u0000\u0000\u0000" +
+            "\u0014\u0082\u0001\u0000\u0000\u0000\u0016\u0084\u0001\u0000\u0000\u0000" +
+            "\u0018\u0086\u0001\u0000\u0000\u0000\u001a\u001c\u0003\u0002\u0001\u0000" +
+            "\u001b\u001a\u0001\u0000\u0000\u0000\u001c\u001d\u0001\u0000\u0000\u0000" +
+            "\u001d\u001b\u0001\u0000\u0000\u0000\u001d\u001e\u0001\u0000\u0000\u0000" +
+            "\u001e\u001f\u0001\u0000\u0000\u0000\u001f \u0005\u0000\u0000\u0001 \u0001" +
+            "\u0001\u0000\u0000\u0000!\"\u0006\u0001\uffff\uffff\u0000\"&\u0003\u0004" +
+            "\u0002\u0000#&\u0003\u0006\u0003\u0000$&\u0005\t\u0000\u0000%!\u0001\u0000" +
+            "\u0000\u0000%#\u0001\u0000\u0000\u0000%$\u0001\u0000\u0000\u0000&A\u0001" +
+            "\u0000\u0000\u0000\'(\n\u0006\u0000\u0000()\u0005\u0004\u0000\u0000)@" +
+            "\u0003\u0002\u0001\u0007*+\n\u0005\u0000\u0000+,\u0005\u0006\u0000\u0000" +
+            ",@\u0003\u0002\u0001\u0006-.\n\u0003\u0000\u0000./\u0005\u0007\u0000\u0000" +
+            "/@\u0003\u0002\u0001\u000401\n\u0004\u0000\u000012\u0005\t\u0000\u0000" +
+            "23\u0005\u0005\u0000\u000034\u0003\u0002\u0001\u000045\u0005\t\u0000\u0000" +
+            "5@\u0001\u0000\u0000\u000067\n\u0002\u0000\u000078\u0005\t\u0000\u0000" +
+            "89\u0005\u0007\u0000\u00009:\u0005\u001d\u0000\u0000:;\u0003\f\u0006\u0000" +
+            ";<\u0005\u001e\u0000\u0000<=\u0003\u0002\u0001\u0000=>\u0005\t\u0000\u0000" +
+            ">@\u0001\u0000\u0000\u0000?\'\u0001\u0000\u0000\u0000?*\u0001\u0000\u0000" +
+            "\u0000?-\u0001\u0000\u0000\u0000?0\u0001\u0000\u0000\u0000?6\u0001\u0000" +
+            "\u0000\u0000@C\u0001\u0000\u0000\u0000A?\u0001\u0000\u0000\u0000AB\u0001" +
+            "\u0000\u0000\u0000B\u0003\u0001\u0000\u0000\u0000CA\u0001\u0000\u0000" +
+            "\u0000DE\u0005\u0002\u0000\u0000EF\u0005\u001d\u0000\u0000FG\u0003\b\u0004" +
+            "\u0000GH\u0005\u001e\u0000\u0000HI\u0005\u001d\u0000\u0000IJ\u0003\u0002" +
+            "\u0001\u0000JK\u0005\u001e\u0000\u0000K\u0005\u0001\u0000\u0000\u0000" +
+            "LM\u0005\u0003\u0000\u0000MN\u0005\u001d\u0000\u0000NO\u0003\f\u0006\u0000" +
+            "OP\u0005\u001e\u0000\u0000PQ\u0005\u001d\u0000\u0000QR\u0003\u0002\u0001" +
+            "\u0000RS\u0005\u001e\u0000\u0000S\u0007\u0001\u0000\u0000\u0000TU\u0003" +
+            "\n\u0005\u0000UV\u0005\n\u0000\u0000VW\u0003\b\u0004\u0000WZ\u0001\u0000" +
+            "\u0000\u0000XZ\u0003\n\u0005\u0000YT\u0001\u0000\u0000\u0000YX\u0001\u0000" +
+            "\u0000\u0000Z\t\u0001\u0000\u0000\u0000[\\\u0006\u0005\uffff\uffff\u0000" +
+            "\\_\u0005\t\u0000\u0000]_\u0003\u0012\t\u0000^[\u0001\u0000\u0000\u0000" +
+            "^]\u0001\u0000\u0000\u0000_e\u0001\u0000\u0000\u0000`a\n\u0002\u0000\u0000" +
+            "ab\u0005\u001c\u0000\u0000bd\u0005\t\u0000\u0000c`\u0001\u0000\u0000\u0000" +
+            "dg\u0001\u0000\u0000\u0000ec\u0001\u0000\u0000\u0000ef\u0001\u0000\u0000" +
+            "\u0000f\u000b\u0001\u0000\u0000\u0000ge\u0001\u0000\u0000\u0000hi\u0003" +
+            "\u000e\u0007\u0000ij\u0003\u0016\u000b\u0000jk\u0003\f\u0006\u0000kn\u0001" +
+            "\u0000\u0000\u0000ln\u0003\u000e\u0007\u0000mh\u0001\u0000\u0000\u0000" +
+            "ml\u0001\u0000\u0000\u0000n\r\u0001\u0000\u0000\u0000op\u0003\u0010\b" +
+            "\u0000pq\u0003\u0014\n\u0000qr\u0003\u0010\b\u0000r\u000f\u0001\u0000" +
+            "\u0000\u0000st\u0005\u001d\u0000\u0000tu\u0003\u0010\b\u0000uv\u0003\u0018" +
+            "\f\u0000vw\u0003\u0010\b\u0000wx\u0005\u001e\u0000\u0000x{\u0001\u0000" +
+            "\u0000\u0000y{\u0003\n\u0005\u0000zs\u0001\u0000\u0000\u0000zy\u0001\u0000" +
+            "\u0000\u0000{\u0011\u0001\u0000\u0000\u0000|}\u0005 \u0000\u0000}~\u0005" +
+            "\t\u0000\u0000~\u0081\u0005 \u0000\u0000\u007f\u0081\u0005\"\u0000\u0000" +
+            "\u0080|\u0001\u0000\u0000\u0000\u0080\u007f\u0001\u0000\u0000\u0000\u0081" +
+            "\u0013\u0001\u0000\u0000\u0000\u0082\u0083\u0007\u0000\u0000\u0000\u0083" +
+            "\u0015\u0001\u0000\u0000\u0000\u0084\u0085\u0007\u0001\u0000\u0000\u0085" +
+            "\u0017\u0001\u0000\u0000\u0000\u0086\u0087\u0007\u0002\u0000\u0000\u0087" +
+            "\u0019\u0001\u0000\u0000\u0000\n\u001d%?AY^emz\u0080";
     public static final ATN _ATN =
         new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 

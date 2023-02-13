@@ -228,6 +228,30 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 */
 	void exitExpression(RA2SQLParser.ExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code binarySub}
+	 * labeled alternative in {@link RA2SQLParser#binaryExp}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinarySub(RA2SQLParser.BinarySubContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code binarySub}
+	 * labeled alternative in {@link RA2SQLParser#binaryExp}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinarySub(RA2SQLParser.BinarySubContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code unarySub}
+	 * labeled alternative in {@link RA2SQLParser#binaryExp}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnarySub(RA2SQLParser.UnarySubContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code unarySub}
+	 * labeled alternative in {@link RA2SQLParser#binaryExp}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnarySub(RA2SQLParser.UnarySubContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code consStri}
 	 * labeled alternative in {@link RA2SQLParser#constant}.
 	 * @param ctx the parse tree
@@ -271,4 +295,14 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBoolOp(RA2SQLParser.BoolOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RA2SQLParser#binaryOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryOp(RA2SQLParser.BinaryOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RA2SQLParser#binaryOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryOp(RA2SQLParser.BinaryOpContext ctx);
 }

@@ -29,7 +29,7 @@ public class NaturalJoin extends RAContext {
         return para1.print() + " join " + para2.print();
     }
 
-    private void selfCheck() {
+    public void selfCheck() {
         if (this.para1 instanceof NaturalJoin) {
             if (((NaturalJoin) this.para1).contains(this.para2)) {
                 NaturalJoin p = new NaturalJoin(((NaturalJoin) this.para1).getPara1(),

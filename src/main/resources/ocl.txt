@@ -1,4 +1,5 @@
-context SnapShotTest inv add: (self.timeStamp + self.expired) > 0
+context T inv crossAdd: T.allInstances()->forAll(t| TT.allInstances()->forAll(tt| (t.XH + tt.XH) > 0))
+context SnapShotTest inv add: ((self.timeStamp + self.expired) - self.time) > 0
 context SnapShotTest inv timeLimit: self.timeStamp < self.predId.expired
 context SnapShotTest inv timeLimit: self.timeStamp < self.expired
 context SnapShotTest inv passIdNotN: self.passId <> 'null'

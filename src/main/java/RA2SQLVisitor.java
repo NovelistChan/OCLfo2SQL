@@ -183,11 +183,28 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
     }
 
     /*
-    expression : column compOp column
+    expression : binaryExp compOp binaryExp
      */
     @Override
     public String visitExpression(RA2SQLParser.ExpressionContext ctx) {
-        return visit(ctx.column(0)) + " " + visit(ctx.compOp()) + " " + visit(ctx.column(1));
+        return visit(ctx.binaryExp(0)) + " " + visit(ctx.compOp()) + " " + visit(ctx.binaryExp(1));
+    }
+
+    /*
+    binaryExp : LB binaryExp binaryOp binaryExp RB
+     */
+    @Override
+    public String visitBinarySub(RA2SQLParser.BinarySubContext ctx) {
+        return "( " + visit(ctx.binaryExp(0)) + " " + visit(ctx.binaryOp()) + " " + visit(
+            ctx.binaryExp(1)) + " )";
+    }
+
+    /*
+    binaryExp : column
+     */
+    @Override
+    public String visitUnarySub(RA2SQLParser.UnarySubContext ctx) {
+        return visit(ctx.column());
     }
 
     /*
@@ -219,4 +236,8 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
         return ctx.getText();
     }
 
+    @Override
+    public String visitBinaryOp(RA2SQLParser.BinaryOpContext ctx) {
+        return ctx.getText();
+    }
 }

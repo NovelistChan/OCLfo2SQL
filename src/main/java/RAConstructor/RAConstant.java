@@ -20,11 +20,12 @@ public class RAConstant extends RAContext {
 
     @Override
     public String print() {
-        if (consType.equals(ConstantType.INT)) {
-            return this.content;
-        } else {
-            return "'" + this.content + "'";
-        }
+//        if (consType.equals(ConstantType.INT)) {
+//            return this.content;
+//        } else {
+//            return "'" + this.content + "'";
+//        }
+        return this.content;
     }
 
     @Override

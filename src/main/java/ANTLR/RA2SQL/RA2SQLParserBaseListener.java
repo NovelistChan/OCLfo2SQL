@@ -244,6 +244,30 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBinarySub(RA2SQLParser.BinarySubContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinarySub(RA2SQLParser.BinarySubContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnarySub(RA2SQLParser.UnarySubContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnarySub(RA2SQLParser.UnarySubContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterConsStri(RA2SQLParser.ConsStriContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -287,6 +311,18 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBoolOp(RA2SQLParser.BoolOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryOp(RA2SQLParser.BinaryOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryOp(RA2SQLParser.BinaryOpContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

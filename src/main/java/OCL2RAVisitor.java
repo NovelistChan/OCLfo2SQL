@@ -65,27 +65,14 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         }
 
         return res;
-//        StringBuilder res = new StringBuilder(visit(ctx.oclExpr(0)));
-//
-//        for (int i = 1; i < ctx.oclExpr().size(); i++) {
-//            if (!this.contextQuery.peek().equals(ORIGIN_CTX)) {
-//                this.contextQuery.pop();
-//            }
-//            res.append("\n");
-//            res.append(visit(ctx.oclExpr(i)));
-//        }
-//        return res.toString();
     }
 
     // oclExpr : context oclContext inv oclInvariant
     @Override
     public RAObject visitOclExpr(OCL2RAParser.OclExprContext ctx) {
-//        this.initContextQuery();
-//        this.setContextQuery(ORIGIN_CTX);
         this.initVarContextPairList();
         this.setContextQuery((RAClass) visit(ctx.oclContext()));
         this.setContextSelf(this.contextQuery.peek());
-//        return visit(ctx.oclBool());
         return visit(ctx.oclInvariant());
     }
 
@@ -138,6 +125,9 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
             String lh = r1.getBinaryString();
             String rh = r2.getBinaryString();
             conds.add(new Comparison(lh, rh, visit(ctx.compOp()).print()));
+            if (this.contextQuery.peek() instanceof NaturalJoin) {
+                ((NaturalJoin) this.contextQuery.peek()).selfCheck();
+            }
             return new Selection(conds, this.contextQuery.peek());
         }
         // II. excluding Binary
@@ -247,7 +237,6 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
             default:
                 return new RAString(INVALID_BOOLOP);
         }
-//        return visitChildren(ctx);
     }
 
 //    /*
@@ -272,6 +261,9 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         if (cq.equals(ORIGIN_CTX)) {
             this.setContextQuery(new RAClass(ctx.oclClass().getText()));
             return new RAClass(ctx.oclClass().getText());
+        }
+        if (cq.print().equals(ctx.oclClass().getText())) {
+            return cq;
         }
         this.setContextQuery(new NaturalJoin(new RAClass(ctx.oclClass().getText()), cq));
         return new NaturalJoin(new RAClass(ctx.oclClass().getText()), cq);
@@ -301,19 +293,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
      */
     @Override
     public RAObject visitObjectSingle(OCL2RAParser.ObjectSingleContext ctx) {
-//        return new RASingle((RAContext) visit(ctx.oclObject()), ctx.oclAttr().getText());
-//        String ctxText = ctx.getText();
-//        String[] ops = ctxText.split("\\.");
-//        String var = ops[0];
-//        if (var.equals("self")) {
-//            var = this.contextSelf.print();
-//        } else {
-//            var = this.varContextPairList.get(var).print();
-//        }
-        RAObject obj = visit(ctx.oclObject());
-//        obj.setName(var + "." + ops[ops.length - 1]);
-//        System.out.println("name: " + obj.getName());
-        return obj;
+        return visit(ctx.oclObject());
     }
 
     /*

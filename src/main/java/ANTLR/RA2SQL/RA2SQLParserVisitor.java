@@ -140,6 +140,20 @@ public interface RA2SQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpression(RA2SQLParser.ExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code binarySub}
+	 * labeled alternative in {@link RA2SQLParser#binaryExp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinarySub(RA2SQLParser.BinarySubContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code unarySub}
+	 * labeled alternative in {@link RA2SQLParser#binaryExp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnarySub(RA2SQLParser.UnarySubContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code consStri}
 	 * labeled alternative in {@link RA2SQLParser#constant}.
 	 * @param ctx the parse tree
@@ -165,4 +179,10 @@ public interface RA2SQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBoolOp(RA2SQLParser.BoolOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RA2SQLParser#binaryOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinaryOp(RA2SQLParser.BinaryOpContext ctx);
 }

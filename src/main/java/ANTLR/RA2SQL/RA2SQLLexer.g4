@@ -25,6 +25,12 @@ IMPLY:                               'implies';
 NOT:                                 'not';
 AR:                                  '->';
 
+ADD:                                 '+';
+MIN:                                 '-';
+MUL:                                 '*';
+DIV:                                 '/';
+MOD:                                 '%';
+
 DOT:                                 '.';
 LB:                                  '(';
 RB:                                  ')';
