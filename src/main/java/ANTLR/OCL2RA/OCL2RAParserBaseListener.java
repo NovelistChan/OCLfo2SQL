@@ -100,6 +100,18 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBoolExist(OCL2RAParser.BoolExistContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolExist(OCL2RAParser.BoolExistContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBoolCalc(OCL2RAParser.BoolCalcContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -107,6 +119,30 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBoolCalc(OCL2RAParser.BoolCalcContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterQuerySelect(OCL2RAParser.QuerySelectContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitQuerySelect(OCL2RAParser.QuerySelectContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterQueryReject(OCL2RAParser.QueryRejectContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitQueryReject(OCL2RAParser.QueryRejectContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -160,6 +196,18 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAggregationSingle(OCL2RAParser.AggregationSingleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAggregationSingle(OCL2RAParser.AggregationSingleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterRoleObj(OCL2RAParser.RoleObjContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -179,6 +227,30 @@ public class OCL2RAParserBaseListener implements OCL2RAParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVarObj(OCL2RAParser.VarObjContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOclExist(OCL2RAParser.OclExistContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOclExist(OCL2RAParser.OclExistContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOclAggregation(OCL2RAParser.OclAggregationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOclAggregation(OCL2RAParser.OclAggregationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

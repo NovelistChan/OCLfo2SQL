@@ -1,5 +1,14 @@
 context T inv crossAdd: T.allInstances()->forAll(t| TT.allInstances()->forAll(tt| (t.XH + tt.XH) > 0))
 context SnapShotTest inv add: ((self.timeStamp + self.expired) - self.time) > 0
+context SnapShotTest inv add: ((self.timeStamp + self.expired) - self.time) > self.timeStamp
+context SnapShotTest inv add: ((self.timeStamp + self.expired) - self.time) > self.predId.timeStamp
+context SnapShotTest inv aggCompare: self.timeStamp->sum() > self.timeStamp->max()
+context SnapShotTest inv aggCompare: self.timeStamp->sum() > (self.timeStamp + 1)
+context SnapShotTest inv aggCompare: self.timeStamp->sum() > (3 + 1)
+context SnapShotTest inv aggCompare: self.timeStamp->sum() > self.predId.timeStamp
+context SnapShotTest inv aggCompare: self.timeStamp->sum() > 6
+context SnapShotTest inv aggCompare: self.timeStamp->sum() > self.timeStamp
+context T inv selection: T.allInstances()->select(t| t.XH > 0)->isEmpty()
 context SnapShotTest inv timeLimit: self.timeStamp < self.predId.expired
 context SnapShotTest inv timeLimit: self.timeStamp < self.expired
 context SnapShotTest inv passIdNotN: self.passId <> 'null'

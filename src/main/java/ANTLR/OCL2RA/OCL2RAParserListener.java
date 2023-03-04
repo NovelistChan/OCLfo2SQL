@@ -82,6 +82,18 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 */
 	void exitBoolCompare(OCL2RAParser.BoolCompareContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code boolExist}
+	 * labeled alternative in {@link OCL2RAParser#oclBool}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolExist(OCL2RAParser.BoolExistContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code boolExist}
+	 * labeled alternative in {@link OCL2RAParser#oclBool}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolExist(OCL2RAParser.BoolExistContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code boolCalc}
 	 * labeled alternative in {@link OCL2RAParser#oclBool}.
 	 * @param ctx the parse tree
@@ -93,6 +105,30 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBoolCalc(OCL2RAParser.BoolCalcContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code querySelect}
+	 * labeled alternative in {@link OCL2RAParser#oclQuery}.
+	 * @param ctx the parse tree
+	 */
+	void enterQuerySelect(OCL2RAParser.QuerySelectContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code querySelect}
+	 * labeled alternative in {@link OCL2RAParser#oclQuery}.
+	 * @param ctx the parse tree
+	 */
+	void exitQuerySelect(OCL2RAParser.QuerySelectContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code queryReject}
+	 * labeled alternative in {@link OCL2RAParser#oclQuery}.
+	 * @param ctx the parse tree
+	 */
+	void enterQueryReject(OCL2RAParser.QueryRejectContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code queryReject}
+	 * labeled alternative in {@link OCL2RAParser#oclQuery}.
+	 * @param ctx the parse tree
+	 */
+	void exitQueryReject(OCL2RAParser.QueryRejectContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code classAll}
 	 * labeled alternative in {@link OCL2RAParser#oclSet}.
@@ -142,6 +178,18 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 */
 	void exitConstantSingle(OCL2RAParser.ConstantSingleContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code aggregationSingle}
+	 * labeled alternative in {@link OCL2RAParser#oclSingle}.
+	 * @param ctx the parse tree
+	 */
+	void enterAggregationSingle(OCL2RAParser.AggregationSingleContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code aggregationSingle}
+	 * labeled alternative in {@link OCL2RAParser#oclSingle}.
+	 * @param ctx the parse tree
+	 */
+	void exitAggregationSingle(OCL2RAParser.AggregationSingleContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code roleObj}
 	 * labeled alternative in {@link OCL2RAParser#oclObject}.
 	 * @param ctx the parse tree
@@ -165,6 +213,26 @@ public interface OCL2RAParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarObj(OCL2RAParser.VarObjContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclExist}.
+	 * @param ctx the parse tree
+	 */
+	void enterOclExist(OCL2RAParser.OclExistContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclExist}.
+	 * @param ctx the parse tree
+	 */
+	void exitOclExist(OCL2RAParser.OclExistContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link OCL2RAParser#oclAggregation}.
+	 * @param ctx the parse tree
+	 */
+	void enterOclAggregation(OCL2RAParser.OclAggregationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link OCL2RAParser#oclAggregation}.
+	 * @param ctx the parse tree
+	 */
+	void exitOclAggregation(OCL2RAParser.OclAggregationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link OCL2RAParser#oclRole}.
 	 * @param ctx the parse tree

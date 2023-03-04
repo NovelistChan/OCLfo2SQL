@@ -55,12 +55,33 @@ public interface OCL2RAParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolCompare(OCL2RAParser.BoolCompareContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code boolExist}
+	 * labeled alternative in {@link OCL2RAParser#oclBool}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolExist(OCL2RAParser.BoolExistContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code boolCalc}
 	 * labeled alternative in {@link OCL2RAParser#oclBool}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBoolCalc(OCL2RAParser.BoolCalcContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code querySelect}
+	 * labeled alternative in {@link OCL2RAParser#oclQuery}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQuerySelect(OCL2RAParser.QuerySelectContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code queryReject}
+	 * labeled alternative in {@link OCL2RAParser#oclQuery}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitQueryReject(OCL2RAParser.QueryRejectContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code classAll}
 	 * labeled alternative in {@link OCL2RAParser#oclSet}.
@@ -90,6 +111,13 @@ public interface OCL2RAParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConstantSingle(OCL2RAParser.ConstantSingleContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code aggregationSingle}
+	 * labeled alternative in {@link OCL2RAParser#oclSingle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAggregationSingle(OCL2RAParser.AggregationSingleContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code roleObj}
 	 * labeled alternative in {@link OCL2RAParser#oclObject}.
 	 * @param ctx the parse tree
@@ -103,6 +131,18 @@ public interface OCL2RAParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVarObj(OCL2RAParser.VarObjContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclExist}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOclExist(OCL2RAParser.OclExistContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link OCL2RAParser#oclAggregation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOclAggregation(OCL2RAParser.OclAggregationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link OCL2RAParser#oclRole}.
 	 * @param ctx the parse tree

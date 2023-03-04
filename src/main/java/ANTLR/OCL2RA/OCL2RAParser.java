@@ -35,20 +35,22 @@ public class OCL2RAParser extends Parser {
     public static final int
         SPACE = 1, EQ = 2, GT = 3, LT = 4, NE = 5, GE = 6, LE = 7, AND = 8, OR = 9, XOR = 10, IMPLY = 11,
         NOT = 12, AR = 13, DOT = 14, LB = 15, RB = 16, SEP = 17, QUOTE = 18, ALL = 19, FA = 20,
-        SE = 21, CTX = 22, COLON = 23, INV = 24, ADD = 25, MIN = 26, MUL = 27, DIV = 28, MOD = 29,
-        ID = 30, INT = 31;
+        EX = 21, SE = 22, RE = 23, CO = 24, CTX = 25, COLON = 26, INV = 27, SUM = 28, COUNT = 29,
+        SIZE = 30, AVG = 31, Min = 32, Max = 33, ISEMPTY = 34, NOTEMPTY = 35, ADD = 36, MIN = 37,
+        MUL = 38, DIV = 39, MOD = 40, ID = 41, INT = 42;
     public static final int
         RULE_oclText = 0, RULE_oclExpr = 1, RULE_oclContext = 2, RULE_oclInvariant = 3,
-        RULE_oclInvName = 4, RULE_oclBool = 5, RULE_oclSet = 6, RULE_oclSingle = 7,
-        RULE_oclObject = 8, RULE_oclRole = 9, RULE_oclAttr = 10, RULE_oclVar = 11,
-        RULE_oclClass = 12, RULE_oclConstant = 13, RULE_compOp = 14, RULE_boolOp = 15,
-        RULE_binaryOp = 16;
+        RULE_oclInvName = 4, RULE_oclBool = 5, RULE_oclQuery = 6, RULE_oclSet = 7,
+        RULE_oclSingle = 8, RULE_oclObject = 9, RULE_oclExist = 10, RULE_oclAggregation = 11,
+        RULE_oclRole = 12, RULE_oclAttr = 13, RULE_oclVar = 14, RULE_oclClass = 15,
+        RULE_oclConstant = 16, RULE_compOp = 17, RULE_boolOp = 18, RULE_binaryOp = 19;
 
     private static String[] makeRuleNames() {
         return new String[]{
             "oclText", "oclExpr", "oclContext", "oclInvariant", "oclInvName", "oclBool",
-            "oclSet", "oclSingle", "oclObject", "oclRole", "oclAttr", "oclVar", "oclClass",
-            "oclConstant", "compOp", "boolOp", "binaryOp"
+            "oclQuery", "oclSet", "oclSingle", "oclObject", "oclExist", "oclAggregation",
+            "oclRole", "oclAttr", "oclVar", "oclClass", "oclConstant", "compOp",
+            "boolOp", "binaryOp"
         };
     }
 
@@ -58,8 +60,10 @@ public class OCL2RAParser extends Parser {
         return new String[]{
             null, null, "'='", "'>'", "'<'", "'<>'", "'>='", "'<='", "'and'", "'or'",
             "'xor'", "'implies'", "'not'", "'->'", "'.'", "'('", "')'", "'|'", "'''",
-            "'allInstances()'", "'forAll'", "'select'", "'context'", "':'", "'inv'",
-            "'+'", "'-'", "'*'", "'/'", "'%'"
+            "'allInstances()'", "'forAll'", "'exists'", "'select'", "'reject'", "'collect'",
+            "'context'", "':'", "'inv'", "'sum()'", "'count()'", "'size()'", "'average()'",
+            "'min()'", "'max()'", "'isEmpty()'", "'notEmpty()'", "'+'", "'-'", "'*'",
+            "'/'", "'%'"
         };
     }
 
@@ -69,8 +73,9 @@ public class OCL2RAParser extends Parser {
         return new String[]{
             null, "SPACE", "EQ", "GT", "LT", "NE", "GE", "LE", "AND", "OR", "XOR",
             "IMPLY", "NOT", "AR", "DOT", "LB", "RB", "SEP", "QUOTE", "ALL", "FA",
-            "SE", "CTX", "COLON", "INV", "ADD", "MIN", "MUL", "DIV", "MOD", "ID",
-            "INT"
+            "EX", "SE", "RE", "CO", "CTX", "COLON", "INV", "SUM", "COUNT", "SIZE",
+            "AVG", "Min", "Max", "ISEMPTY", "NOTEMPTY", "ADD", "MIN", "MUL", "DIV",
+            "MOD", "ID", "INT"
         };
     }
 
@@ -188,21 +193,21 @@ public class OCL2RAParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(35);
+                setState(41);
                 _errHandler.sync(this);
                 _la = _input.LA(1);
                 do {
                     {
                         {
-                            setState(34);
+                            setState(40);
                             oclExpr();
                         }
                     }
-                    setState(37);
+                    setState(43);
                     _errHandler.sync(this);
                     _la = _input.LA(1);
                 } while (_la == CTX);
-                setState(39);
+                setState(45);
                 match(EOF);
             }
         } catch (RecognitionException re) {
@@ -272,13 +277,13 @@ public class OCL2RAParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(41);
+                setState(47);
                 match(CTX);
-                setState(42);
+                setState(48);
                 oclContext();
-                setState(43);
+                setState(49);
                 match(INV);
-                setState(44);
+                setState(50);
                 oclInvariant();
             }
         } catch (RecognitionException re) {
@@ -336,7 +341,7 @@ public class OCL2RAParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(46);
+                setState(52);
                 match(ID);
             }
         } catch (RecognitionException re) {
@@ -402,11 +407,11 @@ public class OCL2RAParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(48);
+                setState(54);
                 oclInvName();
-                setState(49);
+                setState(55);
                 match(COLON);
-                setState(50);
+                setState(56);
                 oclBool(0);
             }
         } catch (RecognitionException re) {
@@ -464,7 +469,7 @@ public class OCL2RAParser extends Parser {
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(52);
+                setState(58);
                 match(ID);
             }
         } catch (RecognitionException re) {
@@ -600,6 +605,48 @@ public class OCL2RAParser extends Parser {
         }
     }
 
+    public static class BoolExistContext extends OclBoolContext {
+
+        public OclQueryContext oclQuery() {
+            return getRuleContext(OclQueryContext.class, 0);
+        }
+
+        public TerminalNode AR() {
+            return getToken(OCL2RAParser.AR, 0);
+        }
+
+        public OclExistContext oclExist() {
+            return getRuleContext(OclExistContext.class, 0);
+        }
+
+        public BoolExistContext(OclBoolContext ctx) {
+            copyFrom(ctx);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).enterBoolExist(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).exitBoolExist(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof OCL2RAParserVisitor) {
+				return ((OCL2RAParserVisitor<? extends T>) visitor).visitBoolExist(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
     public static class BoolCalcContext extends OclBoolContext {
 
         public List<OclBoolContext> oclBool() {
@@ -657,7 +704,7 @@ public class OCL2RAParser extends Parser {
             int _alt;
             enterOuterAlt(_localctx, 1);
             {
-                setState(68);
+                setState(78);
                 _errHandler.sync(this);
                 switch (getInterpreter().adaptivePredict(_input, 1, _ctx)) {
                     case 1: {
@@ -665,21 +712,21 @@ public class OCL2RAParser extends Parser {
                         _ctx = _localctx;
                         _prevctx = _localctx;
 
-                        setState(55);
-                        oclSet();
-                        setState(56);
-                        match(AR);
-                        setState(57);
-                        match(FA);
-                        setState(58);
-                        match(LB);
-                        setState(59);
-                        oclVar();
-                        setState(60);
-                        match(SEP);
                         setState(61);
-                        oclBool(0);
+                        oclSet();
                         setState(62);
+                        match(AR);
+                        setState(63);
+                        match(FA);
+                        setState(64);
+                        match(LB);
+                        setState(65);
+                        oclVar();
+                        setState(66);
+                        match(SEP);
+                        setState(67);
+                        oclBool(0);
+                        setState(68);
                         match(RB);
                     }
                     break;
@@ -687,17 +734,29 @@ public class OCL2RAParser extends Parser {
                         _localctx = new BoolCompareContext(_localctx);
                         _ctx = _localctx;
                         _prevctx = _localctx;
-                        setState(64);
+                        setState(70);
                         oclSingle();
-                        setState(65);
+                        setState(71);
                         compOp();
-                        setState(66);
+                        setState(72);
                         oclSingle();
+                    }
+                    break;
+                    case 3: {
+                        _localctx = new BoolExistContext(_localctx);
+                        _ctx = _localctx;
+                        _prevctx = _localctx;
+                        setState(74);
+                        oclQuery();
+                        setState(75);
+                        match(AR);
+                        setState(76);
+                        oclExist();
                     }
                     break;
                 }
                 _ctx.stop = _input.LT(-1);
-                setState(76);
+                setState(86);
                 _errHandler.sync(this);
                 _alt = getInterpreter().adaptivePredict(_input, 2, _ctx);
                 while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
@@ -711,18 +770,18 @@ public class OCL2RAParser extends Parser {
                                 _localctx = new BoolCalcContext(
                                     new OclBoolContext(_parentctx, _parentState));
                                 pushNewRecursionContext(_localctx, _startState, RULE_oclBool);
-                                setState(70);
-								if (!(precpred(_ctx, 1))) {
-									throw new FailedPredicateException(this, "precpred(_ctx, 1)");
+                                setState(80);
+								if (!(precpred(_ctx, 2))) {
+									throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 								}
-                                setState(71);
+                                setState(81);
                                 boolOp();
-                                setState(72);
-                                oclBool(2);
+                                setState(82);
+                                oclBool(3);
                             }
                         }
                     }
-                    setState(78);
+                    setState(88);
                     _errHandler.sync(this);
                     _alt = getInterpreter().adaptivePredict(_input, 2, _ctx);
                 }
@@ -733,6 +792,211 @@ public class OCL2RAParser extends Parser {
             _errHandler.recover(this, re);
         } finally {
             unrollRecursionContexts(_parentctx);
+        }
+        return _localctx;
+    }
+
+    public static class OclQueryContext extends ParserRuleContext {
+
+        public OclQueryContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_oclQuery;
+        }
+
+        public OclQueryContext() {
+        }
+
+        public void copyFrom(OclQueryContext ctx) {
+            super.copyFrom(ctx);
+        }
+    }
+
+    public static class QuerySelectContext extends OclQueryContext {
+
+        public OclSetContext oclSet() {
+            return getRuleContext(OclSetContext.class, 0);
+        }
+
+        public TerminalNode AR() {
+            return getToken(OCL2RAParser.AR, 0);
+        }
+
+        public TerminalNode SE() {
+            return getToken(OCL2RAParser.SE, 0);
+        }
+
+        public TerminalNode LB() {
+            return getToken(OCL2RAParser.LB, 0);
+        }
+
+        public OclVarContext oclVar() {
+            return getRuleContext(OclVarContext.class, 0);
+        }
+
+        public TerminalNode SEP() {
+            return getToken(OCL2RAParser.SEP, 0);
+        }
+
+        public OclBoolContext oclBool() {
+            return getRuleContext(OclBoolContext.class, 0);
+        }
+
+        public TerminalNode RB() {
+            return getToken(OCL2RAParser.RB, 0);
+        }
+
+        public QuerySelectContext(OclQueryContext ctx) {
+            copyFrom(ctx);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).enterQuerySelect(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).exitQuerySelect(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof OCL2RAParserVisitor) {
+				return ((OCL2RAParserVisitor<? extends T>) visitor).visitQuerySelect(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
+    public static class QueryRejectContext extends OclQueryContext {
+
+        public OclSetContext oclSet() {
+            return getRuleContext(OclSetContext.class, 0);
+        }
+
+        public TerminalNode AR() {
+            return getToken(OCL2RAParser.AR, 0);
+        }
+
+        public TerminalNode RE() {
+            return getToken(OCL2RAParser.RE, 0);
+        }
+
+        public TerminalNode LB() {
+            return getToken(OCL2RAParser.LB, 0);
+        }
+
+        public OclVarContext oclVar() {
+            return getRuleContext(OclVarContext.class, 0);
+        }
+
+        public TerminalNode SEP() {
+            return getToken(OCL2RAParser.SEP, 0);
+        }
+
+        public OclBoolContext oclBool() {
+            return getRuleContext(OclBoolContext.class, 0);
+        }
+
+        public TerminalNode RB() {
+            return getToken(OCL2RAParser.RB, 0);
+        }
+
+        public QueryRejectContext(OclQueryContext ctx) {
+            copyFrom(ctx);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).enterQueryReject(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).exitQueryReject(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof OCL2RAParserVisitor) {
+				return ((OCL2RAParserVisitor<? extends T>) visitor).visitQueryReject(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
+    public final OclQueryContext oclQuery() throws RecognitionException {
+        OclQueryContext _localctx = new OclQueryContext(_ctx, getState());
+        enterRule(_localctx, 12, RULE_oclQuery);
+        try {
+            setState(107);
+            _errHandler.sync(this);
+            switch (getInterpreter().adaptivePredict(_input, 3, _ctx)) {
+                case 1:
+                    _localctx = new QuerySelectContext(_localctx);
+                    enterOuterAlt(_localctx, 1);
+                {
+                    setState(89);
+                    oclSet();
+                    setState(90);
+                    match(AR);
+                    setState(91);
+                    match(SE);
+                    setState(92);
+                    match(LB);
+                    setState(93);
+                    oclVar();
+                    setState(94);
+                    match(SEP);
+                    setState(95);
+                    oclBool(0);
+                    setState(96);
+                    match(RB);
+                }
+                break;
+                case 2:
+                    _localctx = new QueryRejectContext(_localctx);
+                    enterOuterAlt(_localctx, 2);
+                {
+                    setState(98);
+                    oclSet();
+                    setState(99);
+                    match(AR);
+                    setState(100);
+                    match(RE);
+                    setState(101);
+                    match(LB);
+                    setState(102);
+                    oclVar();
+                    setState(103);
+                    match(SEP);
+                    setState(104);
+                    oclBool(0);
+                    setState(105);
+                    match(RB);
+                }
+                break;
+            }
+        } catch (RecognitionException re) {
+            _localctx.exception = re;
+            _errHandler.reportError(this, re);
+            _errHandler.recover(this, re);
+        } finally {
+            exitRule();
         }
         return _localctx;
     }
@@ -800,16 +1064,16 @@ public class OCL2RAParser extends Parser {
 
     public final OclSetContext oclSet() throws RecognitionException {
         OclSetContext _localctx = new OclSetContext(_ctx, getState());
-        enterRule(_localctx, 12, RULE_oclSet);
+        enterRule(_localctx, 14, RULE_oclSet);
         try {
             _localctx = new ClassAllContext(_localctx);
             enterOuterAlt(_localctx, 1);
             {
-                setState(79);
+                setState(109);
                 oclClass();
-                setState(80);
+                setState(110);
                 match(DOT);
-                setState(81);
+                setState(111);
                 match(ALL);
             }
         } catch (RecognitionException re) {
@@ -967,52 +1231,115 @@ public class OCL2RAParser extends Parser {
         }
     }
 
+    public static class AggregationSingleContext extends OclSingleContext {
+
+        public OclClassContext oclClass() {
+            return getRuleContext(OclClassContext.class, 0);
+        }
+
+        public TerminalNode DOT() {
+            return getToken(OCL2RAParser.DOT, 0);
+        }
+
+        public OclAttrContext oclAttr() {
+            return getRuleContext(OclAttrContext.class, 0);
+        }
+
+        public TerminalNode AR() {
+            return getToken(OCL2RAParser.AR, 0);
+        }
+
+        public OclAggregationContext oclAggregation() {
+            return getRuleContext(OclAggregationContext.class, 0);
+        }
+
+        public AggregationSingleContext(OclSingleContext ctx) {
+            copyFrom(ctx);
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).enterAggregationSingle(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).exitAggregationSingle(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof OCL2RAParserVisitor) {
+				return ((OCL2RAParserVisitor<? extends T>) visitor).visitAggregationSingle(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
     public final OclSingleContext oclSingle() throws RecognitionException {
         OclSingleContext _localctx = new OclSingleContext(_ctx, getState());
-        enterRule(_localctx, 14, RULE_oclSingle);
+        enterRule(_localctx, 16, RULE_oclSingle);
         try {
-            setState(94);
+            setState(130);
             _errHandler.sync(this);
-            switch (_input.LA(1)) {
-                case LB:
+            switch (getInterpreter().adaptivePredict(_input, 4, _ctx)) {
+                case 1:
                     _localctx = new BinarySingleContext(_localctx);
                     enterOuterAlt(_localctx, 1);
                 {
-                    setState(83);
+                    setState(113);
                     match(LB);
-                    setState(84);
+                    setState(114);
                     oclSingle();
-                    setState(85);
+                    setState(115);
                     binaryOp();
-                    setState(86);
+                    setState(116);
                     oclSingle();
-                    setState(87);
+                    setState(117);
                     match(RB);
                 }
                 break;
-                case ID:
+                case 2:
                     _localctx = new ObjectSingleContext(_localctx);
                     enterOuterAlt(_localctx, 2);
                 {
-                    setState(89);
+                    setState(119);
                     oclObject(0);
-                    setState(90);
+                    setState(120);
                     match(DOT);
-                    setState(91);
+                    setState(121);
                     oclAttr();
                 }
                 break;
-                case QUOTE:
-                case INT:
+                case 3:
                     _localctx = new ConstantSingleContext(_localctx);
                     enterOuterAlt(_localctx, 3);
                 {
-                    setState(93);
+                    setState(123);
                     oclConstant();
                 }
                 break;
-                default:
-                    throw new NoViableAltException(this);
+                case 4:
+                    _localctx = new AggregationSingleContext(_localctx);
+                    enterOuterAlt(_localctx, 4);
+                {
+                    setState(124);
+                    oclClass();
+                    setState(125);
+                    match(DOT);
+                    setState(126);
+                    oclAttr();
+                    setState(127);
+                    match(AR);
+                    setState(128);
+                    oclAggregation();
+                }
+                break;
             }
         } catch (RecognitionException re) {
             _localctx.exception = re;
@@ -1128,8 +1455,8 @@ public class OCL2RAParser extends Parser {
         int _parentState = getState();
         OclObjectContext _localctx = new OclObjectContext(_ctx, _parentState);
         OclObjectContext _prevctx = _localctx;
-        int _startState = 16;
-        enterRecursionRule(_localctx, 16, RULE_oclObject, _p);
+        int _startState = 18;
+        enterRecursionRule(_localctx, 18, RULE_oclObject, _p);
         try {
             int _alt;
             enterOuterAlt(_localctx, 1);
@@ -1139,13 +1466,13 @@ public class OCL2RAParser extends Parser {
                     _ctx = _localctx;
                     _prevctx = _localctx;
 
-                    setState(97);
+                    setState(133);
                     oclVar();
                 }
                 _ctx.stop = _input.LT(-1);
-                setState(104);
+                setState(140);
                 _errHandler.sync(this);
-                _alt = getInterpreter().adaptivePredict(_input, 4, _ctx);
+                _alt = getInterpreter().adaptivePredict(_input, 5, _ctx);
                 while (_alt != 2 && _alt != org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER) {
                     if (_alt == 1) {
 						if (_parseListeners != null) {
@@ -1157,20 +1484,20 @@ public class OCL2RAParser extends Parser {
                                 _localctx = new RoleObjContext(
                                     new OclObjectContext(_parentctx, _parentState));
                                 pushNewRecursionContext(_localctx, _startState, RULE_oclObject);
-                                setState(99);
+                                setState(135);
 								if (!(precpred(_ctx, 1))) {
 									throw new FailedPredicateException(this, "precpred(_ctx, 1)");
 								}
-                                setState(100);
+                                setState(136);
                                 match(DOT);
-                                setState(101);
+                                setState(137);
                                 oclRole();
                             }
                         }
                     }
-                    setState(106);
+                    setState(142);
                     _errHandler.sync(this);
-                    _alt = getInterpreter().adaptivePredict(_input, 4, _ctx);
+                    _alt = getInterpreter().adaptivePredict(_input, 5, _ctx);
                 }
             }
         } catch (RecognitionException re) {
@@ -1179,6 +1506,164 @@ public class OCL2RAParser extends Parser {
             _errHandler.recover(this, re);
         } finally {
             unrollRecursionContexts(_parentctx);
+        }
+        return _localctx;
+    }
+
+    public static class OclExistContext extends ParserRuleContext {
+
+        public TerminalNode ISEMPTY() {
+            return getToken(OCL2RAParser.ISEMPTY, 0);
+        }
+
+        public TerminalNode NOTEMPTY() {
+            return getToken(OCL2RAParser.NOTEMPTY, 0);
+        }
+
+        public OclExistContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_oclExist;
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).enterOclExist(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).exitOclExist(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof OCL2RAParserVisitor) {
+				return ((OCL2RAParserVisitor<? extends T>) visitor).visitOclExist(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
+    public final OclExistContext oclExist() throws RecognitionException {
+        OclExistContext _localctx = new OclExistContext(_ctx, getState());
+        enterRule(_localctx, 20, RULE_oclExist);
+        int _la;
+        try {
+            enterOuterAlt(_localctx, 1);
+            {
+                setState(143);
+                _la = _input.LA(1);
+                if (!(_la == ISEMPTY || _la == NOTEMPTY)) {
+                    _errHandler.recoverInline(this);
+                } else {
+					if (_input.LA(1) == Token.EOF) {
+						matchedEOF = true;
+					}
+                    _errHandler.reportMatch(this);
+                    consume();
+                }
+            }
+        } catch (RecognitionException re) {
+            _localctx.exception = re;
+            _errHandler.reportError(this, re);
+            _errHandler.recover(this, re);
+        } finally {
+            exitRule();
+        }
+        return _localctx;
+    }
+
+    public static class OclAggregationContext extends ParserRuleContext {
+
+        public TerminalNode SUM() {
+            return getToken(OCL2RAParser.SUM, 0);
+        }
+
+        public TerminalNode COUNT() {
+            return getToken(OCL2RAParser.COUNT, 0);
+        }
+
+        public TerminalNode AVG() {
+            return getToken(OCL2RAParser.AVG, 0);
+        }
+
+        public TerminalNode Min() {
+            return getToken(OCL2RAParser.Min, 0);
+        }
+
+        public TerminalNode Max() {
+            return getToken(OCL2RAParser.Max, 0);
+        }
+
+        public OclAggregationContext(ParserRuleContext parent, int invokingState) {
+            super(parent, invokingState);
+        }
+
+        @Override
+        public int getRuleIndex() {
+            return RULE_oclAggregation;
+        }
+
+        @Override
+        public void enterRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).enterOclAggregation(this);
+			}
+        }
+
+        @Override
+        public void exitRule(ParseTreeListener listener) {
+			if (listener instanceof OCL2RAParserListener) {
+				((OCL2RAParserListener) listener).exitOclAggregation(this);
+			}
+        }
+
+        @Override
+        public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if (visitor instanceof OCL2RAParserVisitor) {
+				return ((OCL2RAParserVisitor<? extends T>) visitor).visitOclAggregation(this);
+			} else {
+				return visitor.visitChildren(this);
+			}
+        }
+    }
+
+    public final OclAggregationContext oclAggregation() throws RecognitionException {
+        OclAggregationContext _localctx = new OclAggregationContext(_ctx, getState());
+        enterRule(_localctx, 22, RULE_oclAggregation);
+        int _la;
+        try {
+            enterOuterAlt(_localctx, 1);
+            {
+                setState(145);
+                _la = _input.LA(1);
+                if (!((((_la) & ~0x3f) == 0 &&
+                    ((1L << _la) & ((1L << SUM) | (1L << COUNT) | (1L << AVG) | (1L << Min) | (1L
+                        << Max))) != 0))) {
+                    _errHandler.recoverInline(this);
+                } else {
+					if (_input.LA(1) == Token.EOF) {
+						matchedEOF = true;
+					}
+                    _errHandler.reportMatch(this);
+                    consume();
+                }
+            }
+        } catch (RecognitionException re) {
+            _localctx.exception = re;
+            _errHandler.reportError(this, re);
+            _errHandler.recover(this, re);
+        } finally {
+            exitRule();
         }
         return _localctx;
     }
@@ -1224,11 +1709,11 @@ public class OCL2RAParser extends Parser {
 
     public final OclRoleContext oclRole() throws RecognitionException {
         OclRoleContext _localctx = new OclRoleContext(_ctx, getState());
-        enterRule(_localctx, 18, RULE_oclRole);
+        enterRule(_localctx, 24, RULE_oclRole);
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(107);
+                setState(147);
                 match(ID);
             }
         } catch (RecognitionException re) {
@@ -1282,11 +1767,11 @@ public class OCL2RAParser extends Parser {
 
     public final OclAttrContext oclAttr() throws RecognitionException {
         OclAttrContext _localctx = new OclAttrContext(_ctx, getState());
-        enterRule(_localctx, 20, RULE_oclAttr);
+        enterRule(_localctx, 26, RULE_oclAttr);
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(109);
+                setState(149);
                 match(ID);
             }
         } catch (RecognitionException re) {
@@ -1340,11 +1825,11 @@ public class OCL2RAParser extends Parser {
 
     public final OclVarContext oclVar() throws RecognitionException {
         OclVarContext _localctx = new OclVarContext(_ctx, getState());
-        enterRule(_localctx, 22, RULE_oclVar);
+        enterRule(_localctx, 28, RULE_oclVar);
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(111);
+                setState(151);
                 match(ID);
             }
         } catch (RecognitionException re) {
@@ -1398,11 +1883,11 @@ public class OCL2RAParser extends Parser {
 
     public final OclClassContext oclClass() throws RecognitionException {
         OclClassContext _localctx = new OclClassContext(_ctx, getState());
-        enterRule(_localctx, 24, RULE_oclClass);
+        enterRule(_localctx, 30, RULE_oclClass);
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(113);
+                setState(153);
                 match(ID);
             }
         } catch (RecognitionException re) {
@@ -1512,20 +1997,20 @@ public class OCL2RAParser extends Parser {
 
     public final OclConstantContext oclConstant() throws RecognitionException {
         OclConstantContext _localctx = new OclConstantContext(_ctx, getState());
-        enterRule(_localctx, 26, RULE_oclConstant);
+        enterRule(_localctx, 32, RULE_oclConstant);
         try {
-            setState(119);
+            setState(159);
             _errHandler.sync(this);
             switch (_input.LA(1)) {
                 case QUOTE:
                     _localctx = new OclStringContext(_localctx);
                     enterOuterAlt(_localctx, 1);
                 {
-                    setState(115);
+                    setState(155);
                     match(QUOTE);
-                    setState(116);
+                    setState(156);
                     match(ID);
-                    setState(117);
+                    setState(157);
                     match(QUOTE);
                 }
                 break;
@@ -1533,7 +2018,7 @@ public class OCL2RAParser extends Parser {
                     _localctx = new OclIntContext(_localctx);
                     enterOuterAlt(_localctx, 2);
                 {
-                    setState(118);
+                    setState(158);
                     match(INT);
                 }
                 break;
@@ -1611,12 +2096,12 @@ public class OCL2RAParser extends Parser {
 
     public final CompOpContext compOp() throws RecognitionException {
         CompOpContext _localctx = new CompOpContext(_ctx, getState());
-        enterRule(_localctx, 28, RULE_compOp);
+        enterRule(_localctx, 34, RULE_compOp);
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(121);
+                setState(161);
                 _la = _input.LA(1);
                 if (!((((_la) & ~0x3f) == 0 &&
                     ((1L << _la) & ((1L << EQ) | (1L << GT) | (1L << LT) | (1L << NE) | (1L << GE)
@@ -1693,12 +2178,12 @@ public class OCL2RAParser extends Parser {
 
     public final BoolOpContext boolOp() throws RecognitionException {
         BoolOpContext _localctx = new BoolOpContext(_ctx, getState());
-        enterRule(_localctx, 30, RULE_boolOp);
+        enterRule(_localctx, 36, RULE_boolOp);
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(123);
+                setState(163);
                 _la = _input.LA(1);
                 if (!((((_la) & ~0x3f) == 0
                     && ((1L << _la) & ((1L << AND) | (1L << OR) | (1L << XOR) | (1L << IMPLY)))
@@ -1779,12 +2264,12 @@ public class OCL2RAParser extends Parser {
 
     public final BinaryOpContext binaryOp() throws RecognitionException {
         BinaryOpContext _localctx = new BinaryOpContext(_ctx, getState());
-        enterRule(_localctx, 32, RULE_binaryOp);
+        enterRule(_localctx, 38, RULE_binaryOp);
         int _la;
         try {
             enterOuterAlt(_localctx, 1);
             {
-                setState(125);
+                setState(165);
                 _la = _input.LA(1);
                 if (!((((_la) & ~0x3f) == 0 &&
                     ((1L << _la) & ((1L << ADD) | (1L << MIN) | (1L << MUL) | (1L << DIV) | (1L
@@ -1812,7 +2297,7 @@ public class OCL2RAParser extends Parser {
         switch (ruleIndex) {
             case 5:
                 return oclBool_sempred((OclBoolContext) _localctx, predIndex);
-            case 8:
+            case 9:
                 return oclObject_sempred((OclObjectContext) _localctx, predIndex);
         }
         return true;
@@ -1821,7 +2306,7 @@ public class OCL2RAParser extends Parser {
     private boolean oclBool_sempred(OclBoolContext _localctx, int predIndex) {
         switch (predIndex) {
             case 0:
-                return precpred(_ctx, 1);
+                return precpred(_ctx, 2);
         }
         return true;
     }
@@ -1835,73 +2320,98 @@ public class OCL2RAParser extends Parser {
     }
 
     public static final String _serializedATN =
-        "\u0004\u0001\u001f\u0080\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001" +
-            "\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004" +
-            "\u0002\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007" +
-            "\u0002\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b" +
-            "\u0002\f\u0007\f\u0002\r\u0007\r\u0002\u000e\u0007\u000e\u0002\u000f\u0007" +
-            "\u000f\u0002\u0010\u0007\u0010\u0001\u0000\u0004\u0000$\b\u0000\u000b" +
-            "\u0000\f\u0000%\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001" +
-            "\u0001\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0003\u0001" +
-            "\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0005\u0001" +
-            "\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001" +
-            "\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001" +
-            "\u0005\u0003\u0005E\b\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001" +
-            "\u0005\u0005\u0005K\b\u0005\n\u0005\f\u0005N\t\u0005\u0001\u0006\u0001" +
-            "\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001" +
-            "\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001" +
-            "\u0007\u0001\u0007\u0003\u0007_\b\u0007\u0001\b\u0001\b\u0001\b\u0001" +
-            "\b\u0001\b\u0001\b\u0005\bg\b\b\n\b\f\bj\t\b\u0001\t\u0001\t\u0001\n\u0001" +
-            "\n\u0001\u000b\u0001\u000b\u0001\f\u0001\f\u0001\r\u0001\r\u0001\r\u0001" +
-            "\r\u0003\rx\b\r\u0001\u000e\u0001\u000e\u0001\u000f\u0001\u000f\u0001" +
-            "\u0010\u0001\u0010\u0001\u0010\u0000\u0002\n\u0010\u0011\u0000\u0002\u0004" +
-            "\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \u0000" +
-            "\u0003\u0001\u0000\u0002\u0007\u0001\u0000\b\u000b\u0001\u0000\u0019\u001d" +
-            "u\u0000#\u0001\u0000\u0000\u0000\u0002)\u0001\u0000\u0000\u0000\u0004" +
-            ".\u0001\u0000\u0000\u0000\u00060\u0001\u0000\u0000\u0000\b4\u0001\u0000" +
-            "\u0000\u0000\nD\u0001\u0000\u0000\u0000\fO\u0001\u0000\u0000\u0000\u000e" +
-            "^\u0001\u0000\u0000\u0000\u0010`\u0001\u0000\u0000\u0000\u0012k\u0001" +
-            "\u0000\u0000\u0000\u0014m\u0001\u0000\u0000\u0000\u0016o\u0001\u0000\u0000" +
-            "\u0000\u0018q\u0001\u0000\u0000\u0000\u001aw\u0001\u0000\u0000\u0000\u001c" +
-            "y\u0001\u0000\u0000\u0000\u001e{\u0001\u0000\u0000\u0000 }\u0001\u0000" +
-            "\u0000\u0000\"$\u0003\u0002\u0001\u0000#\"\u0001\u0000\u0000\u0000$%\u0001" +
-            "\u0000\u0000\u0000%#\u0001\u0000\u0000\u0000%&\u0001\u0000\u0000\u0000" +
-            "&\'\u0001\u0000\u0000\u0000\'(\u0005\u0000\u0000\u0001(\u0001\u0001\u0000" +
-            "\u0000\u0000)*\u0005\u0016\u0000\u0000*+\u0003\u0004\u0002\u0000+,\u0005" +
-            "\u0018\u0000\u0000,-\u0003\u0006\u0003\u0000-\u0003\u0001\u0000\u0000" +
-            "\u0000./\u0005\u001e\u0000\u0000/\u0005\u0001\u0000\u0000\u000001\u0003" +
-            "\b\u0004\u000012\u0005\u0017\u0000\u000023\u0003\n\u0005\u00003\u0007" +
-            "\u0001\u0000\u0000\u000045\u0005\u001e\u0000\u00005\t\u0001\u0000\u0000" +
-            "\u000067\u0006\u0005\uffff\uffff\u000078\u0003\f\u0006\u000089\u0005\r" +
-            "\u0000\u00009:\u0005\u0014\u0000\u0000:;\u0005\u000f\u0000\u0000;<\u0003" +
-            "\u0016\u000b\u0000<=\u0005\u0011\u0000\u0000=>\u0003\n\u0005\u0000>?\u0005" +
-            "\u0010\u0000\u0000?E\u0001\u0000\u0000\u0000@A\u0003\u000e\u0007\u0000" +
-            "AB\u0003\u001c\u000e\u0000BC\u0003\u000e\u0007\u0000CE\u0001\u0000\u0000" +
-            "\u0000D6\u0001\u0000\u0000\u0000D@\u0001\u0000\u0000\u0000EL\u0001\u0000" +
-            "\u0000\u0000FG\n\u0001\u0000\u0000GH\u0003\u001e\u000f\u0000HI\u0003\n" +
-            "\u0005\u0002IK\u0001\u0000\u0000\u0000JF\u0001\u0000\u0000\u0000KN\u0001" +
-            "\u0000\u0000\u0000LJ\u0001\u0000\u0000\u0000LM\u0001\u0000\u0000\u0000" +
-            "M\u000b\u0001\u0000\u0000\u0000NL\u0001\u0000\u0000\u0000OP\u0003\u0018" +
-            "\f\u0000PQ\u0005\u000e\u0000\u0000QR\u0005\u0013\u0000\u0000R\r\u0001" +
-            "\u0000\u0000\u0000ST\u0005\u000f\u0000\u0000TU\u0003\u000e\u0007\u0000" +
-            "UV\u0003 \u0010\u0000VW\u0003\u000e\u0007\u0000WX\u0005\u0010\u0000\u0000" +
-            "X_\u0001\u0000\u0000\u0000YZ\u0003\u0010\b\u0000Z[\u0005\u000e\u0000\u0000" +
-            "[\\\u0003\u0014\n\u0000\\_\u0001\u0000\u0000\u0000]_\u0003\u001a\r\u0000" +
-            "^S\u0001\u0000\u0000\u0000^Y\u0001\u0000\u0000\u0000^]\u0001\u0000\u0000" +
-            "\u0000_\u000f\u0001\u0000\u0000\u0000`a\u0006\b\uffff\uffff\u0000ab\u0003" +
-            "\u0016\u000b\u0000bh\u0001\u0000\u0000\u0000cd\n\u0001\u0000\u0000de\u0005" +
-            "\u000e\u0000\u0000eg\u0003\u0012\t\u0000fc\u0001\u0000\u0000\u0000gj\u0001" +
-            "\u0000\u0000\u0000hf\u0001\u0000\u0000\u0000hi\u0001\u0000\u0000\u0000" +
-            "i\u0011\u0001\u0000\u0000\u0000jh\u0001\u0000\u0000\u0000kl\u0005\u001e" +
-            "\u0000\u0000l\u0013\u0001\u0000\u0000\u0000mn\u0005\u001e\u0000\u0000" +
-            "n\u0015\u0001\u0000\u0000\u0000op\u0005\u001e\u0000\u0000p\u0017\u0001" +
-            "\u0000\u0000\u0000qr\u0005\u001e\u0000\u0000r\u0019\u0001\u0000\u0000" +
-            "\u0000st\u0005\u0012\u0000\u0000tu\u0005\u001e\u0000\u0000ux\u0005\u0012" +
-            "\u0000\u0000vx\u0005\u001f\u0000\u0000ws\u0001\u0000\u0000\u0000wv\u0001" +
-            "\u0000\u0000\u0000x\u001b\u0001\u0000\u0000\u0000yz\u0007\u0000\u0000" +
-            "\u0000z\u001d\u0001\u0000\u0000\u0000{|\u0007\u0001\u0000\u0000|\u001f" +
-            "\u0001\u0000\u0000\u0000}~\u0007\u0002\u0000\u0000~!\u0001\u0000\u0000" +
-            "\u0000\u0006%DL^hw";
+        "\u0004\u0001*\u00a8\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002" +
+            "\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002" +
+            "\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002" +
+            "\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002" +
+            "\f\u0007\f\u0002\r\u0007\r\u0002\u000e\u0007\u000e\u0002\u000f\u0007\u000f" +
+            "\u0002\u0010\u0007\u0010\u0002\u0011\u0007\u0011\u0002\u0012\u0007\u0012" +
+            "\u0002\u0013\u0007\u0013\u0001\u0000\u0004\u0000*\b\u0000\u000b\u0000" +
+            "\f\u0000+\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001" +
+            "\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003" +
+            "\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005" +
+            "\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005" +
+            "\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005" +
+            "\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0003\u0005O\b\u0005" +
+            "\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0005\u0005U\b\u0005" +
+            "\n\u0005\f\u0005X\t\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006" +
+            "\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006" +
+            "\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006" +
+            "\u0001\u0006\u0001\u0006\u0003\u0006l\b\u0006\u0001\u0007\u0001\u0007" +
+            "\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001" +
+            "\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001" +
+            "\b\u0001\b\u0001\b\u0003\b\u0083\b\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001" +
+            "\t\u0001\t\u0005\t\u008b\b\t\n\t\f\t\u008e\t\t\u0001\n\u0001\n\u0001\u000b" +
+            "\u0001\u000b\u0001\f\u0001\f\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0001" +
+            "\u000f\u0001\u000f\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0010\u0003" +
+            "\u0010\u00a0\b\u0010\u0001\u0011\u0001\u0011\u0001\u0012\u0001\u0012\u0001" +
+            "\u0013\u0001\u0013\u0001\u0013\u0000\u0002\n\u0012\u0014\u0000\u0002\u0004" +
+            "\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"" +
+            "$&\u0000\u0005\u0001\u0000\"#\u0002\u0000\u001c\u001d\u001f!\u0001\u0000" +
+            "\u0002\u0007\u0001\u0000\b\u000b\u0001\u0000$(\u009d\u0000)\u0001\u0000" +
+            "\u0000\u0000\u0002/\u0001\u0000\u0000\u0000\u00044\u0001\u0000\u0000\u0000" +
+            "\u00066\u0001\u0000\u0000\u0000\b:\u0001\u0000\u0000\u0000\nN\u0001\u0000" +
+            "\u0000\u0000\fk\u0001\u0000\u0000\u0000\u000em\u0001\u0000\u0000\u0000" +
+            "\u0010\u0082\u0001\u0000\u0000\u0000\u0012\u0084\u0001\u0000\u0000\u0000" +
+            "\u0014\u008f\u0001\u0000\u0000\u0000\u0016\u0091\u0001\u0000\u0000\u0000" +
+            "\u0018\u0093\u0001\u0000\u0000\u0000\u001a\u0095\u0001\u0000\u0000\u0000" +
+            "\u001c\u0097\u0001\u0000\u0000\u0000\u001e\u0099\u0001\u0000\u0000\u0000" +
+            " \u009f\u0001\u0000\u0000\u0000\"\u00a1\u0001\u0000\u0000\u0000$\u00a3" +
+            "\u0001\u0000\u0000\u0000&\u00a5\u0001\u0000\u0000\u0000(*\u0003\u0002" +
+            "\u0001\u0000)(\u0001\u0000\u0000\u0000*+\u0001\u0000\u0000\u0000+)\u0001" +
+            "\u0000\u0000\u0000+,\u0001\u0000\u0000\u0000,-\u0001\u0000\u0000\u0000" +
+            "-.\u0005\u0000\u0000\u0001.\u0001\u0001\u0000\u0000\u0000/0\u0005\u0019" +
+            "\u0000\u000001\u0003\u0004\u0002\u000012\u0005\u001b\u0000\u000023\u0003" +
+            "\u0006\u0003\u00003\u0003\u0001\u0000\u0000\u000045\u0005)\u0000\u0000" +
+            "5\u0005\u0001\u0000\u0000\u000067\u0003\b\u0004\u000078\u0005\u001a\u0000" +
+            "\u000089\u0003\n\u0005\u00009\u0007\u0001\u0000\u0000\u0000:;\u0005)\u0000" +
+            "\u0000;\t\u0001\u0000\u0000\u0000<=\u0006\u0005\uffff\uffff\u0000=>\u0003" +
+            "\u000e\u0007\u0000>?\u0005\r\u0000\u0000?@\u0005\u0014\u0000\u0000@A\u0005" +
+            "\u000f\u0000\u0000AB\u0003\u001c\u000e\u0000BC\u0005\u0011\u0000\u0000" +
+            "CD\u0003\n\u0005\u0000DE\u0005\u0010\u0000\u0000EO\u0001\u0000\u0000\u0000" +
+            "FG\u0003\u0010\b\u0000GH\u0003\"\u0011\u0000HI\u0003\u0010\b\u0000IO\u0001" +
+            "\u0000\u0000\u0000JK\u0003\f\u0006\u0000KL\u0005\r\u0000\u0000LM\u0003" +
+            "\u0014\n\u0000MO\u0001\u0000\u0000\u0000N<\u0001\u0000\u0000\u0000NF\u0001" +
+            "\u0000\u0000\u0000NJ\u0001\u0000\u0000\u0000OV\u0001\u0000\u0000\u0000" +
+            "PQ\n\u0002\u0000\u0000QR\u0003$\u0012\u0000RS\u0003\n\u0005\u0003SU\u0001" +
+            "\u0000\u0000\u0000TP\u0001\u0000\u0000\u0000UX\u0001\u0000\u0000\u0000" +
+            "VT\u0001\u0000\u0000\u0000VW\u0001\u0000\u0000\u0000W\u000b\u0001\u0000" +
+            "\u0000\u0000XV\u0001\u0000\u0000\u0000YZ\u0003\u000e\u0007\u0000Z[\u0005" +
+            "\r\u0000\u0000[\\\u0005\u0016\u0000\u0000\\]\u0005\u000f\u0000\u0000]" +
+            "^\u0003\u001c\u000e\u0000^_\u0005\u0011\u0000\u0000_`\u0003\n\u0005\u0000" +
+            "`a\u0005\u0010\u0000\u0000al\u0001\u0000\u0000\u0000bc\u0003\u000e\u0007" +
+            "\u0000cd\u0005\r\u0000\u0000de\u0005\u0017\u0000\u0000ef\u0005\u000f\u0000" +
+            "\u0000fg\u0003\u001c\u000e\u0000gh\u0005\u0011\u0000\u0000hi\u0003\n\u0005" +
+            "\u0000ij\u0005\u0010\u0000\u0000jl\u0001\u0000\u0000\u0000kY\u0001\u0000" +
+            "\u0000\u0000kb\u0001\u0000\u0000\u0000l\r\u0001\u0000\u0000\u0000mn\u0003" +
+            "\u001e\u000f\u0000no\u0005\u000e\u0000\u0000op\u0005\u0013\u0000\u0000" +
+            "p\u000f\u0001\u0000\u0000\u0000qr\u0005\u000f\u0000\u0000rs\u0003\u0010" +
+            "\b\u0000st\u0003&\u0013\u0000tu\u0003\u0010\b\u0000uv\u0005\u0010\u0000" +
+            "\u0000v\u0083\u0001\u0000\u0000\u0000wx\u0003\u0012\t\u0000xy\u0005\u000e" +
+            "\u0000\u0000yz\u0003\u001a\r\u0000z\u0083\u0001\u0000\u0000\u0000{\u0083" +
+            "\u0003 \u0010\u0000|}\u0003\u001e\u000f\u0000}~\u0005\u000e\u0000\u0000" +
+            "~\u007f\u0003\u001a\r\u0000\u007f\u0080\u0005\r\u0000\u0000\u0080\u0081" +
+            "\u0003\u0016\u000b\u0000\u0081\u0083\u0001\u0000\u0000\u0000\u0082q\u0001" +
+            "\u0000\u0000\u0000\u0082w\u0001\u0000\u0000\u0000\u0082{\u0001\u0000\u0000" +
+            "\u0000\u0082|\u0001\u0000\u0000\u0000\u0083\u0011\u0001\u0000\u0000\u0000" +
+            "\u0084\u0085\u0006\t\uffff\uffff\u0000\u0085\u0086\u0003\u001c\u000e\u0000" +
+            "\u0086\u008c\u0001\u0000\u0000\u0000\u0087\u0088\n\u0001\u0000\u0000\u0088" +
+            "\u0089\u0005\u000e\u0000\u0000\u0089\u008b\u0003\u0018\f\u0000\u008a\u0087" +
+            "\u0001\u0000\u0000\u0000\u008b\u008e\u0001\u0000\u0000\u0000\u008c\u008a" +
+            "\u0001\u0000\u0000\u0000\u008c\u008d\u0001\u0000\u0000\u0000\u008d\u0013" +
+            "\u0001\u0000\u0000\u0000\u008e\u008c\u0001\u0000\u0000\u0000\u008f\u0090" +
+            "\u0007\u0000\u0000\u0000\u0090\u0015\u0001\u0000\u0000\u0000\u0091\u0092" +
+            "\u0007\u0001\u0000\u0000\u0092\u0017\u0001\u0000\u0000\u0000\u0093\u0094" +
+            "\u0005)\u0000\u0000\u0094\u0019\u0001\u0000\u0000\u0000\u0095\u0096\u0005" +
+            ")\u0000\u0000\u0096\u001b\u0001\u0000\u0000\u0000\u0097\u0098\u0005)\u0000" +
+            "\u0000\u0098\u001d\u0001\u0000\u0000\u0000\u0099\u009a\u0005)\u0000\u0000" +
+            "\u009a\u001f\u0001\u0000\u0000\u0000\u009b\u009c\u0005\u0012\u0000\u0000" +
+            "\u009c\u009d\u0005)\u0000\u0000\u009d\u00a0\u0005\u0012\u0000\u0000\u009e" +
+            "\u00a0\u0005*\u0000\u0000\u009f\u009b\u0001\u0000\u0000\u0000\u009f\u009e" +
+            "\u0001\u0000\u0000\u0000\u00a0!\u0001\u0000\u0000\u0000\u00a1\u00a2\u0007" +
+            "\u0002\u0000\u0000\u00a2#\u0001\u0000\u0000\u0000\u00a3\u00a4\u0007\u0003" +
+            "\u0000\u0000\u00a4%\u0001\u0000\u0000\u0000\u00a5\u00a6\u0007\u0004\u0000" +
+            "\u0000\u00a6\'\u0001\u0000\u0000\u0000\u0007+NVk\u0082\u008c\u009f";
     public static final ATN _ATN =
         new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 

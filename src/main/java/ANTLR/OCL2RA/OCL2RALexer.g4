@@ -26,10 +26,21 @@ QUOTE:                               '\'';
 
 ALL:                                 'allInstances()';
 FA:                                  'forAll';
+EX:                                  'exists';
 SE:                                  'select';
+RE:                                  'reject';
+CO:                                  'collect';
 CTX:                                 'context';
 COLON:                               ':';
 INV:                                 'inv';
+SUM:                                 'sum()';
+COUNT:                               'count()';
+SIZE:                                'size()';
+AVG:                                 'average()';
+Min:                                 'min()';
+Max:                                 'max()';
+ISEMPTY:                             'isEmpty()';
+NOTEMPTY:                            'notEmpty()';
 
 ADD:                                 '+';
 MIN:                                 '-';

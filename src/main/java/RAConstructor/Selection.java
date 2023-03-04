@@ -6,7 +6,7 @@ public class Selection extends RAObject {
 
     private ArrayList<Comparison> conds;
     private RAObject body;
-
+    private boolean aggregateFlag;
 
     public Selection(RAObject b) {
         this.body = b;
@@ -15,6 +15,16 @@ public class Selection extends RAObject {
     public Selection(ArrayList<Comparison> c, RAObject b) {
         this.conds = c;
         this.body = b;
+    }
+
+    public Selection(ArrayList<Comparison> c, RAObject b, boolean a) {
+        this.conds = c;
+        this.body = b;
+        this.aggregateFlag = a;
+    }
+
+    public void setAggregateFlag(boolean aggregateFlag) {
+        this.aggregateFlag = aggregateFlag;
     }
 
     public RAObject getBody() {
@@ -28,6 +38,9 @@ public class Selection extends RAObject {
     @Override
     public String print() {
         StringBuilder sb = new StringBuilder();
+        if (aggregateFlag) {
+            sb.append("aggregate ");
+        }
         sb.append("sigma ");
         if (conds.size() != 0) {
             sb.append("(");
