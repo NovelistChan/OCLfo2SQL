@@ -7,6 +7,8 @@ public class Selection extends RAObject {
     private ArrayList<Comparison> conds;
     private RAObject body;
     private boolean aggregateFlag;
+    private boolean groupByFlag;
+    private String groupBy;
 
     public Selection(RAObject b) {
         this.body = b;
@@ -27,6 +29,14 @@ public class Selection extends RAObject {
         this.aggregateFlag = aggregateFlag;
     }
 
+    public void setGroupBy(String groupBy) {
+        this.groupBy = groupBy;
+    }
+
+    public void setGroupByFlag(boolean groupByFlag) {
+        this.groupByFlag = groupByFlag;
+    }
+
     public RAObject getBody() {
         return body;
     }
@@ -40,6 +50,9 @@ public class Selection extends RAObject {
         StringBuilder sb = new StringBuilder();
         if (aggregateFlag) {
             sb.append("aggregate ");
+        }
+        if (groupByFlag) {
+            sb.append("group by ").append(this.groupBy).append(" ");
         }
         sb.append("sigma ");
         if (conds.size() != 0) {

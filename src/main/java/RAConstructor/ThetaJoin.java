@@ -16,6 +16,14 @@ public class ThetaJoin extends NaturalJoin {
         this.t2 = tableName2;
     }
 
+    public String getT1() {
+        return t1;
+    }
+
+    public String getT2() {
+        return t2;
+    }
+
     public ArrayList<Comparison> getConds() {
         return conds;
     }

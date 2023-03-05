@@ -76,6 +76,18 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAggregateGroupBy(RA2SQLParser.AggregateGroupByContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAggregateGroupBy(RA2SQLParser.AggregateGroupByContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterId(RA2SQLParser.IdContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -124,6 +136,18 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAggregate(RA2SQLParser.AggregateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAggregate(RA2SQLParser.AggregateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterProjection(RA2SQLParser.ProjectionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -167,6 +191,18 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitColumnOne(RA2SQLParser.ColumnOneContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIdAgg(RA2SQLParser.IdAggContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIdAgg(RA2SQLParser.IdAggContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -287,6 +323,18 @@ public class RA2SQLParserBaseListener implements RA2SQLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitConsInt(RA2SQLParser.ConsIntContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAggregation(RA2SQLParser.AggregationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAggregation(RA2SQLParser.AggregationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

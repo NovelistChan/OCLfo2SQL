@@ -15,6 +15,8 @@ relation
     | relation JOIN relation                         #join
     | relation ID JOIN LB expressions RB relation ID #thetaJoin
     | ID                                             #id
+    | AGG relation                                   #aggregate
+    | AGG GROUP BY column relation                   #aggregateGroupBy
     ;
 
 projection
@@ -34,6 +36,7 @@ column
     : ID                                             #idOne
     | column DOT ID                                  #idMany
     | constant                                       #idCons
+    | aggregation LB column RB                       #idAgg
     ;
 
 expressions
@@ -55,6 +58,10 @@ binaryExp
 constant
     : QUOTE ID QUOTE                                 #consStri
     | INT                                            #consInt
+    ;
+
+aggregation
+    : SUM | AVG | Min | Max | COUNT
     ;
 
 compOp

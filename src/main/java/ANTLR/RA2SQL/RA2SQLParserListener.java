@@ -66,6 +66,18 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 */
 	void exitProject(RA2SQLParser.ProjectContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code aggregateGroupBy}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 */
+	void enterAggregateGroupBy(RA2SQLParser.AggregateGroupByContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code aggregateGroupBy}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 */
+	void exitAggregateGroupBy(RA2SQLParser.AggregateGroupByContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code id}
 	 * labeled alternative in {@link RA2SQLParser#relation}.
 	 * @param ctx the parse tree
@@ -114,6 +126,18 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 */
 	void exitDiffer(RA2SQLParser.DifferContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code aggregate}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 */
+	void enterAggregate(RA2SQLParser.AggregateContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code aggregate}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 */
+	void exitAggregate(RA2SQLParser.AggregateContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RA2SQLParser#projection}.
 	 * @param ctx the parse tree
 	 */
@@ -157,6 +181,18 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitColumnOne(RA2SQLParser.ColumnOneContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code idAgg}
+	 * labeled alternative in {@link RA2SQLParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdAgg(RA2SQLParser.IdAggContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code idAgg}
+	 * labeled alternative in {@link RA2SQLParser#column}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdAgg(RA2SQLParser.IdAggContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code idCons}
 	 * labeled alternative in {@link RA2SQLParser#column}.
@@ -275,6 +311,16 @@ public interface RA2SQLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConsInt(RA2SQLParser.ConsIntContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RA2SQLParser#aggregation}.
+	 * @param ctx the parse tree
+	 */
+	void enterAggregation(RA2SQLParser.AggregationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RA2SQLParser#aggregation}.
+	 * @param ctx the parse tree
+	 */
+	void exitAggregation(RA2SQLParser.AggregationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RA2SQLParser#compOp}.
 	 * @param ctx the parse tree

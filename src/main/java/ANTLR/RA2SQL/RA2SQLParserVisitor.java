@@ -45,6 +45,13 @@ public interface RA2SQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProject(RA2SQLParser.ProjectContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code aggregateGroupBy}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAggregateGroupBy(RA2SQLParser.AggregateGroupByContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code id}
 	 * labeled alternative in {@link RA2SQLParser#relation}.
 	 * @param ctx the parse tree
@@ -73,6 +80,13 @@ public interface RA2SQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDiffer(RA2SQLParser.DifferContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code aggregate}
+	 * labeled alternative in {@link RA2SQLParser#relation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAggregate(RA2SQLParser.AggregateContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link RA2SQLParser#projection}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -98,6 +112,13 @@ public interface RA2SQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitColumnOne(RA2SQLParser.ColumnOneContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code idAgg}
+	 * labeled alternative in {@link RA2SQLParser#column}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdAgg(RA2SQLParser.IdAggContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code idCons}
 	 * labeled alternative in {@link RA2SQLParser#column}.
@@ -167,6 +188,12 @@ public interface RA2SQLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitConsInt(RA2SQLParser.ConsIntContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link RA2SQLParser#aggregation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAggregation(RA2SQLParser.AggregationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link RA2SQLParser#compOp}.
 	 * @param ctx the parse tree

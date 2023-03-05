@@ -3,13 +3,19 @@ import ANTLR.RA2SQL.RA2SQLParserBaseVisitor;
 
 public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
 
+    private boolean aggregationFlag;
+    private boolean groupByFlag;
+    private String groupByStr;
+
     /*
     script : relation + EOF
      */
     @Override
     public String visitScript(RA2SQLParser.ScriptContext ctx) {
         StringBuilder res = new StringBuilder();
-
+        this.aggregationFlag = false;
+        this.groupByFlag = false;
+        this.groupByStr = "";
         for (int i = 0; i < ctx.relation().size(); i++) {
             String r = visit(ctx.relation(i));
 //            if (r.charAt(0) == '(' && r.charAt(r.length() - 1) == ')') {
@@ -20,6 +26,26 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
         }
 
         return res.toString();
+    }
+
+    /*
+    relation : aggregate relation
+     */
+    @Override
+    public String visitAggregate(RA2SQLParser.AggregateContext ctx) {
+        this.aggregationFlag = true;
+        return visit(ctx.relation());
+    }
+
+    /*
+    relation : aggregate group by xx.xx relation
+     */
+    @Override
+    public String visitAggregateGroupBy(RA2SQLParser.AggregateGroupByContext ctx) {
+        this.aggregationFlag = true;
+        this.groupByFlag = true;
+        this.groupByStr = visit(ctx.column());
+        return visit(ctx.relation());
     }
 
     /*
@@ -121,6 +147,20 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
      */
     @Override
     public String visitSelection(RA2SQLParser.SelectionContext ctx) {
+        if (this.aggregationFlag) {
+            this.aggregationFlag = false;
+            if (this.groupByFlag) {
+                this.groupByFlag = false;
+                return "SELECT CASE " + visit(ctx.expressions())
+                    + " WHEN 1 THEN 1 ELSE 0 END AS res\n"
+                    + "FROM " + visit(ctx.relation()) + "\n"
+                    + "GROUP BY " + this.groupByStr;
+            } else {
+                return "SELECT CASE " + visit(ctx.expressions())
+                    + " WHEN 1 THEN 1 ELSE 0 END AS res\n"
+                    + "FROM " + visit(ctx.relation());
+            }
+        }
         return "SELECT * \n"
             + "FROM " + visit(ctx.relation()) + "\n"
             + "WHERE " + visit(ctx.expressions());
@@ -164,6 +204,14 @@ public class RA2SQLVisitor extends RA2SQLParserBaseVisitor<String> {
     @Override
     public String visitIdCons(RA2SQLParser.IdConsContext ctx) {
         return visit(ctx.constant());
+    }
+
+    /*
+    column : AGG(column)
+     */
+    @Override
+    public String visitIdAgg(RA2SQLParser.IdAggContext ctx) {
+        return ctx.aggregation().getText() + "(" + visit(ctx.column()) + ")";
     }
 
     /*

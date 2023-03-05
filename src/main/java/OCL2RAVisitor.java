@@ -193,10 +193,22 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
                     rh = ctx.oclSingle(1).getText();
                     rctx = ctx.oclSingle(1).getText().split("\\.");
                 }
-                RAContext c1 = new RAClass(((RAAggregation) t1).getClassName());
                 Selection res = (Selection) compareWithRAContext(ctx, conds, (RAContext) t2, lh, rh,
-                    rctx, rename, c1);
+                    rctx, rename, t1);
                 res.setAggregateFlag(true);
+                res.setGroupByFlag(true);
+                String groupByStr = rctx[0];
+                if (res.getBody() instanceof ThetaJoin) {
+                    groupByStr = ((ThetaJoin) res.getBody()).getT2() + "." + rctx[rctx.length - 1];
+                } else {
+                    if (groupByStr.equals("self")) {
+                        groupByStr = this.contextSelf.print();
+                    } else {
+                        groupByStr = this.varContextPairList.get(rctx[rctx.length - 2]).print();
+                    }
+                    groupByStr = groupByStr + "." + rctx[rctx.length - 1];
+                }
+                res.setGroupBy(groupByStr);
                 return res;
             }
         }
@@ -231,8 +243,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
                 if (this.contextQuery.peek() instanceof NaturalJoin) {
                     ((NaturalJoin) this.contextQuery.peek()).selfCheck();
                 }
-                RAContext c1 = this.contextQuery.peek();
-                return compareWithRAContext(ctx, conds, (RAContext) t2, lh, rh, rctx, rename, c1);
+                return compareWithRAContext(ctx, conds, (RAContext) t2, lh, rh, rctx, rename, t1);
             }
         }
         // III. excluding A&B
@@ -328,8 +339,10 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     }
 
     private RAObject compareWithRAContext(BoolCompareContext ctx, ArrayList<Comparison> conds,
-        RAContext t2, String lh, String rh, String[] rctx, boolean rename, RAContext c1) {
+        RAContext t2, String lh, String rh, String[] rctx, boolean rename, RAObject t1) {
         RAContext c2 = t2;
+        RAContext c1 = (t1 instanceof RABinary) ? this.contextQuery.peek()
+            : new RAClass(((RAAggregation) t1).getClassName());
         if (c1.equals(c2) && rctx.length > 2 && c1 instanceof RAClass
             && c2 instanceof RAClass) {
             rename = true;
@@ -769,6 +782,10 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
         String res = "t" + Integer.toString(this.tempTableCount);
         this.tempTableCount++;
         return res;
+    }
+
+    private String getLastTempTableName() {
+        return "t" + Integer.toString(this.tempTableCount - 1);
     }
 
     private String makeUpConds(String operand, boolean changeName, String newName) {

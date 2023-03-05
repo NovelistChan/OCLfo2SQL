@@ -9,7 +9,6 @@ DIFFER:                              '\\';
 INTERSECTION:                        'intersect';
 JOIN:                                'join';
 UNIVERSALSET:                        'U';
-ID:                                  [a-zA-Z][a-zA-Z0-9_]*;
 COMMA:                               ',';
 EQ:                                  '=';
 GT:                                  '>';
@@ -31,11 +30,21 @@ MUL:                                 '*';
 DIV:                                 '/';
 MOD:                                 '%';
 
+SUM:                                 'SUM';
+AVG:                                 'AVG';
+Min:                                 'MIN';
+Max:                                 'MAX';
+COUNT:                               'COUNT';
+AGG:                                 'aggregate';
+GROUP:                               'group';
+BY:                                  'by';
+
 DOT:                                 '.';
 LB:                                  '(';
 RB:                                  ')';
 SEP:                                 '|';
 QUOTE:                               '\'';
 
+ID:                                  [a-zA-Z][a-zA-Z0-9_]*;
 STRING:                              [a-zA-Z]+;
 INT:                                 [0-9]+;
