@@ -5,7 +5,7 @@ This tool is implemented to realize the translation from OCLfo to RA, then RA to
 
 [OMG. 2012. Object Constraint Language Specification, version 2.3.1]( https://www.omg.org/spec/OCL/2.3.1/PDF)
 
-[$OCL_{FO}$:First-order Expressive OCL Constraints for Efficient Integrity Checking](https://link.springer.com/article/10.1007/s10270-018-0688-z)
+[OCLfo:First-order Expressive OCL Constraints for Efficient Integrity Checking](https://link.springer.com/article/10.1007/s10270-018-0688-z)
 
 [Logic Foundation of the OCL Modelling Language](https://link.springer.com/chapter/10.1007/978-3-319-11558-0_49)
 
