@@ -21,3 +21,4 @@ context SnapShotTest inv uni: self.timeStamp > 0 xor self.predId.succId.timeStam
 context T inv SBM: THP.allInstances()->forAll(thp| TT.allInstances()->forAll(tt| tt.SBM <> thp.SBM and self.SBM <> tt.SBM))
 context SnapShotTest inv oneNull: self.predId <> 'null' or self.succId <> 'null'
 context SnapShotTest inv oneNull: self.predId = 'null' implies self.succId <> 'null'
+context Taxi inv taxiSpd: Taxi.allInstances()->forAll(t| t.taxi_id <> self.taxi_id implies t.taxi_id <> 'null')

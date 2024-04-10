@@ -595,7 +595,7 @@ public class OCL2RAVisitor extends OCL2RAParserBaseVisitor<RAObject> {
     }
 
     /*
-        oclObject : var
+        oclObject : oclVar
      */
     @Override
     public RAContext visitVarObj(OCL2RAParser.VarObjContext ctx) {

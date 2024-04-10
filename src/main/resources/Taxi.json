@@ -1,0 +1,34 @@
+{
+  "class": "Car",
+  "attributes": [
+    {
+      "name": "time",
+      "type": "String"
+    },
+    {
+      "name": "taxi_id",
+      "type": "String"
+    },
+    {
+      "name": "longitude",
+      "type": "Double"
+    },
+    {
+      "name": "latitude",
+      "type": "Double"
+    },
+    {
+      "name": "speed",
+      "type": "Double"
+    },
+    {
+      "name": "direction",
+      "type": "Double"
+    },
+    {
+      "name": "status",
+      "type": "Boolean"
+    }
+  ],
+  "ends": []
+}
